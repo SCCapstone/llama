@@ -66,3 +66,4 @@ Explain how to run the automated tests.
 # Authors
 
 Colin Richard - colincr@email.sc.edu
+Thomas Kareka <tkareka@email.sc.edu>
