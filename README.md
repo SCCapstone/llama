@@ -17,8 +17,8 @@ run in their laptop. For example:
 
 In order to build this project you first have to install:
 
--   [Node.js](https://nodejs.org/en/)
--   [MongoDB](https://www.mongodb.com/)
+- [Node.js](https://nodejs.org/en/)
+- [MongoDB](https://www.mongodb.com/)
 
 If possible, list the actual commands you used to install these, so the reader
 can just cut-n-paste the commands and get everything setup.
@@ -65,4 +65,5 @@ Explain how to run the automated tests.
 
 # Authors
 
+Colin Richard - colincr@email.sc.edu
 Thomas Kareka <tkareka@email.sc.edu>
