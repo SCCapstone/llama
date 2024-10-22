@@ -65,4 +65,4 @@ Explain how to run the automated tests.
 
 # Authors
 
-Your names and emails
+Thomas Kareka <tkareka@email.sc.edu>
