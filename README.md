@@ -65,5 +65,6 @@ Explain how to run the automated tests.
 
 # Authors
 
+Ankit Nath and ankitnath2004@gmail.com
 Colin Richard - colincr@email.sc.edu
 Thomas Kareka <tkareka@email.sc.edu>
