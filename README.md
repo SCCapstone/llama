@@ -67,7 +67,11 @@ Ankit Nath <ankitnath2004@gmail.com> (<anath@email.sc.edu>)
 Cade Stocker <cstocker@email.sc.edu>
 Colin Richard <colincr@email.sc.edu>
 Thomas Kareka <tkareka@email.sc.edu>
+<<<<<<< HEAD
 Trevor Seestdt <seestedt@email.sc.edu>
 
 
 #This is a test for the merge conflict 
+=======
+Trevor Seestdt <seestedt@email.sc.edu> 
+>>>>>>> trevor_mergeConflict
