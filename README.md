@@ -67,4 +67,4 @@ Ankit Nath <ankitnath2004@gmail.com> (<anath@email.sc.edu>)
 Cade Stocker <cstocker@email.sc.edu>
 Colin Richard <colincr@email.sc.edu>
 Thomas Kareka <tkareka@email.sc.edu>
-Trevor Seestdt <seestedt@email.sc.edu>
+Trevor Seestedt <seestedt@email.sc.edu>
