@@ -1,4 +1,4 @@
-# Project Name
+# ColdCall (llama)
 
 This first paragraph should be a short description of the app. You can add links
 to your wiki pages that have more detailed descriptions.
@@ -12,18 +12,14 @@ following your instructions.
 
 ## External Requirements
 
-List all the stuff the reader will need to install in order to get you app to
-run in their laptop. For example:
-
 In order to build this project you first have to install:
 
-- [Node.js](https://nodejs.org/en/)
-- [MongoDB](https://www.mongodb.com/)
+- [Python 3.13.0](https://www.python.org/downloads/release/python-3130/)
+- [Django 5.1.2](https://www.djangoproject.com/download/)
+```pip install Django==5.1.2```
 
-If possible, list the actual commands you used to install these, so the reader
-can just cut-n-paste the commands and get everything setup.
-
-You only need to add instructions for the OS you are using.
+In order to deploy this project, you need [Gunicorn](https://gunicorn.org/). (UNIX only)
+```pip install gunicorn```
 
 ## Setup
 
@@ -34,17 +30,19 @@ database for running your webapp locally.
 
 ## Running
 
-Specify the commands for a developer to run the app from the cloned repo.
-
+1. Clone the repo. ```https://github.com/SCCapstone/llama.git```
+2. Create a `.env` file with the following:
+```
+SECRET_KEY=<put key here>
+DEBUG=TRUE
+```
+3. Initialize the database through ```python manage.py migrate```
+4. Run the server through `python manage.py runserver`
 # Deployment
 
-Webapps need a deployment section that explains how to get it deployed on the
-Internet. These should be detailed enough so anyone can re-deploy if needed
-. Note that you **do not put passwords in git**.
-
-Mobile apps will also sometimes need some instructions on how to build a
-"release" version, maybe how to sign it, and how to run that binary in an
-emulator or in a physical phone.
+1. Follow the prior steps to initialize the server.
+2. Edit the .env to set `DEBUG=FALSE`.
+3. Run `gunicorn llama.wsgi`
 
 # Testing
 
@@ -65,6 +63,8 @@ Explain how to run the automated tests.
 
 # Authors
 
-Ankit Nath and ankitnath2004@gmail.com
-Colin Richard - colincr@email.sc.edu
+Ankit Nath <ankitnath2004@gmail.com> (<anath@email.sc.edu>)
+Cade Stocker <cstocker@email.sc.edu>
+Colin Richard <colincr@email.sc.edu>
 Thomas Kareka <tkareka@email.sc.edu>
+Trevor Seestdt <seestedt@email.sc.edu>
