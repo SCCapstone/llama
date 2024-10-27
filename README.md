@@ -68,3 +68,7 @@ Cade Stocker <cstocker@email.sc.edu>
 Colin Richard <colincr@email.sc.edu>
 Thomas Kareka <tkareka@email.sc.edu>
 Trevor Seestedt <seestedt@email.sc.edu>
+
+# Coding Style 
+The following link provides the style of coding that will be used for the project. 
+https://docs.djangoproject.com/en/dev/internals/contributing/writing-code/coding-style/
