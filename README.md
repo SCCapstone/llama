@@ -33,8 +33,9 @@ database for running your webapp locally.
 SECRET_KEY=<put key here>
 DEBUG=TRUE
 ```
-3. Initialize the database through ```python manage.py migrate```
-4. Run the server through `python manage.py runserver`
+3. Install the dependencies through ```pip install -r requirements.txt```
+4. Initialize the database through ```python manage.py migrate```
+5. Run the server through `python manage.py runserver`
 # Deployment
 
 1. Follow the prior steps to initialize the server.
