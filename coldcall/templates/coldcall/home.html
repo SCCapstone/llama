@@ -3,23 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Cold Call App</title>
+    <title>Student Dashboard</title>
+    <style>
+        /* Basic styling for the table */
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+            text-align: left;
+        }
+        .student-table thead tr {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        .student-table th, .student-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .student-table th {
+            font-weight: bold;
+        }
+        .view-metrics-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .view-metrics-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
     <h1>Student Dashboard</h1>
-    
-    <div class="student-list">
-        {% for student in students %}
-            <div class="student-preview">
-                <h3>{{ student.first_name }} {{ student.last_name }}</h3>
-                <p>Total Calls: {{ student.total_calls }}</p>
-                <p>Absent Calls: {{ student.absent_calls }}</p>
-                <p>Total Score: {{ student.total_score }}</p>
-                <a href="{% url 'coldcall:student_metrics' student.id %}">View Metrics</a>
-            </div>
-        {% endfor %}
-    </div>
+
+    <table class="student-table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Total Calls</th>
+                <th>Absent Calls</th>
+                <th>Total Score</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.first_name }}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.total_calls }}</td>
+                    <td>{{ student.absent_calls }}</td>
+                    <td>{{ student.total_score }}</td>
+                    <td><a href="{% url 'coldcall:student_metrics' student.id %}" class="view-metrics-link">View Metrics</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 </body>
 </html>
