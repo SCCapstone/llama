@@ -43,8 +43,11 @@ DEBUG=TRUE
 3. Run `gunicorn llama.wsgi`
 
 # SuperUser
+
 Username: SuperUser
+
 Email: Cstocker@email.sc.edu
+
 Password: SuperUser123
 
 # Testing
