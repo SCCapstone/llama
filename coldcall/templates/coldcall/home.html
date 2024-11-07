@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Cold Call App</title>
+</head>
+<body>
+
+    <h1>Student Dashboard</h1>
+    
+    <div class="student-list">
+        {% for student in students %}
+            <div class="student-preview">
+                <h3>{{ student.first_name }} {{ student.last_name }}</h3>
+                <p>Total Calls: {{ student.total_calls }}</p>
+                <p>Absent Calls: {{ student.absent_calls }}</p>
+                <p>Total Score: {{ student.total_score }}</p>
+                <a href="{% url 'coldcall:student_metrics' student.id %}">View Metrics</a>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
