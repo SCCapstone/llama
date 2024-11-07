@@ -42,6 +42,11 @@ DEBUG=TRUE
 2. Edit the .env to set `DEBUG=FALSE`.
 3. Run `gunicorn llama.wsgi`
 
+# SuperUser
+Username: SuperUser
+Email: Cstocker@email.sc.edu
+Password: SuperUser123
+
 # Testing
 
 In 492 you will write automated tests. When you do you will need to add a
