@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib import admin
 
 from . import views
@@ -7,6 +7,12 @@ app_name = "coldcall"
 urlpatterns = [
     #path("", views.IndexView.as_view(), name="index"),
     path("",views.HomePageView.as_view(), name="home"),
+
+    
+    #added this path to make a login page - cade
+    path('accounts/', include('django.contrib.auth.urls')),
+
+
     path("admin/", admin.site.urls),
     #path("home/", views.HomePageView.as_view(), name="home"),
     path("<int:course_id>/", views.CourseHomePageView.as_view(), name="course_home"),

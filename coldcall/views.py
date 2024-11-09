@@ -20,7 +20,8 @@ class HomePageView(View):
         classes = Class.objects.all()
 
         # get the id of the selected class
-        selected_class_id = request.GET.get('class_id')
+        # WAITING UNTIL TEAMMATES SAY IF WE NEED A LOGIN - CADE
+        #selected_class_id = request.GET.get('class_id')
 
         # get the students that are in that class
         if selected_class_id:
