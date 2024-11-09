@@ -5,12 +5,15 @@ from . import views
 
 app_name = "coldcall"
 urlpatterns = [
-    path("", views.IndexView.as_view(), name="index"),
+    ##path("", views.IndexView.as_view(), name="index"),
+    path("",views.HomePageView.as_view(), name="home"),
     path("admin/", admin.site.urls),
-    path("home/", views.HomePageView.as_view(), name="home"),
+    ##path("home/", views.HomePageView.as_view(), name="home"),
     path("<int:course_id>/", views.CourseHomePageView.as_view(), name="course_home"),
     path("<int:course_id>/randomizer", views.StudentRandomizerView.as_view(), name="randomizer"),
-    path("student/<int:student_id>", views.StudentMetricsView.as_view(), name="student_metrics"),
+    ##path("student/<int:student_id>", views.StudentMetricsView.as_view(), name="student_metrics"),
+    ## edited to int:pk which now works - cade
+    path("student/<int:pk>", views.StudentMetricsView.as_view(), name="student_metrics"),
     path("addstudents/manual", views.AddStudentManualView.as_view(), name="add_student_manual"),
     path("addstudents/import", views.AddStudentImportView.as_view(), name="add_student_import"),
     path("addstudents/addcourse", views.AddCourseView.as_view(), name="add_course"),
