@@ -26,6 +26,8 @@
 </head>
 <body>
 
+{% if user.is_authenticated %}
+    <h1>Welcome, {{ user.username }}!</h1>
 
     <!-- Class Filter Dropdown -->
     <div class="filter-container">
@@ -64,7 +66,7 @@
                     <td>{{ student.total_calls }}</td>
                     <td>{{ student.absent_calls }}</td>
                     <td>{{ student.total_score }}</td>
-                    <td><a href="{% url 'coldcall:student_metrics' student.id %}">View Metrics</a></td>
+                    <td><a href="{% url 'student_metrics' student.id %}">View Metrics</a></td>
                 </tr>
             {% empty %}
                 <tr>
@@ -73,6 +75,17 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- updated logout -->
+    <!-- Logout form -->
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+{% else %}
+    <p>You need to <a href="{% url 'login' %}">log in</a> to view your classes and students.</p>
+{% endif %}
 
 </body>
 </html>

@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.views import View, generic
 from django.views.generic import TemplateView, ListView
 from .models import Student, Class
+from django.contrib.auth.mixins import LoginRequiredMixin
 import random
 # Create your views here.
 
@@ -13,12 +14,20 @@ class IndexView(generic.TemplateView):
 #    template_name = "coldcall/home.html"
 #    context_object_name = "students"
 
-class HomePageView(View):
+class HomePageView(LoginRequiredMixin, View):
     template_name = "coldcall/home.html"
+
+    # user needs to login first
+    login_url = '/accounts/login'
 
     def get(self, request):
         # get all existing classes to select from dropdown
-        classes = Class.objects.all()
+
+        #changed to only display logged in user's students and classes
+        #classes = Class.objects.all()
+
+        classes = Class.objects.filter(professor_key=request.user)
+        students = Student.objects.filter(class_key__professor_key=request.user)
 
         # get the id of the selected class
         # WAITING UNTIL TEAMMATES SAY IF WE NEED A LOGIN - CADE
@@ -42,7 +51,7 @@ class HomePageView(View):
 #class StudentRandomizerView(TemplateView):
 #    template_name = "coldcall/randomizer.html"
 #param below changed to View instead of TemplateView
-class StudentRandomizerView(View):
+class StudentRandomizerView(LoginRequiredMixin,View):
     template_name = "coldcall/randomizer.html"
 
     def get(self, request):
@@ -76,23 +85,23 @@ class StudentRandomizerView(View):
         return render(request, self.template_name, context)
 
 
-class CourseHomePageView(generic.DetailView):
+class CourseHomePageView(LoginRequiredMixin,generic.DetailView):
     model = Class
     template_name = "coldcall/course_home.html"
     context_object_name = "course"
 
-class StudentMetricsView(generic.DetailView):
+class StudentMetricsView(LoginRequiredMixin,generic.DetailView):
     model = Student
     template_name = "coldcall/student_metrics.html"
     context_object_name = "student"
 
-class AddCourseView(TemplateView):
+class AddCourseView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_course.html"
 
-class AddStudentImportView(TemplateView):
+class AddStudentImportView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_student_import.html"
 
-class AddStudentManualView(TemplateView):
+class AddStudentManualView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_student_manual.html"
 
      # added this to help get classes for the add new student manual page
@@ -125,10 +134,10 @@ class AddStudentManualView(TemplateView):
         # send the user back to home page
         return redirect('coldcall:home')
 
-class EditStudentManualView(generic.DetailView):
+class EditStudentManualView(LoginRequiredMixin,generic.DetailView):
     model = Student
     template_name = "coldcall/edit_student_manual.html"
 
-class EditStudentCSVView(generic.DetailView):
+class EditStudentCSVView(LoginRequiredMixin,generic.DetailView):
     model = Student
     template_name = "coldcall/edit_student_csv.html"

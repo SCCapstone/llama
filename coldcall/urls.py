@@ -1,11 +1,15 @@
 from django.urls import path, include
 from django.contrib import admin
+#from coldcall import views
 
 from . import views
 
-app_name = "coldcall"
+#app_name = "coldcall"
+#may be causing namespace conflicts
+#commented above out because i was having errors with making login - cade
 urlpatterns = [
     #path("", views.IndexView.as_view(), name="index"),
+    #path("", include("coldcall.urls")),
     path("",views.HomePageView.as_view(), name="home"),
 
     
