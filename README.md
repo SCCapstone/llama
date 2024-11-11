@@ -20,11 +20,6 @@ In order to deploy this project, you need [Gunicorn](https://gunicorn.org/). (UN
 
 ## Setup
 
-Here you list all the one-time things the developer needs to do after cloning
-your repo. Sometimes there is no need for this section, but some apps require
-some first-time configuration from the developer, for example: setting up a
-database for running your webapp locally.
-
 ## Running
 
 1. Clone the repo. ```https://github.com/SCCapstone/llama.git```
@@ -39,16 +34,14 @@ DEBUG=TRUE
 # Deployment
 
 1. Follow the prior steps to initialize the server.
-2. Edit the .env to set `DEBUG=FALSE`.
-3. Run `gunicorn llama.wsgi`
+2. Install Gunicorn ```pip install gunicorn```
+3. Create the static directory thorugh ```python manage.py collectstatic```
+4. Edit the .env to set `DEBUG=FALSE`.
+5. Run `gunicorn llama.wsgi`
 
-# SuperUser
+Additional configuration may be required depending on operating system setup. For this, we connected Gunicorn to [nginx](https://nginx.org/en/).
 
-Username: SuperUser
-
-Email: Cstocker@email.sc.edu
-
-Password: SuperUser123
+The current dev server is deployed at http://132.145.167.159/.
 
 # Testing
 
