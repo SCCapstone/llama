@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Randomizer</title>
+    <meta name="csrf-token" content="{{ csrf_token }}"> <!-- CSRF token in meta tag -->
+    <style>
+        /* Basic styling */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .class-select {
+            margin-bottom: 20px;
+        }
+        .student-info {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .button-group, .new-student-btn {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            color: #fff;
+        }
+        .button.star-1 { background-color: #d9534f; } /* Red for 1 star */
+        .button.star-2 { background-color: #f0ad4e; } /* Orange for 2 stars */
+        .button.star-3 { background-color: #5bc0de; } /* Blue for 3 stars */
+        .button.star-4 { background-color: #5cb85c; } /* Green for 4 stars */
+        .button.star-5 { background-color: #428bca; } /* Dark blue for 5 stars */
+        .button.absent { background-color: #d9534f; }
+        .button.unprepared { background-color: #f0ad4e; }
+        .button.skip { background-color: #777; }
+        .new-student-btn button {
+            background-color: #428bca;
+        }
+    </style>
+    <script>
+        // Function to get the CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Check if this cookie string begins with the name we want
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Store CSRF token in a variable
+        const csrfToken = getCookie('csrftoken');
+
+        // Function to handle AJAX requests for rating actions
+        function rateStudent(studentId, rating) {
+            fetch(`/coldcall/rate_student/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken  // Add CSRF token here
+                },
+                body: JSON.stringify({ student_id: studentId, rating: rating })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Rating saved successfully!");
+                    // Optionally reload or update the student data
+                    window.location.reload();
+                } else {
+                    alert("Error saving rating: " + data.error);
+                }
+            });
+        }
+
+        // Show the "Choose New Student" button after rating or action
+        function handleRatingAction(studentId, rating) {
+            rateStudent(studentId, rating);
+            document.getElementById('new-student-btn').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Randomly Select a Student</h1>
+
+    <!-- Class Selection Dropdown -->
+    <form method="get" class="class-select">
+        <label for="class_id">Select Class:</label>
+        <select id="class_id" name="class_id" onchange="this.form.submit()">
+            <option value="">-- Choose a Class --</option>
+            {% for class in classes %}
+                <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                    {{ class.class_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- Display Student Information if a Student is Selected -->
+    {% if student %}
+    <div class="student-info">
+        <h2>{{ student.first_name }} {{ student.last_name }}</h2>
+        <p>Seat Number: {{ student.seating }}</p>
+        <p>Prior Calls: {{ student.total_calls }}</p>
+        <p>Average Rating: {{ student.average_rating|default:"N/A" }} / 5</p>
+    </div>
+
+    <!-- Rating and Action Buttons -->
+    <div class="button-group">
+        <button class="button star-1" onclick="handleRatingAction({{ student.id }}, 1)">1 Star</button>
+        <button class="button star-2" onclick="handleRatingAction({{ student.id }}, 2)">2 Stars</button>
+        <button class="button star-3" onclick="handleRatingAction({{ student.id }}, 3)">3 Stars</button>
+        <button class="button star-4" onclick="handleRatingAction({{ student.id }}, 4)">4 Stars</button>
+        <button class="button star-5" onclick="handleRatingAction({{ student.id }}, 5)">5 Stars</button>
+        <button class="button absent" onclick="handleRatingAction({{ student.id }}, 'absent')">Absent</button>
+        <button class="button unprepared" onclick="handleRatingAction({{ student.id }}, 'unprepared')">Unprepared</button>
+        <button class="button skip" onclick="handleRatingAction({{ student.id }}, 'skip')">Skip</button>
+    </div>
+
+    <!-- New Student Button (shown after action) -->
+    <div id="new-student-btn" class="new-student-btn" style="display:none;">
+        <button onclick="window.location.reload();">Choose New Student</button>
+    </div>
+    {% else %}
+    <p>Select a class to randomly choose a student.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

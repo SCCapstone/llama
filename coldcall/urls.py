@@ -16,7 +16,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     #path("home/", views.HomePageView.as_view(), name="home"),
     path("<int:course_id>/", views.CourseHomePageView.as_view(), name="course_home"),
-    path("<int:course_id>/randomizer", views.StudentRandomizerView.as_view(), name="randomizer"),
+    #path("<int:course_id>/randomizer", views.StudentRandomizerView.as_view(), name="randomizer"),
+    # removing variable int from randomizer url so that you can open it and select a course from within the page - cade
+    path("randomizer", views.StudentRandomizerView.as_view(), name="randomizer"),
     #path("student/<int:student_id>", views.StudentMetricsView.as_view(), name="student_metrics"),
     # edited to int:pk which now works - cade
     path("student/<int:pk>", views.StudentMetricsView.as_view(), name="student_metrics"),

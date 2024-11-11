@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.views import View, generic
 from django.views.generic import TemplateView, ListView
 from .models import Student, Class
+import random
 # Create your views here.
 
 class IndexView(generic.TemplateView):
@@ -21,7 +22,7 @@ class HomePageView(View):
 
         # get the id of the selected class
         # WAITING UNTIL TEAMMATES SAY IF WE NEED A LOGIN - CADE
-        #selected_class_id = request.GET.get('class_id')
+        selected_class_id = request.GET.get('class_id')
 
         # get the students that are in that class
         if selected_class_id:
@@ -38,8 +39,42 @@ class HomePageView(View):
         }
         return render(request, self.template_name, context)
 
-class StudentRandomizerView(TemplateView):
+#class StudentRandomizerView(TemplateView):
+#    template_name = "coldcall/randomizer.html"
+#param below changed to View instead of TemplateView
+class StudentRandomizerView(View):
     template_name = "coldcall/randomizer.html"
+
+    def get(self, request):
+        # get all classes to populate the dropdown
+        classes = Class.objects.all()
+        class_id = request.GET.get('class_id')  # selected class ID from query parameters
+
+        # initialize variables for the selected class and student
+        student = None
+        selected_class = None
+
+        # check if a class ID is provided in the query parameters
+        if class_id:
+            try:
+                # get the selected class and filter students by this class
+                selected_class = Class.objects.get(id=class_id)
+                students = Student.objects.filter(class_key=selected_class)
+
+                # randomly select a student if there are students in the selected class
+                if students.exists():
+                    student = random.choice(students)
+            except Class.DoesNotExist:
+                selected_class = None  # if the class does not exist, reset to None
+
+        # context for rendering the template
+        context = {
+            'classes': classes,  # all classes for the dropdown
+            'selected_class': selected_class,  # currently selected class
+            'student': student,  # randomly selected student
+        }
+        return render(request, self.template_name, context)
+
 
 class CourseHomePageView(generic.DetailView):
     model = Class
