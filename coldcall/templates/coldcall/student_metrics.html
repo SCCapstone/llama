@@ -1,37 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+<link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+<link rel="stylesheet" href="{% static 'coldcall/student_metrics.css' %}">
 <head>
     <meta charset="UTF-8">
     <title>Student Metrics - {{ student.first_name }} {{ student.last_name }}</title>
-    <style>
-        /* Basic styling for the student metrics page */
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .metrics-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .metrics-table th, .metrics-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        .metrics-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
 

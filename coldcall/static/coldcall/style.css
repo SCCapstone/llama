@@ -1,4 +1,7 @@
-/*This is a test change to make sure templates work, please remove when actually designing*/
-p {
-    color: #500
+/*All changes here will modify every template.
+  These changes can be overwritten, but serve to make a unified design easier.
+  Don't repeat yourself with style rules. 
+*/
+body {
+    background-color: #eee
 }

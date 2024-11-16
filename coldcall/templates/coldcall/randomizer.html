@@ -1,53 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+<link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+<link rel="stylesheet" href="{% static 'coldcall/randomizer.css' %}">
 <head>
     <meta charset="UTF-8">
     <title>Student Randomizer</title>
     <meta name="csrf-token" content="{{ csrf_token }}"> <!-- CSRF token in meta tag -->
-    <style>
-        /* Basic styling */
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-        .class-select {
-            margin-bottom: 20px;
-        }
-        .student-info {
-            margin-bottom: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        .button-group, .new-student-btn {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        .button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            color: #fff;
-        }
-        .button.star-1 { background-color: #d9534f; } /* Red for 1 star */
-        .button.star-2 { background-color: #f0ad4e; } /* Orange for 2 stars */
-        .button.star-3 { background-color: #5bc0de; } /* Blue for 3 stars */
-        .button.star-4 { background-color: #5cb85c; } /* Green for 4 stars */
-        .button.star-5 { background-color: #428bca; } /* Dark blue for 5 stars */
-        .button.absent { background-color: #d9534f; }
-        .button.unprepared { background-color: #f0ad4e; }
-        .button.skip { background-color: #777; }
-        .new-student-btn button {
-            background-color: #428bca;
-        }
-    </style>
     <script>
         // Function to get the CSRF token from cookies
         function getCookie(name) {
