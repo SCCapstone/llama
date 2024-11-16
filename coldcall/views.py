@@ -98,6 +98,17 @@ class StudentMetricsView(LoginRequiredMixin,generic.DetailView):
 class AddCourseView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_course.html"
 
+    def post(self,request):
+        if(request.user.is_authenticated):
+            Class.objects.create(
+                professor_key = request.user,
+                class_name = request.POST.get('name')
+            )
+            return redirect('/')
+        else:
+            return redirect('accounts/login') #should never reach this, but fall back to redirect
+
+
 class AddStudentImportView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_student_import.html"
 
