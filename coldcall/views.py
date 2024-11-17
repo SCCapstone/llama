@@ -106,7 +106,7 @@ class AddCourseView(LoginRequiredMixin,TemplateView):
             )
             return redirect('/')
         else:
-            return redirect('accounts/login') #should never reach this, but fall back to redirect
+            return redirect('/accounts/login') #should never reach this, but fall back to redirect
 
 
 class AddStudentImportView(LoginRequiredMixin,TemplateView):
@@ -117,7 +117,7 @@ class AddStudentManualView(LoginRequiredMixin,TemplateView):
 
      # added this to help get classes for the add new student manual page
     def get(self, request):
-        classes = Class.objects.all()
+        classes = Class.objects.filter(professor_key = request.user)
         return render(request, self.template_name, {'classes': classes})
     
     def post(self, request):
@@ -143,7 +143,7 @@ class AddStudentManualView(LoginRequiredMixin,TemplateView):
         )
 
         # send the user back to home page
-        return redirect('coldcall:home')
+        return redirect('/')
 
 class EditStudentManualView(LoginRequiredMixin,generic.DetailView):
     model = Student
