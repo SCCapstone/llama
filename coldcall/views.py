@@ -26,7 +26,7 @@ class HomePageView(LoginRequiredMixin, View):
         #changed to only display logged in user's students and classes
         #classes = Class.objects.all()
 
-        classes = Class.objects.filter(professor_key=request.user)
+        classes = Class.objects.filter(professor_key=request.user, is_archived=False)
         students = Student.objects.filter(class_key__professor_key=request.user)
 
         # get the id of the selected class
@@ -47,6 +47,21 @@ class HomePageView(LoginRequiredMixin, View):
             'selected_class': selected_class,
         }
         return render(request, self.template_name, context)
+    
+    def post(self, request):
+        # Archive a class
+        class_id = request.POST.get('class_id')
+        if class_id:
+            try:
+                class_to_archive = Class.objects.get(id=class_id)
+                class_to_archive.is_archived = True
+                class_to_archive.save()
+            except Class.DoesNotExist:
+                #TODO handle this error
+                pass
+
+        return redirect('home')
+
 
 #class StudentRandomizerView(TemplateView):
 #    template_name = "coldcall/randomizer.html"
@@ -106,7 +121,7 @@ class AddCourseView(LoginRequiredMixin,TemplateView):
             )
             return redirect('/')
         else:
-            return redirect('/accounts/login') #should never reach this, but fall back to redirect
+            return redirect('/accounts/login') #should never reach this, but fall back to redirect    
 
 
 class AddStudentImportView(LoginRequiredMixin,TemplateView):
