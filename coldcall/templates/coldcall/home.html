@@ -25,6 +25,15 @@
                 {% endfor %}
             </select>
         </form>
+
+    <!-- Archive Button -->
+    {% if selected_class and not selected_class.is_archived %}
+        <form method="post" action="{% url 'home' %}">
+            {% csrf_token %}
+            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+            <button type="submit">Archive Class</button>
+        </form>
+    {% endif %}
     </div>
 
     <!-- Display Students for the Selected Class -->

@@ -8,6 +8,7 @@ from django.shortcuts import render
 class Class(models.Model):
     professor_key = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     class_name = models.CharField(max_length=200)
+    is_archived = models.BooleanField(default=False)
 
 
 class Seating:
