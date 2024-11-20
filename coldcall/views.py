@@ -37,8 +37,13 @@ class HomePageView(LoginRequiredMixin, View):
         if selected_class_id:
             students = Student.objects.filter(class_key_id=selected_class_id)
             selected_class = Class.objects.get(id=selected_class_id)
-        else:
-            students = Student.objects.all()
+        if Class.objects.get(id = selected_class_id).professor_key != request.user:
+            # prevent user from viewing information by modifying URL
+            students = None
+            selected_class = None
+        else: 
+            #all classes, limited to classes authenticated user has access to
+            students = Student.objects.filter(class_key__professor_key = request.user)
             selected_class = None
 
         context = {
@@ -71,7 +76,7 @@ class StudentRandomizerView(LoginRequiredMixin,View):
 
     def get(self, request):
         # get all classes to populate the dropdown
-        classes = Class.objects.all()
+        classes = Class.objects.filter(professor_key = request.user)
         class_id = request.GET.get('class_id')  # selected class ID from query parameters
 
         # initialize variables for the selected class and student
@@ -83,11 +88,16 @@ class StudentRandomizerView(LoginRequiredMixin,View):
             try:
                 # get the selected class and filter students by this class
                 selected_class = Class.objects.get(id=class_id)
-                students = Student.objects.filter(class_key=selected_class)
+                
+                #hide information on class without access
+                if selected_class.professor_key != request.user:
+                    selected_class = None
+                else: 
+                    students = Student.objects.filter(class_key=selected_class)
 
-                # randomly select a student if there are students in the selected class
-                if students.exists():
-                    student = random.choice(students)
+                    # randomly select a student if there are students in the selected class
+                    if students.exists():
+                        student = random.choice(students)
             except Class.DoesNotExist:
                 selected_class = None  # if the class does not exist, reset to None
 

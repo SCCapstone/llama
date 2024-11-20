@@ -2,14 +2,15 @@
 <link rel="stylesheet" href="{% static 'coldcall/base.css' %}">
 
 <div class="navbar">
-    <button class="menuButton" onclick="show_menu()">menu button placeholder text</button>
+    <button class="menuButton" onclick="show_menu()">☰</button>
     <div class="menu" id="menu">
         <ul>
+            <li><a href="/">Home</a></li>
             <li><a href="/addcourse">Add Class</a></li>
             <li><a href="/addstudents/manual">Add Students</a></li>
             <li><a href="">Import From (TODO)</a></li>
             <li><a href="">Save To (TODO)</a></li>
-            <li><button class="menuButton" onclick="show_menu()">Close Menu</button></li>
+            <button class="menuButton" onclick="show_menu()">Close Menu</button>
         </ul>
     </div>
 </div>
