@@ -35,12 +35,15 @@ class HomePageView(LoginRequiredMixin, View):
 
         # get the students that are in that class
         if selected_class_id:
-            students = Student.objects.filter(class_key_id=selected_class_id)
             selected_class = Class.objects.get(id=selected_class_id)
-        if Class.objects.get(id = selected_class_id).professor_key != request.user:
-            # prevent user from viewing information by modifying URL
-            students = None
-            selected_class = None
+            if selected_class.professor_key != request.user:
+                # prevent user from viewing information by modifying URL
+                students = None
+                selected_class = None
+            else:             
+                students = Student.objects.filter(class_key_id=selected_class_id)
+
+
         else: 
             #all classes, limited to classes authenticated user has access to
             students = Student.objects.filter(class_key__professor_key = request.user)
