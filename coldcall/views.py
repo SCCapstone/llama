@@ -97,10 +97,20 @@ class StudentRandomizerView(LoginRequiredMixin,View):
                     selected_class = None
                 else: 
                     students = Student.objects.filter(class_key=selected_class)
-
                     # randomly select a student if there are students in the selected class
                     if students.exists():
-                        student = random.choice(students)
+                        ms = random.choice(students).total_calls # initalize with any student value
+                        for s in students:
+                           ms = min(s.total_calls-s.absent_calls, ms)
+                        ms+=3 # buffer room
+
+                        student = None
+                        while student == None:
+                            student = random.choice(students)
+                            if(student.total_calls-student.absent_calls >= ms):
+                                student = None
+                        
+
             except Class.DoesNotExist:
                 selected_class = None  # if the class does not exist, reset to None
 
