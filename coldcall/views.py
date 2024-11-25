@@ -4,6 +4,8 @@ from django.views.generic import TemplateView, ListView
 from .models import Student, Class
 from django.contrib.auth.mixins import LoginRequiredMixin
 import random
+from django.http import HttpResponseBadRequest
+from datetime import datetime
 # Create your views here.
 
 class IndexView(generic.TemplateView):
@@ -138,10 +140,43 @@ class AddCourseView(LoginRequiredMixin,TemplateView):
 
     def post(self,request):
         if(request.user.is_authenticated):
+            start_date_str = request.POST.get('start_date')
+            end_date_str = request.POST.get('end_date')
+
+            start_date = None
+            end_date = None
+
+            # If start_date_str is non empty, convert it to a date object
+            if start_date_str:
+                try:
+                    start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+                except ValueError:
+                    return HttpResponseBadRequest("Invalid date format. Please use YYYY-MM-DD.")
+                
+            # If end_date_str is non empty, convert it to a date object
+            if end_date_str:
+                try:
+                    end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+                except ValueError:
+                    return HttpResponseBadRequest("Invalid date format. Please use YYYY-MM-DD.")
+            
+            # If start_date and end_date are both provided, check if the end date is before the start date
+            if start_date and end_date and end_date < start_date:
+                error_message = "End date cannot be before start date."
+                return render(request, self.template_name, {
+                    'error_message': error_message,
+                    'name': request.POST.get('name'),
+                    'start_date': start_date_str,
+                    'end_date': end_date_str,
+                })
+
             Class.objects.create(
                 professor_key = request.user,
-                class_name = request.POST.get('name')
+                class_name = request.POST.get('name'),
+                start_date = start_date,
+                end_date = end_date,
             )
+
             return redirect('/')
         else:
             return redirect('/accounts/login') #should never reach this, but fall back to redirect    

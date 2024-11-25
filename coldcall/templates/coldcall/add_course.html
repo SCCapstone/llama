@@ -1,15 +1,22 @@
-{% include 'coldcall/base.html' %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+{% include 'coldcall/base.html' %} {% load static %}
+<link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
 
 <head>
-    <meta charset="UTF-8">
-    <title>Create Course</title>
+  <meta charset="UTF-8" />
+  <title>Create Course</title>
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" id="name" name="name" maxlength="200" required>
-        <button type="submit">Submit</button>
-    </form>
+  <form method="post">
+    {% csrf_token %}
+    <label for="name">Course Name:</label>
+    <input type="text" id="name" name="name" maxlength="200" required />
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" maxlength="200" />
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" maxlength="200" />
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <button type="submit">Submit</button>
+  </form>
 </body>

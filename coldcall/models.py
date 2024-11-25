@@ -9,6 +9,8 @@ class Class(models.Model):
     professor_key = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     class_name = models.CharField(max_length=200)
     is_archived = models.BooleanField(default=False)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
 
 
 class Seating:
