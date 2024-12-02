@@ -1,23 +1,23 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'coldcall/base.css' %}">
+<link rel="stylesheet" href="{% static 'coldcall/base.css' %}" />
 
 <div class="navbar">
-    <button class="menuButton" onclick="show_menu()">☰</button>
-    <div class="menu" id="menu">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/addcourse">Add Class</a></li>
-            <li><a href="/addstudents/manual">Add Students</a></li>
-            <li><a href="">Import From (TODO)</a></li>
-            <li><a href="">Save To (TODO)</a></li>
-            <button class="menuButton" onclick="show_menu()">Close Menu</button>
-        </ul>
-    </div>
+  <button class="menuButton" onclick="show_menu()">☰</button>
+  <div class="menu" id="menu">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/addcourse">Add Class</a></li>
+      <li><a href="/addeditstudents/manual">Add Students</a></li>
+      <li><a href="">Import From (TODO)</a></li>
+      <li><a href="">Save To (TODO)</a></li>
+      <button class="menuButton" onclick="show_menu()">Close Menu</button>
+    </ul>
+  </div>
 </div>
 
 <script>
-    function show_menu() {
-        const menu = document.getElementById('menu')
-        menu.style.display = (menu.style.display === 'flex' ? 'none' : 'flex');
-    }
+  function show_menu() {
+    const menu = document.getElementById("menu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+  }
 </script>

@@ -47,6 +47,7 @@
                 <th>Absent Calls</th>
                 <th>Total Score</th>
                 <th>Actions</th>
+                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
@@ -59,6 +60,7 @@
                     <td>{{ student.absent_calls }}</td>
                     <td>{{ student.total_score }}</td>
                     <td><a href="{% url 'student_metrics' student.id %}">View Metrics</a></td>
+                    <td><a href="{% url 'addedit_student_manual_with_id' student.id %}">Edit</a></td>
                 </tr>
             {% empty %}
                 <tr>

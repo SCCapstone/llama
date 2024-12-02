@@ -185,15 +185,20 @@ class AddCourseView(LoginRequiredMixin,TemplateView):
 class AddStudentImportView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_student_import.html"
 
-class AddStudentManualView(LoginRequiredMixin,TemplateView):
-    template_name = "coldcall/add_student_manual.html"
+class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
+    template_name = "coldcall/addedit_student_manual.html"
 
      # added this to help get classes for the add new student manual page
-    def get(self, request):
+    def get(self, request, student_id=None):
         classes = Class.objects.filter(professor_key = request.user)
-        return render(request, self.template_name, {'classes': classes})
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            student = None
+
+        return render(request, self.template_name, {'classes': classes, 'student': student})
     
-    def post(self, request):
+    def post(self, request, student_id=None):
         # made to handle form submission. I was getting errors when submitting add
         # student form
         first_name = request.POST.get('first_name')
@@ -204,24 +209,33 @@ class AddStudentManualView(LoginRequiredMixin,TemplateView):
         absent_calls = request.POST.get('absent_calls', 0)
         total_score = request.POST.get('total_score', 0)
 
-        # Create and save the new Student instance
-        Student.objects.create(
-            first_name=first_name,
-            last_name=last_name,
-            class_key=Class.objects.get(id=class_key_id),
-            seating=seating,
-            total_calls=total_calls,
-            absent_calls=absent_calls,
-            total_score=total_score,
-        )
+        try:
+            class_key = Class.objects.get(id=class_key_id)
+        except Class.DoesNotExist:
+            return HttpResponseBadRequest("Invalid class ID.")
+
+        # if student_id is provided, update the existing Student instance
+        if student_id:
+            student = Student.objects.get(id=student_id)
+            student.first_name = first_name
+            student.last_name = last_name
+            student.class_key = class_key
+            student.seating = seating
+            student.total_calls = total_calls
+            student.absent_calls = absent_calls
+            student.total_score = total_score
+            student.save()
+        # create a new student if no ID is provided
+        else:
+            Student.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                class_key=class_key,
+                seating=seating,
+                total_calls=total_calls,
+                absent_calls=absent_calls,
+                total_score=total_score,
+            )
 
         # send the user back to home page
         return redirect('/')
-
-class EditStudentManualView(LoginRequiredMixin,generic.DetailView):
-    model = Student
-    template_name = "coldcall/edit_student_manual.html"
-
-class EditStudentCSVView(LoginRequiredMixin,generic.DetailView):
-    model = Student
-    template_name = "coldcall/edit_student_csv.html"
