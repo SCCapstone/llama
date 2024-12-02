@@ -22,9 +22,8 @@ urlpatterns = [
     #path("student/<int:student_id>", views.StudentMetricsView.as_view(), name="student_metrics"),
     # edited to int:pk which now works - cade
     path("student/<int:pk>", views.StudentMetricsView.as_view(), name="student_metrics"),
-    path("addstudents/manual", views.AddStudentManualView.as_view(), name="add_student_manual"),
+    path("addeditstudents/manual", views.AddEditStudentManualView.as_view(), name="addedit_student_manual"),
+    path("addeditstudents/manual/<int:student_id>", views.AddEditStudentManualView.as_view(), name="addedit_student_manual_with_id"),
     path("addstudents/import", views.AddStudentImportView.as_view(), name="add_student_import"),
     path("addcourse", views.AddCourseView.as_view(), name="add_course"),
-    path("editclasses/<int:course_id>/<int:student_id>/manual", views.EditStudentManualView.as_view(), name="edit_student_manual"),
-    path("editclasses/<int:course_id>/<int:student_id>/csv", views.EditStudentCSVView.as_view(), name="edit_student_csv"),
 ]

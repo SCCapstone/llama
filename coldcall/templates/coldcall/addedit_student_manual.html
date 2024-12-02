@@ -1,0 +1,105 @@
+{% include 'coldcall/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
+  <link
+    rel="stylesheet"
+    href="{% static 'coldcall/addedit_student_manual.css' %}" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      {% if student %}Edit Student{% else %}Add New Student{% endif %}
+    </title>
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>{% if student %}Edit Student{% else %}Add New Student{% endif %}</h2>
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            value="{{ student.first_name|default:'' }}"
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input
+            type="text"
+            id="last_name"
+            name="last_name"
+            value="{{ student.last_name|default:'' }}"
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="class_key">Class</label>
+          <select id="class_key" name="class_key" required>
+            {% for class in classes %}
+                {% if not class.is_archived %}
+                    <option value="{{ class.id }}" {% if student and student.class_key.id == class.id %}selected{% endif %}>{{ class.class_name }}</option>
+                {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="seating">Seating</label>
+          <select id="seating" name="seating">
+            <option value="FR" {% if student and student.seating == 'FR' %}selected{% endif %}>Front Right</option>
+                    <option value="FM" {% if student and student.seating == 'FM' %}selected{% endif %}>Front Middle</option>
+                    <option value="FL" {% if student and student.seating == 'FL' %}selected{% endif %}>Front Left</option>
+                    <option value="BR" {% if student and student.seating == 'BR' %}selected{% endif %}>Back Right</option>
+                    <option value="BM" {% if student and student.seating == 'BM' %}selected{% endif %}>Back Middle</option>
+                    <option value="BL" {% if student and student.seating == 'BL' %}selected{% endif %}>Back Left</option>
+                    <option value="NA" {% if student and student.seating == 'NA' %}selected{% endif %}>None</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="total_calls">Total Calls</label>
+          <input
+            type="number"
+            id="total_calls"
+            name="total_calls"
+            min="0"
+            value="{{ student.total_calls|default:0 }}"
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="absent_calls">Absent Calls</label>
+          <input
+            type="number"
+            id="absent_calls"
+            name="absent_calls"
+            min="0"
+            value="{{ student.absent_calls|default:0 }}"
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="total_score">Total Score</label>
+          <input
+            type="number"
+            id="total_score"
+            name="total_score"
+            min="0"
+            value="{{ student.total_score|default:0 }}"
+            required />
+        </div>
+
+        <div class="form-group">
+          <button type="submit">{% if student %}Update Student{% else %}Add Student{% endif %}</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
