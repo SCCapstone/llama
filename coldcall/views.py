@@ -135,17 +135,30 @@ class StudentMetricsView(LoginRequiredMixin,generic.DetailView):
     model = Student
     template_name = "coldcall/student_metrics.html"
     context_object_name = "student"
-    def get(self, request, student_id):
-        try:
-            student = Student.objects.get(id=student_id)
-            attendance_rate = student.calculate_attendance_rate()
-            performance = student.performance_summary()
-            return JsonResponse({
-                "attendance_rate": attendance_rate,
-                "performance_summary": performance
-            })
-        except Student.DoesNotExist:
-            return JsonResponse({"error": "Student not found"}, status=404)
+
+    # Tempoary fix for the previous get function 
+    # Removed the JsonResponse and rendered a template instead to allow the passing of attendance rate and performance
+    def get_context_data(self, **kwargs): # kwargs variable allowing us to accept any additional keyword arguemnts
+        context = super().get_context_data(**kwargs)
+        student = self.object
+        attendance_rate = student.calculate_attendance_rate()
+        performance = student.performance_summary()
+        context['attendance_rate'] = attendance_rate
+        context['performance_summary'] = performance
+        return context
+
+#    Previous get function is below 
+#    def get(self, request, student_id):
+#        try:
+#            student = Student.objects.get(id=student_id)
+#            attendance_rate = student.calculate_attendance_rate()
+#            performance = student.performance_summary()
+#            return JsonResponse({
+#                "attendance_rate": attendance_rate,
+#                "performance_summary": performance
+#            })
+#        except Student.DoesNotExist:
+#            return JsonResponse({"error": "Student not found"}, status=404)
 
 class StudentUpdateView(View):  # New
     def post(self, request, student_id):

@@ -62,13 +62,13 @@ class Student(models.Model):
         else:
             return "Needs Improvemnet"
 
-    def attendance_details(self):  # Returns detailed attendance info for a student
-        attendance_rate = self.calculate_attendance_rate()
-        return {
-            "attendance_rate": attendance_rate,
-            "absent_calls": self.absent_calls,
-            "total_calls": self.total_calls,
-        }
+#    def attendance_details(self):  # Returns detailed attendance info for a student
+#        attendance_rate = self.calculate_attendance_rate()
+#        return {
+#            "attendance_rate": attendance_rate,
+#            "absent_calls": self.absent_calls,
+#            "total_calls": self.total_calls,
+#        }
     
 class StudentRating(models.Model):
     student_key = models.ForeignKey(Student, on_delete=models.CASCADE)
