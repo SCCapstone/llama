@@ -286,3 +286,14 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
 
         # send the user back to home page
         return redirect('/')
+    
+class FilterStudentsByScoreView(View):
+    def get(self, request):
+        score_filter = request.GET.get('min_score', 0)
+        students = Student.objects.filter(total_score__gte=score_filter)
+        
+        return JsonResponse([{
+            "id": student.id,
+            "name": f"{student.first_name} {student.last_name}",
+            "score": student.total_score
+        } for student in students], safe=False)

@@ -20,6 +20,14 @@ class Class(models.Model):
     def total_students(self):  
         return self.student_set.count()
 
+    def get_student_performance(self):  # Returns students with their performance (score and attendance)
+        students = self.student_set.all()
+        performance_data = [{
+            "student_name": f"{student.first_name} {student.last_name}",
+            "score": student.total_score,
+            "attendance_rate": (student.total_calls - student.absent_calls) / student.total_calls * 100 if student.total_calls else 0
+        } for student in students]
+        return performance_data
 
 class Seating:
     choices = (
@@ -54,6 +62,14 @@ class Student(models.Model):
         else:
             return "Needs Improvemnet"
 
+    def attendance_details(self):  # Returns detailed attendance info for a student
+        attendance_rate = self.calculate_attendance_rate()
+        return {
+            "attendance_rate": attendance_rate,
+            "absent_calls": self.absent_calls,
+            "total_calls": self.total_calls,
+        }
+    
 class StudentRating(models.Model):
     student_key = models.ForeignKey(Student, on_delete=models.CASCADE)
     date = models.DateField(default=datetime.date.today)
