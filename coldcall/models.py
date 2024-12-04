@@ -11,6 +11,14 @@ class Class(models.Model):
     is_archived = models.BooleanField(default=False)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    def is_active(self):  
+        today = datetime.date.today()
+        if self.start_date and self.end_date:
+            return self.start_date <= today <= self.end_date
+        return not self.is_archived
+
+    def total_students(self):  
+        return self.student_set.count()
 
 
 class Seating:
@@ -32,6 +40,19 @@ class Student(models.Model):
     total_calls = models.IntegerField(default=0)
     absent_calls = models.IntegerField(default=0)
     total_score = models.IntegerField(default=0)
+    def calculate_attendance_rate(self):
+        if self.total_calls == 0:
+            return 0
+        return ((self.total_calls - self.absent_calls)/self.total_calls) * 100
+    
+    def performance_summary(self):
+        attendance_rate = self.calculate_attendance_rate()
+        if attendance_rate > 90:
+            return "Excellent"
+        elif attendance_rate > 75:
+            return "Good"
+        else:
+            return "Needs Improvemnet"
 
 class StudentRating(models.Model):
     student_key = models.ForeignKey(Student, on_delete=models.CASCADE)

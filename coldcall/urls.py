@@ -26,4 +26,8 @@ urlpatterns = [
     path("addeditstudents/manual/<int:student_id>", views.AddEditStudentManualView.as_view(), name="addedit_student_manual_with_id"),
     path("addstudents/import", views.AddStudentImportView.as_view(), name="add_student_import"),
     path("addcourse", views.AddCourseView.as_view(), name="add_course"),
+    path("student/<int:student_id>/metrics", views.StudentMetricsView.as_view(), name="student_metrics"),
+    path("student/<int:student_id>/update", views.StudentUpdateView.as_view(), name="student_update"),
+    path("class/<int:class_id>/details", views.ClassDetailsView.as_view(), name="class_details"),
+    path("student/<int:student_id>/update_score", views.StudentScoreUpdateView.as_view(), name="student_score_update"),
 ]

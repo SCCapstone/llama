@@ -4,7 +4,8 @@ from django.views.generic import TemplateView, ListView
 from .models import Student, Class
 from django.contrib.auth.mixins import LoginRequiredMixin
 import random
-from django.http import HttpResponseBadRequest
+import json
+from django.http import HttpResponseBadRequest, JsonResponse
 from datetime import datetime
 # Create your views here.
 
@@ -134,6 +135,39 @@ class StudentMetricsView(LoginRequiredMixin,generic.DetailView):
     model = Student
     template_name = "coldcall/student_metrics.html"
     context_object_name = "student"
+    def get(self, request, student_id):
+        try:
+            student = Student.objects.get(id=student_id)
+            attendance_rate = student.calculate_attendance_rate()
+            performance = student.performance_summary()
+            return JsonResponse({
+                "attendance_rate": attendance_rate,
+                "performance_summary": performance
+            })
+        except Student.DoesNotExist:
+            return JsonResponse({"error": "Student not found"}, status=404)
+
+class StudentUpdateView(View):  # New
+    def post(self, request, student_id):
+        try:
+            student = Student.objects.get(id=student_id)
+            data = json.loads(request.body)
+
+            if "absent_calls" in data:
+                student.absent_calls += data["absent_calls"]
+
+            if "total_calls" in data:
+                student.total_calls += data["total_calls"]
+
+            if "total_score" in data:
+                student.total_score += data["total_score"]
+
+            student.save()
+            return JsonResponse({"message": "Student updated successfully"})
+        except Student.DoesNotExist:
+            return JsonResponse({"error": "Student not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
 
 class AddCourseView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_course.html"
@@ -181,7 +215,20 @@ class AddCourseView(LoginRequiredMixin,TemplateView):
         else:
             return redirect('/accounts/login') #should never reach this, but fall back to redirect    
 
-
+class ClassDetailsView(View):  # New view for class details
+    def get(self, request, class_id):
+        try:
+            course = Class.objects.get(id=class_id, professor_key=request.user)
+            students = course.student_set.all()
+            return JsonResponse({
+                "class_name": course.class_name,
+                "is_active": course.is_active(),
+                "total_students": course.total_students(),
+                "students": [{"id": s.id, "name": str(s), "score": s.total_score} for s in students],
+            })
+        except Class.DoesNotExist:
+            return JsonResponse({"error": "Class not found or unauthorized"}, status=404)
+        
 class AddStudentImportView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_student_import.html"
 
