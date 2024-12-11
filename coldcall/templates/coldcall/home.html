@@ -36,6 +36,14 @@
     {% endif %}
     </div>
 
+    <!-- Randomizer Button -->
+    {% if selected_class %}
+    <form method="get" action="{% url 'randomizer' %}">
+        <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+        <button type="submit">Randomize Students</button>
+    </form>
+    {% endif %}
+
     <!-- Display Students for the Selected Class -->
     <table class="student-table">
         <thead>

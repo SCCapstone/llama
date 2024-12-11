@@ -31,4 +31,5 @@ urlpatterns = [
     # path("class/<int:class_id>/details", views.ClassDetailsView.as_view(), name="class_details"),
     # path("student/<int:student_id>/update_score", views.StudentScoreUpdateView.as_view(), name="student_score_update"),
     # path("students/filter", views.FilterStudentsByScoreView.as_view(), name="filter_students_by_score"),
+    path("randomizer/", views. StudentRandomizerView.as_view(), name="randomizer"),
 ]
