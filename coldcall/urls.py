@@ -11,8 +11,9 @@ urlpatterns = [
     path("",views.HomePageView.as_view(), name="home"),
 
     
-    #added this path to make a login page - cade
+    #account management
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/register', views.CreateAccountView.as_view(), name="register"),
 
     #path("home/", views.HomePageView.as_view(), name="home"),
     path("<int:course_id>/", views.CourseHomePageView.as_view(), name="course_home"),

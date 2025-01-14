@@ -1,12 +1,17 @@
 from django.shortcuts import redirect, render
 from django.views import View, generic
-from django.views.generic import TemplateView, ListView
-from .models import Student, Class
+from django.views.generic import TemplateView, ListView, FormView
+
 from django.contrib.auth.mixins import LoginRequiredMixin
-import random
-import json
+from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseBadRequest, JsonResponse
 from datetime import datetime
+
+from .models import Student, Class
+from .forms import RegisterUserForm
+
+import random
+import json
 # Create your views here.
 
 class IndexView(generic.TemplateView):
@@ -16,6 +21,18 @@ class IndexView(generic.TemplateView):
 #    model = Student
 #    template_name = "coldcall/home.html"
 #    context_object_name = "students"
+
+class CreateAccountView(FormView): 
+    template_name = "registration/register.html"
+    form_class = RegisterUserForm
+    success_url = "/accounts/login"
+
+    def form_valid(self, form):
+        new_user = form.save(commit=False) # need to hash password first
+        new_user.password = make_password(form.cleaned_data["password"])
+        new_user.save()
+        return super().form_valid(form)
+
 
 class HomePageView(LoginRequiredMixin, View):
     template_name = "coldcall/home.html"
