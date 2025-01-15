@@ -11,7 +11,7 @@ class Class(models.Model):
     is_archived = models.BooleanField(default=False)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    def is_active(self):  
+    def is_active(self):
         today = datetime.date.today()
         if self.start_date and self.end_date:
             return self.start_date <= today <= self.end_date

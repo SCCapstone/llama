@@ -14,9 +14,6 @@ import random
 import json
 # Create your views here.
 
-class IndexView(generic.TemplateView):
-    template_name = "coldcall/index.html"
-
 #class HomePageView(ListView):
 #    model = Student
 #    template_name = "coldcall/home.html"

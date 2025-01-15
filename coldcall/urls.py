@@ -6,7 +6,6 @@ from . import views
 #may be causing namespace conflicts
 #commented above out because i was having errors with making login - cade
 urlpatterns = [
-    path("index", views.IndexView.as_view(), name="index"),
     #path("", include("coldcall.urls")),
     path("",views.HomePageView.as_view(), name="home"),
 
