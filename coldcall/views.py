@@ -4,10 +4,10 @@ from django.views.generic import TemplateView, ListView, FormView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
 from datetime import datetime
 
-from .models import Student, Class
+from .models import Student, Class, StudentRating
 from .forms import RegisterUserForm
 
 import random
@@ -138,6 +138,27 @@ class StudentRandomizerView(LoginRequiredMixin,View):
             'student': student,  # randomly selected student
         }
         return render(request, self.template_name, context)
+    
+    def post(self, request): 
+        data = json.loads(request.body)
+        rating = -1 # default rating for absent/unprepared w/ no star chosen
+        if data["rating"] != 'none':
+            rating = int(data["rating"][-1]) #negative indexing to get last character
+
+        student = Student.objects.get(id=data["student_id"])
+        if student:
+            new_rating = StudentRating(student_key = student, attendance = not data["is_absent"], prepared = not data["is_unprepared"], score = rating)
+            if data["is_absent"]:
+                student.absent_calls += 1
+            elif rating > 0:
+                student.total_score += rating
+            student.total_calls += 1
+            student.save()
+            new_rating.save()
+            return JsonResponse({"success": True})
+        else:
+            return JsonResponse({"success": False, "error": "Student not found!"})
+
 
 
 class CourseHomePageView(LoginRequiredMixin,generic.DetailView):
