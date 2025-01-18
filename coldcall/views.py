@@ -178,6 +178,7 @@ class StudentMetricsView(LoginRequiredMixin,generic.DetailView):
         student = self.object
         attendance_rate = student.calculate_attendance_rate()
         performance = student.performance_summary()
+        context['attendance_difference'] = student.total_calls - student.absent_calls
         context['attendance_rate'] = attendance_rate
         context['performance_summary'] = performance
         return context
@@ -316,9 +317,6 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
             student.last_name = last_name
             student.class_key = class_key
             student.seating = seating
-            student.total_calls = total_calls
-            student.absent_calls = absent_calls
-            student.total_score = total_score
             student.save()
         # create a new student if no ID is provided
         else:

@@ -32,20 +32,12 @@
                 <td>{{ student.seating }}</td>
             </tr>
             <tr>
-                <th>Total Calls</th>
-                <td>{{ student.total_calls }}</td>
-            </tr>
-            <tr>
-                <th>Absent Calls</th>
-                <td>{{ student.absent_calls }}</td>
-            </tr>
-            <tr>
                 <th>Total Score</th>
-                <td>{{ student.total_score }}</td>
+                <td>{{ student.total_score }} ({{student.get_average_score}} ⭐ average)</td>
             </tr>
             <tr>
-                <th>Attendance Rate</th>
-                <td>{{ attendance_rate }}%</td>
+                <th>Attendance</th>
+                <td>{{ attendance_difference }}/{{ student.total_calls }}    ({{attendance_rate}}%)</td>
             </tr>
         </table>
         

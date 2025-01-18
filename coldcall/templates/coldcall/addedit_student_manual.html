@@ -62,7 +62,11 @@
                     <option value="NA" {% if student and student.seating == 'NA' %}selected{% endif %}>None</option>
           </select>
         </div>
-
+        {% comment %} Should not display on edit student page:
+        total calls updates dynamically based on prior history
+        TODO refactor add students to allow importing of call data
+        {% endcomment %}
+        {% if not student %} 
         <div class="form-group">
           <label for="total_calls">Total Calls</label>
           <input
@@ -95,7 +99,7 @@
             value="{{ student.total_score|default:0 }}"
             required />
         </div>
-
+        {% endif %}
         <div class="form-group">
           <button type="submit">{% if student %}Update Student{% else %}Add Student{% endif %}</button>
         </div>

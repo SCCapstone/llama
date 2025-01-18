@@ -53,6 +53,9 @@ class Student(models.Model):
             return 0
         return ((self.total_calls - self.absent_calls)/self.total_calls) * 100
     
+    def get_average_score(self):
+        return round(self.total_score/(self.total_calls-self.absent_calls), 2)
+    
     def performance_summary(self):
         attendance_rate = self.calculate_attendance_rate()
         if attendance_rate > 90:
