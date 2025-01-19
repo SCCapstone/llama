@@ -54,6 +54,8 @@ class Student(models.Model):
         return ((self.total_calls - self.absent_calls)/self.total_calls) * 100
     
     def get_average_score(self):
+        if self.total_calls - self.absent_calls <= 0:
+            return 0
         return round(self.total_score/(self.total_calls-self.absent_calls), 2)
     
     def performance_summary(self):
