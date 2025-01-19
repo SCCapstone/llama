@@ -45,12 +45,10 @@ The current dev server is deployed at http://132.145.167.159/.
 
 # Testing
 
-In 492 you will write automated tests. When you do you will need to add a
-section that explains how to run them.
+The unit tests are located in  `/coldcall/tests/`.
+The test environment settings are located in `/llama/test_settings.py/`
 
-The unit tests are in `/test/unit`.
-
-The behavioral tests are in `/test/casper/`.
+The behavioral tests are in `<not yet implemented>`.
 
 ## Testing Technology
 
@@ -58,7 +56,7 @@ In some cases you need to install test runners, etc. Explain how.
 
 ## Running Tests
 
-Explain how to run the automated tests.
+To run unit tests, use `python manage.py test --settings=llama.test_settings`.
 
 # Authors
 
