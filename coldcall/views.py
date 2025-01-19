@@ -62,8 +62,8 @@ class HomePageView(LoginRequiredMixin, View):
 
 
         else: 
-            #all classes, limited to classes authenticated user has access to
-            students = Student.objects.filter(class_key__professor_key = request.user)
+            # all classes, limited to classes authenticated user has access to and are not archived
+            students = Student.objects.filter(class_key__professor_key=request.user, class_key__is_archived=False)
             selected_class = None
 
         context = {
