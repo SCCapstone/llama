@@ -65,7 +65,28 @@ class Student(models.Model):
         elif attendance_rate > 75:
             return "Good"
         else:
-            return "Needs Improvemnet"
+            return "Needs Improvement"
+        
+    def recalculate_all(self):
+        self.recalculate_total_calls()
+        self.recalculate_absent_calls()
+        self.recalculate_total_score()
+        return self
+        
+    def recalculate_total_calls(self):
+        self.total_calls = len(StudentRating.objects.filter(student_key = self))
+        self.save()
+        return self.total_calls
+    
+    def recalculate_absent_calls(self):
+        self.absent_calls = len(StudentRating.objects.filter(student_key = self, attendance = False))
+        self.save()
+        return self.absent_calls
+    
+    def recalculate_total_score(self):
+        self.total_score = sum(s.score for s in StudentRating.objects.filter(student_key = self))
+        self.save()
+        return self.total_score
 
 #    def attendance_details(self):  # Returns detailed attendance info for a student
 #        attendance_rate = self.calculate_attendance_rate()
