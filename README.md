@@ -46,9 +46,12 @@ The current dev server is deployed at http://132.145.167.159/.
 # Testing
 
 The unit tests are located in  `/coldcall/tests/`.
+
+The behavioral tests are in `coldcall/selenium_tests/`.
+
 The test environment settings are located in `/llama/test_settings.py/`
 
-The behavioral tests are in `<not yet implemented>`.
+
 
 ## Testing Technology
 
@@ -56,7 +59,11 @@ In some cases you need to install test runners, etc. Explain how.
 
 ## Running Tests
 
-To run unit tests, use `python manage.py test --settings=llama.test_settings`.
+To run unit tests, use `python manage.py test coldcall/tests/ --settings=llama.test_settings`.
+
+To run behavioral tests, use `python manage.py test coldcall/selenium_tests/ --settings=llama.test_settings` (each test will take roughly 5 seconds)
+
+To run all tests, use `python manage.py test --settings=llama.test_settings`
 
 # Authors
 
