@@ -6,25 +6,27 @@ from . import views
 #may be causing namespace conflicts
 #commented above out because i was having errors with making login - cade
 urlpatterns = [
-    # Hamburger Menu
-    path("",views.HomePageView.as_view(), name="home"),
-    
     # Account management
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register', views.CreateAccountView.as_view(), name="register"),
-
+    
+    # Home
+    path("",views.HomePageView.as_view(), name="home"),
+    
     # Opening the specified course 
     path("<int:course_id>/", views.CourseHomePageView.as_view(), name="course_home"),
 
     # Students
     path("student/<int:pk>", views.StudentMetricsView.as_view(), name="student_metrics"),
     path("addeditstudents/manual", views.AddEditStudentManualView.as_view(), name="addedit_student_manual"),
-    path("addeditstudents/manual/<int:student_id>", views.AddEditStudentManualView.as_view(), name="addedit_student_manual_with_id"),
-    path("addstudents/import", views.AddStudentImportView.as_view(), name="add_student_import"),
+    path("addeditstudents/manual/<int:student_id>", views.AddEditStudentManualView.as_view(), name="addedit_student_manual_with_id"),  
     path("student/<int:student_id>/update", views.StudentUpdateView.as_view(), name="student_update"),
 
     # Add course 
     path("addcourse", views.AddCourseView.as_view(), name="add_course"),
+
+    # Import From 
+    path("addstudents/import", views.AddStudentImportView.as_view(), name="add_student_import"),
 
     # Randomizer
     path("randomizer", views.StudentRandomizerView.as_view(), name="randomizer"),

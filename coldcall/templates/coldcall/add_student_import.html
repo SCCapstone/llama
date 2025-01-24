@@ -1,0 +1,18 @@
+{% include 'coldcall/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <title>Import Students</title>
+</head>
+<body>
+    <h1>Import Students</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" accept=".csv">
+        <button type="submit">Import</button>
+    </form>
+</body>
+</html>
