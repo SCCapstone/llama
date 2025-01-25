@@ -40,6 +40,17 @@
         </div>
 
         <div class="form-group">
+          <label for="usc_id">USC ID</label>
+          <input
+            type="text"
+            id="usc_id"
+            name="usc_id"
+            value="{{ student.usc_id|default:'' }}"
+            maxlength="9"
+            required />
+        </div>
+
+        <div class="form-group">
           <label for="class_key">Class</label>
           <select id="class_key" name="class_key" required>
             {% for class in classes %}
