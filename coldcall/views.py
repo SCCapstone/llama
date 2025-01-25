@@ -318,6 +318,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
     def post(self, request, student_id=None):
         # made to handle form submission. I was getting errors when submitting add
         # student form
+        usc_id = request.POST.get('usc_id').upper()
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         class_key_id = request.POST.get('class_key')
@@ -334,6 +335,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         # if student_id is provided, update the existing Student instance
         if student_id:
             student = Student.objects.get(id=student_id)
+            student.usc_id = usc_id
             student.first_name = first_name
             student.last_name = last_name
             student.class_key = class_key
@@ -342,6 +344,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         # create a new student if no ID is provided
         else:
             Student.objects.create(
+                usc_id=usc_id,
                 first_name=first_name,
                 last_name=last_name,
                 class_key=class_key,
