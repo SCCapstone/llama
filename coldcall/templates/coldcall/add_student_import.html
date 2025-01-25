@@ -9,10 +9,29 @@
 </head>
 <body>
     <h1>Import Students</h1>
-    <form method="post" enctype="multipart/form-data">
+    <form method="get">
         {% csrf_token %}
-        <input type="file" name="file" accept=".csv">
-        <button type="submit">Import</button>
+        <div class="form-group">
+            <label for="class_id">Select Class:</label>
+            <select id="class_id" name="class_id" onchange="this.form.submit()">
+                <option value="">-- Choose a Class --</option>
+                {% for class in classes %}
+                    <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                        {{ class.class_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
     </form>
+    
+    {% if selected_class %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="file" name="file" accept=".csv" required>
+                <button type="submit">Import</button>
+            </div>
+        </form>
+    {% endif %}
 </body>
 </html>

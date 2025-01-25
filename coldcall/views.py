@@ -281,6 +281,27 @@ class ClassDetailsView(View):  # New view for class details
 class AddStudentImportView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/add_student_import.html"
 
+    # added the get function so that we can get the class id before we import the students
+    def get(self, request): 
+        class_id = request.GET.get('class_id')
+        if class_id: 
+            selected_class = Class.objects.get(id=class_id)
+        else: 
+            selected_class = None
+        classes = Class.objects.all()
+        return render(request, self.template_name, {'classes': classes, 'selected_class': selected_class})
+    
+    def post(self, request): 
+        class_id = request.POST.get('class_id')
+        file = request.FILES.get('file')
+
+        # Trevor - Will have to deal with this later: 
+        # going to check if the file type is csv, if it is then have to process the file and check if it is in the correct format, etc.
+        # then add the students to the database, unsure if this is just going to be a csv file with \
+        # first name last name or if it is going to be a file that has all of the student metrics, etc. 
+
+        return render(request, self.template_name, {'classes': Class.objects.all()})
+
 class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/addedit_student_manual.html"
 
