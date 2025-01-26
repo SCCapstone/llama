@@ -49,6 +49,7 @@ class Student(models.Model):
     total_calls = models.IntegerField(default=0)
     absent_calls = models.IntegerField(default=0)
     total_score = models.IntegerField(default=0)
+    
     def calculate_attendance_rate(self):
         if self.total_calls == 0:
             return 0
