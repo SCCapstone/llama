@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 import datetime
+from  django.utils import timezone
 
 from django.shortcuts import render
 
@@ -49,6 +50,12 @@ class Student(models.Model):
     total_calls = models.IntegerField(default=0)
     absent_calls = models.IntegerField(default=0)
     total_score = models.IntegerField(default=0)
+
+    def add_rating(self, score, is_present=True, is_prepared=True, in_date=timezone.now()):
+        new_rating = StudentRating(student_key = self, attendance = is_present, prepared = is_prepared, score = score, date = in_date)
+        new_rating.save()
+        self.recalculate_all()
+        pass
     
     def calculate_attendance_rate(self):
         if self.total_calls == 0:
@@ -86,7 +93,7 @@ class Student(models.Model):
         return self.absent_calls
     
     def recalculate_total_score(self):
-        self.total_score = sum(s.score for s in StudentRating.objects.filter(student_key = self))
+        self.total_score = sum(s.score for s in StudentRating.objects.filter(student_key = self, attendance = True))
         self.save()
         return self.total_score
 
@@ -100,7 +107,7 @@ class Student(models.Model):
     
 class StudentRating(models.Model):
     student_key = models.ForeignKey(Student, on_delete=models.CASCADE)
-    date = models.DateField(default=datetime.date.today)
+    date = models.DateField(default=timezone.now)
     attendance = models.BooleanField(default=True)
     prepared = models.BooleanField(default=True)
     score = models.IntegerField(default=5)

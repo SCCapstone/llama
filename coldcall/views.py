@@ -147,14 +147,7 @@ class StudentRandomizerView(LoginRequiredMixin,View):
 
         student = Student.objects.get(id=data["student_id"])
         if student:
-            new_rating = StudentRating(student_key = student, attendance = not data["is_absent"], prepared = not data["is_unprepared"], score = rating)
-            if data["is_absent"]:
-                student.absent_calls += 1
-            elif rating > 0:
-                student.total_score += rating
-            student.total_calls += 1
-            student.save()
-            new_rating.save()
+            student.add_rating(is_present = not data["is_absent"], is_prepared = not data["is_unprepared"], score = rating)
             return JsonResponse({"success": True})
         else:
             return JsonResponse({"success": False, "error": "Student not found!"})
