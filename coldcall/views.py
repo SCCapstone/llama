@@ -12,6 +12,8 @@ from .forms import RegisterUserForm
 
 import random
 import json
+import csv
+
 # Create your views here.
 
 #class HomePageView(ListView):
@@ -271,10 +273,10 @@ class ClassDetailsView(View):  # New view for class details
         except Class.DoesNotExist:
             return JsonResponse({"error": "Class not found or unauthorized"}, status=404)
         
-class AddStudentImportView(LoginRequiredMixin,TemplateView):
+class AddStudentImportView(LoginRequiredMixin, TemplateView):
     template_name = "coldcall/add_student_import.html"
 
-    # added the get function so that we can get the class id before we import the students
+    # Added the get function so that we can get the class id before we import the students
     def get(self, request): 
         class_id = request.GET.get('class_id')
         if class_id: 
@@ -287,13 +289,44 @@ class AddStudentImportView(LoginRequiredMixin,TemplateView):
     def post(self, request): 
         class_id = request.POST.get('class_id')
         file = request.FILES.get('file')
+        
+        # Check if the file type is csv
+        if not file.name.endswith('.csv'):
+            return HttpResponseBadRequest("Invalid file type. Please select a CSV file.")
+        
+        try:
+            selected_class = Class.objects.get(id=class_id)
+        except Class.DoesNotExist:
+            return HttpResponseBadRequest("Invalid class ID.")
+        
+        decoded_file = file.read().decode('utf-8').splitlines()
+        reader = csv.DictReader(decoded_file)
 
-        # Trevor - Will have to deal with this later: 
-        # going to check if the file type is csv, if it is then have to process the file and check if it is in the correct format, etc.
-        # then add the students to the database, unsure if this is just going to be a csv file with \
-        # first name last name or if it is going to be a file that has all of the student metrics, etc. 
+        # Reading CSV file & gathering student information 
+        for row in reader:
+            usc_id = row.get('usc_id', '').strip()
+            first_name = row.get('first_name', '').strip()
+            last_name = row.get('last_name', '').strip()
+            seating = row.get('seating', '').strip()
+            total_calls = row.get('total_calls', '0').strip()
+            absent_calls = row.get('absent_calls', '0').strip()
+            total_score = row.get('total_score', '0').strip()
 
-        return render(request, self.template_name, {'classes': Class.objects.all()})
+            if not usc_id or not first_name or not last_name:
+                continue; # Skip row if field is empty 
+
+            Student.objects.create(
+                usc_id = usc_id,
+                first_name = first_name, 
+                last_name = last_name, 
+                class_key = selected_class, 
+                seating = seating if seating in ['FR', "Front Right", 'FM', "Front Middle", 'FL', "Front Left", 'BR', "Back Right", 'BM', "Back Middle", 'BL', "Back Left", 'NA', "None"] else 'NA',
+                total_calls = int(total_calls) if total_calls.isdigit() else 0, 
+                absent_calls = int(absent_calls) if absent_calls.isdigit() else 0, 
+                total_score = int(total_score) if total_score.isdigit() else 0 
+            )                     
+
+        return redirect('/')
 
 class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
     template_name = "coldcall/addedit_student_manual.html"
