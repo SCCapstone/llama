@@ -27,6 +27,7 @@
     {% if selected_class %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
             <div class="form-group">
                 <input type="file" name="file" accept=".csv" required>
                 <button type="submit">Import</button>
