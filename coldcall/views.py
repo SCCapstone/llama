@@ -272,7 +272,7 @@ class ClassDetailsView(View):  # New view for class details
             })
         except Class.DoesNotExist:
             return JsonResponse({"error": "Class not found or unauthorized"}, status=404)
-        
+
 class AddStudentImportView(LoginRequiredMixin, TemplateView):
     template_name = "coldcall/add_student_import.html"
 
