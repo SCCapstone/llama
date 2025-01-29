@@ -5,5 +5,17 @@
 <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
 <head>
     <meta charset="UTF-8">
-    <title>Export File</title>
+    <title>Export Class File</title>
 </head>
+<body>
+    <h1>Export Class File</h1>
+    <form method="get" action="{% url 'export_class_file' %}">
+        <label for="class_id">Select Class:</label>
+        <select id="class_id" name="class_id">
+            {% for class in classes %}
+                <option value="{{ class.id }}">{{ class.class_name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Export Class File</button>
+    </form>
+</body>
