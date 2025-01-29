@@ -394,6 +394,8 @@ class FilterStudentsByScoreView(View):
             "score": student.total_score
         } for student in students], safe=False)
 
-class ExportView(View): 
+class ExportClassFileView(View): 
     def get(self, request): 
-        return render(request, 'coldcall/export.html')
+        
+
+        return render(request, 'coldcall/export_class_file.html')
