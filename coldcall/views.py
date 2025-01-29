@@ -396,6 +396,19 @@ class FilterStudentsByScoreView(View):
 
 class ExportClassFileView(View): 
     def get(self, request): 
-        
-
-        return render(request, 'coldcall/export_class_file.html')
+        class_id = request.GET.get('class_id')
+        if class_id: 
+            try: 
+                class_to_export  = Class.objects.get(id=class_id, professor_key=request.user)
+                students = class_to_export.student_set.all()
+                response = HttpResponse(content_type='text/csv')
+                response['Content-Disposition'] = f'attachment; filename="{class_to_export.class_name}.csv"'
+                writer = csv.writer(response)
+                writer.writerow(['usc_id', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
+                for student in students:
+                    writer.writerow([student.usc_id, student.first_name, student.last_name, student.seating, student.total_calls, student.absent_calls, student.total_score])
+                return response
+            except Class.DoesNotExist:
+                return HttpResponseBadRequest("Invalid class ID.")
+        else: 
+            return HttpResponseBadRequest("No class ID provided.")
