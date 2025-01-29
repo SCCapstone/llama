@@ -396,6 +396,10 @@ class FilterStudentsByScoreView(View):
 
 class ExportClassFileView(View): 
     def get(self, request): 
+        classes = Class.objects.filter(professor_key=request.user)
+        return render(request, 'coldcall/export_class.html', {'classes': classes})
+    
+    def post(self, request):
         class_id = request.GET.get('class_id')
         if class_id: 
             try: 
