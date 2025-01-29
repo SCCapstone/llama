@@ -393,3 +393,7 @@ class FilterStudentsByScoreView(View):
             "name": f"{student.first_name} {student.last_name}",
             "score": student.total_score
         } for student in students], safe=False)
+
+class ExportView(View): 
+    def get(self, request): 
+        return render(request, 'coldcall/export.html')

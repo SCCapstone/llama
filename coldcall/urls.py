@@ -28,6 +28,9 @@ urlpatterns = [
     # Import From 
     path("addstudents/import", views.AddStudentImportView.as_view(), name="add_student_import"),
 
+    # Export To File 
+    path("export", views.ExportView.as_view(), name="export"),
+
     # Randomizer
     path("randomizer", views.StudentRandomizerView.as_view(), name="randomizer"),
 
