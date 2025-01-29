@@ -397,18 +397,16 @@ class FilterStudentsByScoreView(View):
 class ExportClassFileView(View): 
     def get(self, request): 
         classes = Class.objects.filter(professor_key=request.user)
-        return render(request, 'coldcall/export_class.html', {'classes': classes})
+        return render(request, 'coldcall/export_class_file.html', {'classes': classes})
     
     def post(self, request):
-        class_id = request.GET.get('class_id')
+        class_id = request.POST.get('class_id')
         if class_id: 
             try: 
-                class_to_export  = Class.objects.get(id=class_id, professor_key=request.user)
+                class_to_export = Class.objects.get(id=class_id, professor_key=request.user)
                 students = class_to_export.student_set.all()
-                # File name will be name of the class
                 response = HttpResponse(content_type='text/csv')
                 response['Content-Disposition'] = f'attachment; filename="{class_to_export.class_name}.csv"'
-                # Writing each of the students data to the file
                 writer = csv.writer(response)
                 writer.writerow(['usc_id', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
                 for student in students:

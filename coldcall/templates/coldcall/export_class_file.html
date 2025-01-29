@@ -9,13 +9,26 @@
 </head>
 <body>
     <h1>Export Class File</h1>
-    <form method="get" action="{% url 'export_class_file' %}">
+    <form method="post" action="{% url 'export_class_file' %}" id="export-form">
+        {% csrf_token %}
         <label for="class_id">Select Class:</label>
         <select id="class_id" name="class_id">
+            <option value="">-- Choose a Class --</option>
             {% for class in classes %}
                 <option value="{{ class.id }}">{{ class.class_name }}</option>
             {% endfor %}
         </select>
-        <button type="submit">Export Class File</button>
+        <button type="submit" id="export-button" style="display: none;">Export</button>
     </form>
+
+    <script>
+        document.getElementById('class_id').addEventListener('change', function() {
+            if (this.value !== '') {
+                document.getElementById('export-button').style.display = 'block';
+            } else {
+                document.getElementById('export-button').style.display = 'none';
+            }
+        });
+    </script>
 </body>
+</html>
