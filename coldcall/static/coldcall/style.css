@@ -3,5 +3,6 @@
   Don't repeat yourself with style rules. 
 */
 body {
-    background-color: #eee
+  background-color: #eee;
+  margin: auto;
 }

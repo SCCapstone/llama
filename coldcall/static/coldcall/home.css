@@ -3,6 +3,9 @@
     margin-bottom: 20px;
     text-align: center;
 }
+.student-table-container {
+    padding: 10px;
+}
 .student-table {
     width: 100%;
     border-collapse: collapse;
