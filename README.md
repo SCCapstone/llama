@@ -55,7 +55,7 @@ The test environment settings are located in `/llama/test_settings.py/`
 
 ## Testing Technology
 
-In some cases you need to install test runners, etc. Explain how.
+Unit testing uses Django's built-in test framework, which is an extension of Python's `unittest` functionality. Behavioral testing uses Selenium through python, which is automatically set up through the installation process. Google Chrome must be installed.
 
 ## Running Tests
 
