@@ -102,18 +102,16 @@ class StudentRandomizerView(LoginRequiredMixin,View):
                 if selected_class.professor_key != request.user:
                     selected_class = None
                 else: 
-                    students = Student.objects.filter(class_key=selected_class)
+                    students = list(Student.objects.filter(class_key=selected_class))
                     # randomly select a student if there are students in the selected class
-                    if students.exists():
-                        ms = random.choice(students).total_calls # initalize with any student value
-                        for s in students:
-                           ms = min(s.total_calls-s.absent_calls, ms)
-                        ms+=3 # buffer room
-
+                    if students:
+                        # set maximum calls requirement to 3 higher than the lowest in the class 
+                        ms = min((s.total_calls - s.absent_calls) for s in students) + 3
                         student = None
                         while student == None:
                             student = random.choice(students)
                             if(student.total_calls-student.absent_calls >= ms):
+                                students.remove(student)
                                 student = None
                         
 
@@ -125,6 +123,7 @@ class StudentRandomizerView(LoginRequiredMixin,View):
             'classes': classes,  # all classes for the dropdown
             'selected_class': selected_class,  # currently selected class
             'student': student,  # randomly selected student
+            'avg_rating': student.get_average_score()
         }
         return render(request, self.template_name, context)
     

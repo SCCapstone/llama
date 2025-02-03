@@ -122,7 +122,7 @@
         <h2>{{ student.first_name }} {{ student.last_name }}</h2>
         <p>Seat Number: {{ student.seating }}</p>
         <p>Prior Calls: {{ student.total_calls }}</p>
-        <p>Average Rating: {{ student.average_rating|default:"N/A" }} / 5</p>
+        <p>Average Rating: {{ avg_rating }} / 5</p>
     </div>
 
     <!-- Rating and Action Buttons -->

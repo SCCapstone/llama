@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, TemplateView
 
-from ..models import Class, Student
+from ..models import Class, Student, StudentRating
 
 import json
 
@@ -70,16 +70,15 @@ class StudentMetricsView(LoginRequiredMixin,DetailView):
     template_name = "coldcall/student_metrics.html"
     context_object_name = "student"
 
-    # Tempoary fix for the previous get function 
-    # Removed the JsonResponse and rendered a template instead to allow the passing of attendance rate and performance
     def get_context_data(self, **kwargs): # kwargs variable allowing us to accept any additional keyword arguemnts
         context = super().get_context_data(**kwargs)
-        student = self.object
+        student = Student(self.object)
         attendance_rate = student.calculate_attendance_rate()
         performance = student.performance_summary()
         context['attendance_difference'] = student.total_calls - student.absent_calls
         context['attendance_rate'] = attendance_rate
         context['performance_summary'] = performance
+        context['student_perf'] = StudentRating.objects.filter(student_key = student.pk)
         return context
 
 #Allows editing of a student's existing data.     

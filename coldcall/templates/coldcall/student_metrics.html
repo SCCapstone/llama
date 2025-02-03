@@ -46,5 +46,23 @@
         </p>
     </div>
 
+    <div class="container">
+        <table class ="metrics-table">
+            <thead>
+                <tr>
+                    <th> Date </th>
+                    <th> Rating </th>
+                <tr>
+            </thead>
+            <tbody>
+                {% for s in student_perf %}
+                    <tr>
+                        <td>{{ s.date }}</td>
+                        <td>{{ s.get_formatted_rating }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

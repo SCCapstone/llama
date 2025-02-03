@@ -111,3 +111,9 @@ class StudentRating(models.Model):
     attendance = models.BooleanField(default=True)
     prepared = models.BooleanField(default=True)
     score = models.IntegerField(default=5)
+
+    #used in student's table view
+    def get_formatted_rating(self):
+        if not self.attendance:
+            return "❗ Absent"
+        return str(self.score) + "⭐" + ("⚠️" if not self.prepared else "")
