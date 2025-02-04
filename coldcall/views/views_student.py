@@ -4,16 +4,16 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, TemplateView
 
+from .view_helper import get_template_dir
 from ..models import Class, Student, StudentRating
 
 import json
 
 #Allows the user to add a new student to a class.
 class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
-    template_name = "coldcall/addedit_student_manual.html"
-
      # added this to help get classes for the add new student manual page
     def get(self, request, student_id=None):
+        self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
         classes = Class.objects.filter(professor_key = request.user)
         try:
             student = Student.objects.get(id=student_id)
@@ -67,10 +67,11 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
 #Providdes a read-only table of a student's data.
 class StudentMetricsView(LoginRequiredMixin,DetailView):
     model = Student
-    template_name = "coldcall/student_metrics.html"
     context_object_name = "student"
 
     def get_context_data(self, **kwargs): # kwargs variable allowing us to accept any additional keyword arguemnts
+        self.template_name = get_template_dir("student_metrics", self.request.is_mobile)
+        
         context = super().get_context_data(**kwargs)
         student = Student(self.object)
         attendance_rate = student.calculate_attendance_rate()

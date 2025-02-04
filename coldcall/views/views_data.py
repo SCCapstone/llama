@@ -4,16 +4,16 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import TemplateView
 
+from .view_helper import get_template_dir
 from ..models import Class, Student
 
 import csv
 
 #Adds a list of students to a given course using a user provided .csv file
 class AddStudentImportView(LoginRequiredMixin, TemplateView):
-    template_name = "coldcall/add_student_import.html"
 
-    # Added the get function so that we can get the class id before we import the students
     def get(self, request): 
+        self.template_name = get_template_dir("add_student_import", request.is_mobile)
         class_id = request.GET.get('class_id')
         if class_id: 
             selected_class = Class.objects.get(id=class_id)
@@ -67,8 +67,9 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
 #Gives the user a .csv file containing information about ech student in a class
 class ExportClassFileView(View): 
     def get(self, request): 
+        self.template_name = get_template_dir("export_class_file", request.is_mobile)
         classes = Class.objects.filter(professor_key=request.user)
-        return render(request, 'coldcall/export_class_file.html', {'classes': classes})
+        return render(request, self.template_name, {'classes': classes})
     
     def post(self, request):
         class_id = request.POST.get('class_id')

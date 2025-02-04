@@ -4,12 +4,15 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, TemplateView
 
+from .view_helper import get_template_dir
 from ..models import Class
 import datetime
 
 #Allows the user to add a new empty class with a name and dates.
 class AddCourseView(LoginRequiredMixin,TemplateView):
-    template_name = "coldcall/add_course.html"
+    def get(self, request):
+        self.template_name = get_template_dir("add_course", request.is_mobile)
+        return render(request, self.template_name)
 
     def post(self,request):
         if(request.user.is_authenticated):
@@ -72,5 +75,6 @@ class ClassDetailsView(View):
 #Extension of home page when a class is selected.
 class CourseHomePageView(LoginRequiredMixin,DetailView):
     model = Class
-    template_name = "coldcall/course_home.html"
     context_object_name = "course"
+    def get(self, request):
+        self.template_name = get_template_dir("course_home", request.is_mobile)

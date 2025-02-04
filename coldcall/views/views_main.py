@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import FormView
 
+from .view_helper import get_template_dir
 from ..forms import RegisterUserForm
 from ..models import Student, Class
 
@@ -25,12 +26,12 @@ class CreateAccountView(FormView):
 
 #Default page upon being logged in, no class selected by default.
 class HomePageView(LoginRequiredMixin, View):
-    template_name = "coldcall/home.html"
 
     # user needs to login first
     login_url = '/accounts/login'
 
     def get(self, request):
+        self.template_name = get_template_dir("home", request.is_mobile)
         # get all existing classes to select from dropdown
 
         #changed to only display logged in user's students and classes
@@ -81,9 +82,9 @@ class HomePageView(LoginRequiredMixin, View):
 
 #Core functionality, selects a random student from a course to be called on.    
 class StudentRandomizerView(LoginRequiredMixin,View):
-    template_name = "coldcall/randomizer.html"
 
     def get(self, request):
+        self.template_name = get_template_dir("randomizer", request.is_mobile)
         # get all classes to populate the dropdown
         classes = Class.objects.filter(professor_key = request.user)
         class_id = request.GET.get('class_id')  # selected class ID from query parameters
