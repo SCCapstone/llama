@@ -144,6 +144,10 @@
     {% else %}
     <p>Select a class to randomly choose a student.</p>
     {% endif %}
+
+    {% if empty and id_present %}
+        <p> This class has no students! Please add some through <a href = "/addeditstudents/manual">here.</a></p>
+    {% endif %}
 </div>
 
 </body>

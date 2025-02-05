@@ -120,11 +120,22 @@ class StudentRandomizerView(LoginRequiredMixin,View):
                 selected_class = None  # if the class does not exist, reset to None
 
         # context for rendering the template
+
+        #prevent reading attribute from None if class is empty or invalid (i.e no access)
+        if selected_class is None or student is None:
+            context = {'classes': classes, 'selected_class': selected_class, 'empty': True, 'id_present': False}
+            #only show no class message if a class is selected
+            if class_id:
+                context['id_present'] = True
+            return render(request, self.template_name, context)
+
         context = {
             'classes': classes,  # all classes for the dropdown
             'selected_class': selected_class,  # currently selected class
             'student': student,  # randomly selected student
-            'avg_rating': student.get_average_score()
+            'avg_rating': student.get_average_score(),
+            'empty': False,
+            'id_present' : True
         }
         return render(request, self.template_name, context)
     

@@ -19,7 +19,7 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
             selected_class = Class.objects.get(id=class_id)
         else: 
             selected_class = None
-        classes = Class.objects.all()
+        classes = Class.objects.filter(professor_key = request.user)
         return render(request, self.template_name, {'classes': classes, 'selected_class': selected_class})
     
     def post(self, request): 
