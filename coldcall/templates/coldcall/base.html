@@ -1,5 +1,8 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'coldcall/base.css' %}" />
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'coldcall/base.css' %}" />
+{% endblock styles %}
 
 <header>
   <div class="navbar">
