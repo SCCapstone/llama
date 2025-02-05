@@ -59,6 +59,7 @@
                     <tr>
                         <td>{{ s.date }}</td>
                         <td>{{ s.get_formatted_rating }}</td>
+                        <td><a href = "/student/{{student.pk}}/{{s.pk}}">✏️</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

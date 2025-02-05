@@ -1,0 +1,23 @@
+{% include 'coldcall/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
+  <head>
+    <meta charset="UTF-8">
+    <title>Edit Rating</title>
+  </head>
+
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <input type="number" id="rating" name="rating" min="1" max="5" value = {{rating.score}}>
+        <label for="rating">Rating</label>
+        <input type="checkbox" id="present" name="present" {%if rating.attendance%} checked {% endif %}>
+        <label for="present">Present</label>
+        <input type="checkbox" id="prepared" name="prepared" {%if rating.prepared %} checked {% endif %}>
+        <label for="prepared">Prepared</label>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

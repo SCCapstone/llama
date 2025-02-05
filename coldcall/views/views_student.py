@@ -82,6 +82,43 @@ class StudentMetricsView(LoginRequiredMixin,DetailView):
         context['student_perf'] = StudentRating.objects.filter(student_key = student.pk)
         return context
 
+#TODO: make this and StudentMetricsView restrict access to authorized users only
+class StudentRatingEditView(LoginRequiredMixin, View):
+    def get(self, request, pk, performance_id):
+        self.template_name = get_template_dir("student_rating_edit", request.is_mobile)
+        student = Student.objects.get(pk = pk)
+        rating = StudentRating.objects.get(pk = performance_id)
+        context = {
+            'pk': pk,
+            'performance_id': performance_id,
+            'student': student,
+            'rating': rating
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk, performance_id):
+        student = Student.objects.get(pk=pk)
+        rating = StudentRating.objects.get(pk=performance_id)
+
+        print(request.POST)
+        attendance = 'present' in request.POST
+        prepared = 'prepared' in request.POST
+        print(attendance)
+        print(prepared)
+        try:
+            score = int(request.POST.get('rating'))
+        except:
+            score = 5
+
+        rating.attendance = attendance
+        rating.prepared = prepared
+        rating.score = score
+        rating.save()
+
+        student.recalculate_all()
+        return redirect("/student/" + str(pk))
+
+
 #Allows editing of a student's existing data.     
 class StudentUpdateView(View):
     def post(self, request, student_id):

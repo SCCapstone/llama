@@ -18,6 +18,7 @@ urlpatterns = [
 
     # Students
     path("student/<int:pk>", views.StudentMetricsView.as_view(), name="student_metrics"),
+    path("student/<int:pk>/<int:performance_id>", views.StudentRatingEditView.as_view(), name="edit_rating"),
     path("addeditstudents/manual", views.AddEditStudentManualView.as_view(), name="addedit_student_manual"),
     path("addeditstudents/manual/<int:student_id>", views.AddEditStudentManualView.as_view(), name="addedit_student_manual_with_id"),  
     path("student/<int:student_id>/update", views.StudentUpdateView.as_view(), name="student_update"),
