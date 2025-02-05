@@ -123,6 +123,59 @@
         <p>Seat Number: {{ student.seating }}</p>
         <p>Prior Calls: {{ student.total_calls }}</p>
         <p>Average Rating: {{ avg_rating }} / 5</p>
+
+        
+        <div class="classroom-container">
+            <div class="classroom-front">
+                <h3>Seating Arrangement</h3>
+            </div>
+            
+            <div class="seating-grid">
+                <!-- Front Row -->
+                <div class="seat {% if student.seating == 'FL' %}selected{% endif %}">
+                    <div class="seat-label">Front Left</div>
+                    {% for s in seating_map.FL %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'FM' %}selected{% endif %}">
+                    <div class="seat-label">Front Middle</div>
+                    {% for s in seating_map.FM %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'FR' %}selected{% endif %}">
+                    <div class="seat-label">Front Right</div>
+                    {% for s in seating_map.FR %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Back Row -->
+                <div class="seat {% if student.seating == 'BL' %}selected{% endif %}">
+                    <div class="seat-label">Back Left</div>
+                    {% for s in seating_map.BL %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'BM' %}selected{% endif %}">
+                    <div class="seat-label">Back Middle</div>
+                    {% for s in seating_map.BM %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'BR' %}selected{% endif %}">
+                    <div class="seat-label">Back Right</div>
+                    {% for s in seating_map.BR %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Rating and Action Buttons -->
