@@ -65,5 +65,15 @@
             </tbody>
         </table>
     </div>
+    {% comment %} 
+        Custom graph renderer:
+        Takes in a list of a student's ratings and converts it into a chart over time.
+        json_script used to safely turn input data into a js readable json array. 
+    {% endcomment %}
+    <div>
+        <canvas id = "metrics_graph" width="800" height="200"></canvas>
+        {{ rating_list | json_script:"rating_data" }}
+        <script src="{% static 'coldcall/js/metrics_graph.js' %}"></script>
+    </div>
 </body>
 </html>

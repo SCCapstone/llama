@@ -26,7 +26,6 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         # made to handle form submission. I was getting errors when submitting add
         # student form
         usc_id = request.POST.get('usc_id').upper()
-        email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         class_key_id = request.POST.get('class_key')
@@ -44,7 +43,6 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         if student_id:
             student = Student.objects.get(id=student_id)
             student.usc_id = usc_id
-            student.email = email
             student.first_name = first_name
             student.last_name = last_name
             student.class_key = class_key
@@ -54,7 +52,6 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         else:
             Student.objects.create(
                 usc_id=usc_id,
-                email=email,
                 first_name=first_name,
                 last_name=last_name,
                 class_key=class_key,
@@ -83,6 +80,15 @@ class StudentMetricsView(LoginRequiredMixin,DetailView):
         context['attendance_rate'] = attendance_rate
         context['performance_summary'] = performance
         context['student_perf'] = StudentRating.objects.filter(student_key = student.pk)
+        
+        ratings = StudentRating.objects.filter(student_key = student.pk).order_by('date').values('date', 'score', 'attendance', 'prepared')
+        # convert ratings into json parsable object, date isn't serializable[?]
+        ratings_list = list(ratings)
+        # for rating in ratings_list:
+        #     rating['date'] = rating['date'].strftime("%Y-%m-%d")
+        
+        # context['rating_list'] = json.dumps(ratings_list)
+        context['rating_list'] = ratings_list
         return context
 
 #TODO: make this and StudentMetricsView restrict access to authorized users only
