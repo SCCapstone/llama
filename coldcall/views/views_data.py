@@ -41,6 +41,7 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
         # Reading CSV file & gathering student information 
         for row in reader:
             usc_id = row.get('usc_id', '').strip()
+            email = row.get('email', '').strip()
             first_name = row.get('first_name', '').strip()
             last_name = row.get('last_name', '').strip()
             seating = row.get('seating', '').strip()
@@ -64,7 +65,7 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
 
         return redirect('/')
 
-#Gives the user a .csv file containing information about ech student in a class
+# Gives the user a .csv file containing information about ech student in a class
 class ExportClassFileView(View): 
     def get(self, request): 
         self.template_name = get_template_dir("export_class_file", request.is_mobile)
@@ -80,9 +81,9 @@ class ExportClassFileView(View):
                 response = HttpResponse(content_type='text/csv')
                 response['Content-Disposition'] = f'attachment; filename="{class_to_export.class_name}.csv"'
                 writer = csv.writer(response)
-                writer.writerow(['usc_id', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
+                writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
                 for student in students:
-                    writer.writerow([student.usc_id, student.first_name, student.last_name, student.seating, student.total_calls, student.absent_calls, student.total_score])
+                    writer.writerow([student.usc_id, student.email, student.first_name, student.last_name, student.seating, student.total_calls, student.absent_calls, student.total_score])
                 return response
             except Class.DoesNotExist:
                 return HttpResponseBadRequest("Invalid class ID.")

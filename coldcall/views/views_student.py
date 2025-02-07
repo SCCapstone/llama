@@ -26,6 +26,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         # made to handle form submission. I was getting errors when submitting add
         # student form
         usc_id = request.POST.get('usc_id').upper()
+        email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         class_key_id = request.POST.get('class_key')
@@ -43,6 +44,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         if student_id:
             student = Student.objects.get(id=student_id)
             student.usc_id = usc_id
+            student.email = email
             student.first_name = first_name
             student.last_name = last_name
             student.class_key = class_key
@@ -52,6 +54,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         else:
             Student.objects.create(
                 usc_id=usc_id,
+                email=email,
                 first_name=first_name,
                 last_name=last_name,
                 class_key=class_key,
