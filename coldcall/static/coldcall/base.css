@@ -1,6 +1,19 @@
 .menu {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #333;
+    padding: 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
 }
+
+.menu.show {
+    transform: translateX(0);
+}
+  
 header {
     background-color: #73000a; /*test red*/
     padding: 20px;
