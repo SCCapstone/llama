@@ -25,4 +25,11 @@
     const menu = document.getElementById('menu');
     menu.classList.toggle('show');
   }
+
+  document.addEventListener('click', function(event) {
+    const menu = document.getElementById('menu');
+    if(!menu.contains(event.target) && !event.target.classList.contains('menuButton')) {
+      menu.classList.remove('show');
+    }
+  });
 </script>
