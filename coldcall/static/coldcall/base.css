@@ -13,6 +13,39 @@
 .menu.show {
     transform: translateX(0);
 }
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    margin-bottom: 20px;
+}
+
+.menu a {
+    display: block; 
+    background-color: #73000a;
+    height: 40px;
+    width: 90%;
+    padding: 10px;
+    text-decoration: none;
+    color: #fff;
+    text-align: left;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 40px;
+    border: 1px solid #fff;
+}
+
+.menu a:hover {
+    background-color: #555;
+}
+
+.menu a:active {
+    transform: scale(0.98);
+}
   
 header {
     background-color: #73000a; /*test red*/
