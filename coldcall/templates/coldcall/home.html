@@ -44,6 +44,24 @@
     </form>
     {% endif %}
     
+    <!-- Sort Students -->
+     <div class="sort-containter">
+        <form method="get">
+            <label for="sort">Sort Students:</label>
+            <select id="sort" name="sort" onchange="this.form.submit()">
+                <option value="" {% if not sort %}selected{% endif %}>Default</option>"
+                <option value="first_name" {% if sort == 'first_name' %}selected{% endif %}>First Name</option>
+                <option value="last_name" {% if sort == 'last_name' %}selected{% endif %}>Last Name</option>
+                <option value="seating" {% if sort == 'seating' %}selected{% endif %}>Seating</option>
+                <option value="total_calls" {% if sort == 'total_calls' %}selected{% endif %}>Total Calls</option>
+                <option value="absent_calls" {% if sort == 'absent_calls' %}selected{% endif %}>Absent Calls</option>
+                <option value="total_score" {% if sort == 'total_score' %}selected{% endif %}>Total Score</option>
+            </select>
+            <!-- Hidden input to keep class_id when sorting -->
+            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+        </form>
+     </div>
+
     <!-- Display Students for the Selected Class -->
     <div class="student-table-container">
         <table class="student-table">

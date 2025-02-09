@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.db.models.functions import Lower
 from django.views import View
 from django.views.generic import FormView
 
@@ -41,8 +42,8 @@ class HomePageView(LoginRequiredMixin, View):
         students = Student.objects.filter(class_key__professor_key=request.user)
 
         # get the id of the selected class
-        # WAITING UNTIL TEAMMATES SAY IF WE NEED A LOGIN - CADE
         selected_class_id = request.GET.get('class_id')
+        sort_query = request.GET.get('sort')
 
         # get the students that are in that class
         if selected_class_id:
@@ -59,10 +60,15 @@ class HomePageView(LoginRequiredMixin, View):
             students = Student.objects.filter(class_key__professor_key=request.user, class_key__is_archived=False)
             selected_class = None
 
+        # Apply sorting
+        if students and sort_query:
+            students = students.order_by(Lower(sort_query))
+
         context = {
             'students': students,
             'classes': classes,
             'selected_class': selected_class,
+            'sort': sort_query,
         }
         return render(request, self.template_name, context)
     
