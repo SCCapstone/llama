@@ -35,9 +35,14 @@ function init_graph() {
 }
 
 function draw_points() {
+    let sum = 0, non_absent = 0;
+    let last_x = padding, last_y = g_height + padding;
+
     for(let i = 0; i < rating_data.length; ++i) {
+        // read data and draw point with color based on status, absent always appears as 0
         ctx.beginPath();
-        point = rating_data[i];
+        ctx.setLineDash([]); // reset stroke for future loops
+        let  point = rating_data[i];
         ctx.fillStyle = 'green';
         if(!point.attendance) {
             ctx.fillStyle = 'red';
@@ -49,7 +54,20 @@ function draw_points() {
         ctx.arc(padding + ((i+1) * g_width)/rating_data.length+1, g_height + padding - ((point.score * g_height) / max_score), padding*.5, 0, 2*Math.PI);
         ctx.fill();
 
-
+        // don't update weighted average on absent
+        if(point.prepared) {
+            // draw running average line 
+            ctx.beginPath();
+            ctx.setLineDash([4,4]) //4 pixels on, 4 pixels off
+            ctx.strokeStyle = "black"
+            ctx.moveTo(last_x, last_y);
+            ++non_absent;
+            sum += point.score;
+            last_x = padding + ((i+1) * g_width)/rating_data.length+1;
+            last_y = g_height + padding - ((sum/non_absent * g_height) / max_score);
+            ctx.lineTo(last_x, last_y);
+            ctx.stroke();
+        }
     }
 }
 
