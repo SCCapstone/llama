@@ -49,19 +49,22 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
             absent_calls = row.get('absent_calls', '0').strip()
             total_score = row.get('total_score', '0').strip()
 
-            if not usc_id or not first_name or not last_name:
+            if not usc_id or not email or not first_name or not last_name:
                 continue; # Skip row if field is empty 
 
-            Student.objects.create(
+            # we want students to be repeated but not within a class. 
+            Student.objects.update_or_create(
                 usc_id = usc_id,
-                email = email, 
-                first_name = first_name, 
-                last_name = last_name, 
-                class_key = selected_class, 
-                seating = seating if seating in ['FR', "Front Right", 'FM', "Front Middle", 'FL', "Front Left", 'BR', "Back Right", 'BM', "Back Middle", 'BL', "Back Left", 'NA', "None"] else 'NA',
-                total_calls = int(total_calls) if total_calls.isdigit() else 0, 
-                absent_calls = int(absent_calls) if absent_calls.isdigit() else 0, 
-                total_score = int(total_score) if total_score.isdigit() else 0 
+                defaults={
+                    'email': email, 
+                    'first_name': first_name, 
+                    'last_name': last_name,
+                    'class_key': selected_class,
+                    'seating': seating if seating in ['FR', "Front Right", 'FM', "Front Middle", 'FL', "Front Left", 'BR', "Back Right", 'BM', "Back Middle", 'BL', "Back Left", 'NA', "None"] else 'NA',
+                    'total_calls': int(total_calls) if total_calls.isdigit() else 0,
+                    'absent_calls': int(absent_calls) if absent_calls.isdigit() else 0,
+                    'total_score': int(total_score) if total_score.isdigit() else 0
+                }
             )                     
 
         return redirect('/')
