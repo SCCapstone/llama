@@ -41,7 +41,7 @@ DEBUG=TRUE
 
 Additional configuration may be required depending on operating system setup. For this, we connected Gunicorn to [nginx](https://nginx.org/en/).
 
-The current dev server is deployed at http://132.145.167.159/.
+The current dev server is deployed at https://capsto.me/.
 
 # Testing
 
