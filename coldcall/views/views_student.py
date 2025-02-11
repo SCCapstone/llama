@@ -74,7 +74,9 @@ class StudentMetricsView(LoginRequiredMixin,DetailView):
         self.template_name = get_template_dir("student_metrics", self.request.is_mobile)
         
         context = super().get_context_data(**kwargs)
-        student = Student(self.object)
+        #self.object returns Student object(Student object(pk))
+        #grab pk to fix this
+        student = Student(self.object).pk
         attendance_rate = student.calculate_attendance_rate()
         performance = student.performance_summary()
         context['attendance_difference'] = student.total_calls - student.absent_calls
