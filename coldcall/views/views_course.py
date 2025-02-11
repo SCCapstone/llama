@@ -6,7 +6,7 @@ from django.views.generic import DetailView, TemplateView
 
 from .view_helper import get_template_dir
 from ..models import Class
-import datetime
+from datetime import datetime
 
 #Allows the user to add a new empty class with a name and dates.
 class AddCourseView(LoginRequiredMixin,TemplateView):
