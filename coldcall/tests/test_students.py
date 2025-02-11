@@ -107,5 +107,5 @@ class TestEmptyStudent(TestCase):
         self.assertEqual(3, s.total_calls)
         self.assertEqual(1, s.absent_calls)
         self.assertEqual(8, s.total_score)
-        self.assertEqual(66.66666666666666, s.calculate_attendance_rate())
+        self.assertEqual(66.67, s.calculate_attendance_rate())
         self.assertEqual("Needs Improvement", s.performance_summary())

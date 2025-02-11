@@ -118,17 +118,18 @@ class TestHamburgerMenu(StaticLiveServerTestCase):
     def test_open_menu(self):
         self.driver.find_element(By.CLASS_NAME, "menuButton").click()
 
-        visibility = self.driver.find_element(By.CLASS_NAME, "menu").get_attribute("style")
-        self.assertIn("flex", visibility)
+        visibility = self.driver.find_element(By.XPATH, '//*[@id="menu"]').get_attribute("class")
+
+        self.assertIn("show", visibility)
 
     def test_close_menu(self):
         found_button = self.driver.find_element(By.CLASS_NAME, "menuButton")
         found_button.click()
         found_button.click()
 
-        visibility = self.driver.find_element(By.CLASS_NAME, "menu").get_attribute("style")
+        visibility = self.driver.find_element(By.XPATH, '//*[@id="menu"]').get_attribute("class")
 
-        self.assertIn("none", visibility)
+        self.assertNotIn("show", visibility)
 
 class TestCreateClass(StaticLiveServerTestCase):
     def setUp(self):
