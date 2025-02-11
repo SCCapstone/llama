@@ -54,6 +54,7 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
 
             Student.objects.create(
                 usc_id = usc_id,
+                email = email, 
                 first_name = first_name, 
                 last_name = last_name, 
                 class_key = selected_class, 

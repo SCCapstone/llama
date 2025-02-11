@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseBadRequest, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import DetailView, TemplateView
+from django.urls import reverse
 
 from .view_helper import get_template_dir
 from ..models import Class, Student, StudentRating
@@ -125,9 +126,8 @@ class StudentRatingEditView(LoginRequiredMixin, View):
         rating.save()
 
         student.recalculate_all()
-        return redirect("/student/" + str(pk))
-
-
+        return redirect("/student/" + str(pk))   
+        
 #Allows editing of a student's existing data.     
 class StudentUpdateView(View):
     def post(self, request, student_id):
@@ -148,5 +148,16 @@ class StudentUpdateView(View):
             return JsonResponse({"message": "Student updated successfully"})
         except Student.DoesNotExist:
             return JsonResponse({"error": "Student not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+        
+
+class StudentDeleteView(View):
+    def post(self, request, student_id):
+        try: 
+            student = get_object_or_404(Student, id=student_id)
+            student.delete()
+        
+            return redirect('home')
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)

@@ -125,6 +125,21 @@
           <button type="submit">{% if student %}Update Student{% else %}Add Student{% endif %}</button>
         </div>
       </form>
+      
+      {% if student %}
+      <form id="delete-student-form" action="{% url 'student_delete' student.id %}" method="post" style="display:none;">
+        {% csrf_token %}
+      </form>
+      <button type="button" id="delete-button">Delete Student</button>
+      {% endif %}
     </div>
+
+    <script>
+      document.getElementById('delete-button').addEventListener('click', function(){
+        if (confirm('Please confirm if you want to delete student: {{ student.first_name }} {{ student.last_name }}')) {
+          document.getElementById('delete-student-form').submit();
+        }
+      });
+    </script>
   </body>
 </html>

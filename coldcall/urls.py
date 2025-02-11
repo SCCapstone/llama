@@ -22,6 +22,7 @@ urlpatterns = [
     path("addeditstudents/manual", views.AddEditStudentManualView.as_view(), name="addedit_student_manual"),
     path("addeditstudents/manual/<int:student_id>", views.AddEditStudentManualView.as_view(), name="addedit_student_manual_with_id"),  
     path("student/<int:student_id>/update", views.StudentUpdateView.as_view(), name="student_update"),
+    path("student/<int:student_id>/delete", views.StudentDeleteView.as_view(), name="student_delete"),
 
     # Add course 
     path("addcourse", views.AddCourseView.as_view(), name="add_course"),
@@ -34,7 +35,6 @@ urlpatterns = [
 
     # Randomizer
     path("randomizer", views.StudentRandomizerView.as_view(), name="randomizer"),
-
     # Unsure URLS (Were already commented out)
     # path("class/<int:class_id>/details", views.ClassDetailsView.as_view(), name="class_details"),
     # path("student/<int:student_id>/update_score", views.StudentScoreUpdateView.as_view(), name="student_score_update"),
