@@ -1,12 +1,13 @@
 {% include 'coldcall/base.html' %} {% load static %}
 <link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
+<link rel="stylesheet" href="{% static 'coldcall/add_course.css' %}">
 
 <head>
   <meta charset="UTF-8" />
   <title>Create Course</title>
 </head>
 <body>
-  <form method="post">
+  <form method="post" class="form-container">
     {% csrf_token %}
     <label for="name">Course Name:</label>
     <input type="text" id="name" name="name" maxlength="200" required />
