@@ -31,6 +31,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         last_name = request.POST.get('last_name')
         class_key_id = request.POST.get('class_key')
         seating = request.POST.get('seating')
+        email = request.POST.get('email')
         total_calls = request.POST.get('total_calls', 0)
         absent_calls = request.POST.get('absent_calls', 0)
         total_score = request.POST.get('total_score', 0)
@@ -48,6 +49,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
             student.last_name = last_name
             student.class_key = class_key
             student.seating = seating
+            student.email = email
             student.save()
         # create a new student if no ID is provided
         else:
@@ -59,6 +61,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
                 seating=seating,
                 total_calls=total_calls,
                 absent_calls=absent_calls,
+                email=email,
                 total_score=total_score,
             )
 
