@@ -3,13 +3,14 @@
 <html lang="en">
 {% load static %}
 <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+<link rel="stylesheet" href="{% static 'coldcall/add_student_import.css' %}">
 <head>
     <meta charset="UTF-8">
     <title>Import Students</title>
 </head>
 <body>
     <h1>Import Students</h1>
-    <form method="get">
+    <form id="import-form" method="get">
         {% csrf_token %}
         <div class="form-group">
             <label for="class_id">Select Class:</label>
@@ -25,7 +26,7 @@
     </form>
     
     {% if selected_class %}
-        <form method="post" enctype="multipart/form-data">
+        <form id="import-form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="class_id" value="{{ selected_class.id }}">
             <div class="form-group">
