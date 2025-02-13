@@ -1,3 +1,18 @@
+.menuButton { 
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: background-color 0.2s ease;
+}
+
+.menuButton:hover {
+    background-color: #5a0008; /* Darker garnet for hover */
+    border-radius: 3px;
+}
+
 .menu {
     position: fixed;
     top: 0;
@@ -40,7 +55,7 @@
 }
 
 .menu a:hover {
-    background-color: #555;
+    background-color: #5a0008;
 }
 
 .menu a:active {
