@@ -35,15 +35,13 @@
         </form>
     {% endif %}
     </div>
-
+    
     <!-- Randomizer Button -->
-    {% if selected_class %}
     <form method="get" action="{% url 'randomizer' %}">
         <input type="hidden" name="class_id" value="{{ selected_class.id }}">
         <button type="submit">Randomize Students</button>
     </form>
-    {% endif %}
-    
+
     <!-- Sort Students -->
      <div class="sort-containter">
         <form method="get">
