@@ -13,7 +13,10 @@ const g_height = c_height - (padding * 2);
 const min_score = 0;
 const max_score = 5;
 
+const points = []; //populated in draw_points, store locations for tooltips
+
 function init_graph() {
+    ctx.reset();
     // draw bounding lines
     ctx.strokeStyle = "black"
     ctx.beginPath();
@@ -42,7 +45,7 @@ function draw_points() {
         // read data and draw point with color based on status, absent always appears as 0
         ctx.beginPath();
         ctx.setLineDash([]); // reset stroke for future loops
-        let  point = rating_data[i];
+        let point = rating_data[i];
         ctx.fillStyle = 'green';
         if(!point.attendance) {
             ctx.fillStyle = 'red';
@@ -51,7 +54,13 @@ function draw_points() {
         if(!point.prepared) {
             ctx.fillStyle = 'orange';
         }
-        ctx.arc(padding + ((i+1) * g_width)/rating_data.length+1, g_height + padding - ((point.score * g_height) / max_score), padding*.5, 0, 2*Math.PI);
+
+        let x = padding + ((i+1) * g_width)/rating_data.length+1;
+        let y = g_height + padding - ((point.score * g_height) / max_score);
+
+        points.push({x,y, data: point}); // create obj with point data and position
+
+        ctx.arc(x, y, padding*.5, 0, 2*Math.PI);
         ctx.fill();
 
         // don't update weighted average on absent
@@ -72,8 +81,57 @@ function draw_points() {
 }
 
 function draw_all() {
+    ctx.clearRect(0, 0, c_width, c_height); // clears canvas on each draw
     init_graph();
     draw_points();
 }
+
+function show_hover(x, y, txt) {
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.font = "12px Arial"; //TODO: replace this with better font once decided
+    ctx.setLineDash([]);
+
+    //TODO: change this to scale with canvas size instead of magic numbers
+    let tooltip_width = ctx.measureText(txt).width + 10;
+    let tooltip_height = 20;
+
+    // render tooltip to the center to prevent it from rendering out of bounds
+    if(x < g_width / 2) {
+        ctx.fillRect(x + 10, y - 15, tooltip_width, tooltip_height);
+        ctx.strokeRect(x + 10, y - 15, tooltip_width, tooltip_height);
+        ctx.fillStyle = "black";
+        ctx.fillText(txt, x + 15, y);
+    } else {
+        ctx.fillRect(x - 10 - tooltip_width, y - 15, tooltip_width, tooltip_height);
+        ctx.strokeRect(x - 10 - tooltip_width, y - 15, tooltip_width, tooltip_height);
+        ctx.fillStyle = "black";
+        ctx.fillText(txt, x - 5 - tooltip_width, y);
+    }
+}
+
+canvas.addEventListener("click", (event) => {
+    draw_all();
+
+    let rect = canvas.getBoundingClientRect();
+    x = event.clientX - rect.left;
+    y = event.clientY - rect.top;
+
+    points.forEach(point => {
+        const dx = x - point.x;
+        const dy = y - point.y;
+        let distance = Math.sqrt(dx ** 2 + dy ** 2);
+
+        if(distance < padding * 1.2) { // dots have a radius of padding, give slightly more leniance on render
+            let txt = `${point.data.date}`;
+            show_hover(point.x, point.y, txt);
+        }
+    });
+});
+
+canvas.addEventListener("mouseleave", (event) => {
+    draw_all();
+})
 
 draw_all();
