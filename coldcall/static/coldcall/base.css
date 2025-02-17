@@ -40,6 +40,7 @@
 }
 
 .menu a {
+    font-family: Arial, sans-serif;
     display: block; 
     background-color: #73000a;
     height: 40px;
@@ -56,6 +57,8 @@
 
 .menu a:hover {
     background-color: #5a0008;
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 .menu a:active {

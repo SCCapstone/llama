@@ -1,6 +1,5 @@
 body {
     background-color: #eee;
-    font-family: Arial, sans-serif;
 }
 
 h1 {
@@ -90,23 +89,17 @@ button {
 }
 
 button:hover {
-    background-color: #555;
+    background-color: #5a0008;
+}
+
+button:active { 
+    transform: scale(0.98);
 }
 
 p {
     text-align: center;
     color: #333;
     font-weight: bold;
-}
-
-a {
-    color: #73000a;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
 }
 
 .sort-container {
