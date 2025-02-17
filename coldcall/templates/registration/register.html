@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+    <link rel="stylesheet" href="{% static 'coldcall/register.css' %}">
 </head>
 <body>
-    <h2>Sign Up</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign Up</button>
-    </form>
+    <h1>Sign Up</h1>
+    <div class="form-container">
+        <form method="post" class="form-group"> 
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
 </body>
 </html>
