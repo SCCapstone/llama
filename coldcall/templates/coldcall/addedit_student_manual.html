@@ -130,7 +130,9 @@
       <form id="delete-student-form" action="{% url 'student_delete' student.id %}" method="post" style="display:none;">
         {% csrf_token %}
       </form>
-      <button type="button" id="delete-button">Delete Student</button>
+      <div class="form-group">
+        <button type="button" id="delete-button" class="delete-button">Delete Student</button>
+      </div>
       {% endif %}
     </div>
 
