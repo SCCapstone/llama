@@ -2,15 +2,16 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-<link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
-<link rel="stylesheet" href="{% static 'coldcall/home.css' %}">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+    <link rel="stylesheet" href="{% static 'coldcall/home.css' %}">
+    <title>Home</title>
 </head>
 <body>
 
 {% if user.is_authenticated %}
-    <h1>Welcome, {{ user.username }}!</h1>
+    <h1>Welcome, {{ user.username }}! </h1>
 
     <!-- Class Filter Dropdown -->
     <div class="filter-container">
@@ -26,14 +27,14 @@
             </select>
         </form>
 
-    <!-- Archive Button -->
-    {% if selected_class and not selected_class.is_archived %}
-        <form method="post" action="{% url 'home' %}">
-            {% csrf_token %}
-            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
-            <button type="submit">Archive Class</button>
-        </form>
-    {% endif %}
+        <!-- Archive Button -->
+        {% if selected_class and not selected_class.is_archived %}
+            <form method="post" action="{% url 'home' %}">
+                {% csrf_token %}
+                <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+                <button type="submit">Archive Class</button>
+            </form>
+        {% endif %}
     </div>
     
     <!-- Randomizer Button -->
@@ -43,11 +44,11 @@
     </form>
 
     <!-- Sort Students -->
-     <div class="sort-containter">
+    <div class="sort-container">
         <form method="get">
             <label for="sort">Sort Students:</label>
             <select id="sort" name="sort" onchange="this.form.submit()">
-                <option value="" {% if not sort %}selected{% endif %}>Default</option>"
+                <option value="" {% if not sort %}selected{% endif %}>Default</option>
                 <option value="first_name" {% if sort == 'first_name' %}selected{% endif %}>First Name</option>
                 <option value="last_name" {% if sort == 'last_name' %}selected{% endif %}>Last Name</option>
                 <option value="seating" {% if sort == 'seating' %}selected{% endif %}>Seating</option>
@@ -58,7 +59,7 @@
             <!-- Hidden input to keep class_id when sorting -->
             <input type="hidden" name="class_id" value="{{ selected_class.id }}">
         </form>
-     </div>
+    </div>
 
     <!-- Display Students for the Selected Class -->
     <div class="student-table-container">
@@ -89,14 +90,13 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="7">No students found for this class.</td>
+                        <td colspan="8">No students found for this class.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
-    <!-- updated logout -->
     <!-- Logout form -->
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
