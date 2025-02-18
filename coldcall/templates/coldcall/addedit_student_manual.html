@@ -136,12 +136,9 @@
       {% endif %}
     </div>
 
+    <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
     <script>
-      document.getElementById('delete-button').addEventListener('click', function(){
-        if (confirm('Please confirm if you want to delete student: {{ student.first_name }} {{ student.last_name }}')) {
-          document.getElementById('delete-student-form').submit();
-        }
-      });
+      buttonConfirm('delete-button', 'delete-student-form', 'Please confirm if you want to delete student: {{ student.first_name }} {{ student.last_name }}');
     </script>
   </body>
 </html>

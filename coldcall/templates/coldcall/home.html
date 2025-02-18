@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/home.css' %}">
+    <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
     <title>Home</title>
 </head>
 <body>
@@ -29,10 +30,10 @@
 
         <!-- Archive Button -->
         {% if selected_class and not selected_class.is_archived %}
-            <form method="post" action="{% url 'home' %}">
+            <form method="post" action="{% url 'home' %}" id="archiveForm">
                 {% csrf_token %}
                 <input type="hidden" name="class_id" value="{{ selected_class.id }}">
-                <button type="submit">Archive Class</button>
+                <button type="submit" id="archiveButton">Archive Class</button>
             </form>
         {% endif %}
     </div>
@@ -127,4 +128,7 @@
 {% endif %}
 
 </body>
+<script>
+    buttonConfirm('archiveButton', 'archiveForm', 'Are you sure you want to archive this class?');
+</script>
 </html>
