@@ -58,6 +58,25 @@
             </select>
             <!-- Hidden input to keep class_id when sorting -->
             <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+            <!-- Hidden input to keep search queries when sorting -->
+            <input type="hidden" name="search_first_name" value="{{ first_name }}">
+            <input type="hidden" name="search_last_name" value="{{ last_name }}">
+            <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
+        </form>
+    </div>
+
+    <!-- Search Students -->
+    <div class = "search-container">
+        <form method="get">
+            <label for="search">Search Students:</label>
+            <input type="text" id="search_first_name" name="search_first_name" value="{{ first_name }}" placeholder="First Name">
+            <input type="text" id="search_last_name" name="search_last_name" value="{{ last_name }}" placeholder="Last Name">
+            <input type="text" id="search_usc_id" name="search_usc_id" value="{{ usc_id }}" placeholder="USC ID">
+            <!-- Hidden input to keep class_id when searching -->
+            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+            <!-- Hidden input to keep sort when searching -->
+            <input type="hidden" name="sort" value="{{ sort }}">
+            <button type="submit" onclick="this.form.submit()">Search</button>
         </form>
     </div>
 

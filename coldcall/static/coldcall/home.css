@@ -1,114 +1,130 @@
 body {
-    background-color: #eee;
+  background-color: #eee;
 }
 
 h1 {
-    text-align: center;
-    margin-top: 40px;
-    color: #333;
-    font-weight: bold;
+  text-align: center;
+  margin-top: 40px;
+  color: #333;
+  font-weight: bold;
 }
 
 .filter-container {
-    margin-bottom: 20px;
-    text-align: center;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .filter-container form {
-    display: inline-block;
-    margin: 0 10px;
+  display: inline-block;
+  margin: 0 10px;
 }
 
 .filter-container label {
-    font-weight: bold;
-    margin-right: 10px;
-    text-align: center;
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: center;
 }
 
 .filter-container select {
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    background-color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
 }
 
 .student-table-container {
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .student-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.student-table th, .student-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
+.student-table th,
+.student-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
 }
 
 .student-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
 
 .student-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 .student-table tr:hover {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
 
 .student-table a {
-    color: #73000a;
-    text-decoration: none;
-    font-weight: bold;
+  color: #73000a;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .student-table a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 button {
-    padding: 10px;
-    background-color: #73000a;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    display: block;
-    margin: 20px auto;
-
+  padding: 10px;
+  background-color: #73000a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin: 20px auto;
 }
 
 button:hover {
-    background-color: #5a0008;
+  background-color: #5a0008;
 }
 
-button:active { 
-    transform: scale(0.98);
+button:active {
+  transform: scale(0.98);
 }
 
 p {
-    text-align: center;
-    color: #333;
-    font-weight: bold;
+  text-align: center;
+  color: #333;
+  font-weight: bold;
 }
 
 .sort-container {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .sort-container label {
-    font-weight: bold;
-    margin-right: 10px;
-    text-align: center;
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.search-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-container label {
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.search-container button {
+  display: inline-block;
+  margin-top: 0px;
 }

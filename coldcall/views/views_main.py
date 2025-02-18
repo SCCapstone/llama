@@ -43,7 +43,10 @@ class HomePageView(LoginRequiredMixin, View):
 
         # get the id of the selected class
         selected_class_id = request.GET.get('class_id')
-        sort_query = request.GET.get('sort')
+        sort_query = request.GET.get('sort', '') # default to empty string
+        search_first_name_query = request.GET.get('search_first_name', '') # default to empty string
+        search_last_name_query = request.GET.get('search_last_name', '') # default to empty string
+        search_usc_id_query = request.GET.get('search_usc_id', '') # default to empty string
 
         # get the students that are in that class
         if selected_class_id:
@@ -64,11 +67,22 @@ class HomePageView(LoginRequiredMixin, View):
         if students and sort_query:
             students = students.order_by(Lower(sort_query))
 
+        # Apply search filters
+        if students and search_first_name_query:
+            students = students.filter(first_name__icontains=search_first_name_query)
+        if students and search_last_name_query:
+            students = students.filter(last_name__icontains=search_last_name_query)
+        if students and search_usc_id_query:
+            students = students.filter(usc_id__icontains=search_usc_id_query)
+
         context = {
             'students': students,
             'classes': classes,
             'selected_class': selected_class,
             'sort': sort_query,
+            'first_name': search_first_name_query,
+            'last_name': search_last_name_query,
+            'usc_id': search_usc_id_query
         }
         return render(request, self.template_name, context)
     
