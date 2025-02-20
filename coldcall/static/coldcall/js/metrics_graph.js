@@ -1,14 +1,29 @@
 const canvas = document.getElementById('metrics_graph');
+
+let c_width, c_height, padding, g_width, g_height = 0;
+// initialize proper canvas size, 
+function resize_canvas() {
+    const container = canvas.parentElement;
+
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+    
+    c_width = canvas.width;
+    c_height = canvas.height;
+    padding = c_height * 0.1;
+    g_width = c_width - (padding * 2);
+    g_height = c_height - (padding * 2);
+    
+}
+
+window.addEventListener('load', resize_canvas());
+window.addEventListener('resize', resize_canvas());
+
 const ctx = canvas.getContext('2d');
 
 // Securely grab data of student's ratings
 const rating_data = JSON.parse(document.getElementById('rating_data').textContent);
 
-const c_width = canvas.width;
-const c_height = canvas.height;
-const padding = c_height * 0.1;
-const g_width = c_width - (padding * 2);
-const g_height = c_height - (padding * 2);
 
 const min_score = 0;
 const max_score = 5;

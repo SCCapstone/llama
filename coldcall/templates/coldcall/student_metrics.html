@@ -9,27 +9,20 @@
     <title>Student Metrics - {{ student.first_name }} {{ student.last_name }}</title>
 </head>
 <body>
-
+    <div class="column-div">
+    <div class="left-align">
     <div class="container">
         <h1>Metrics for {{ student.first_name }} {{ student.last_name }}</h1>
         
         <!-- Student Details Table -->
         <table class="metrics-table">
             <tr>
-                <th>First Name</th>
-                <td>{{ student.first_name }}</td>
-            </tr>
-            <tr>
-                <th>Last Name</th>
-                <td>{{ student.last_name }}</td>
-            </tr>
-            <tr>
                 <th>Class</th>
                 <td>{{ student.class_key.class_name }}</td>
             </tr>
             <tr>
                 <th>Seating</th>
-                <td>{{ student.seating }}</td>
+                <td>{{ student.get_seating_display }}</td>
             </tr>
             <tr>
                 <th>Total Score</th>
@@ -46,13 +39,14 @@
         </p>
     </div>
 
-    <div class="container">
+    <div class="container table-container">
         <table class ="metrics-table">
             <thead>
                 <tr>
                     <th> Date </th>
                     <th> Rating </th>
-                <tr>
+                    <th> </th>
+                </tr>
             </thead>
             <tbody>
                 {% for s in student_perf %}
@@ -65,15 +59,19 @@
             </tbody>
         </table>
     </div>
+    </div>
     {% comment %} 
         Custom graph renderer:
         Takes in a list of a student's ratings and converts it into a chart over time.
         json_script used to safely turn input data into a js readable json array. 
     {% endcomment %}
-    <div>
-        <canvas id = "metrics_graph" width="800" height="200"></canvas>
+    <div class="right-align container">
+    <div class="metrics_div">
+        <canvas id = "metrics_graph"></canvas>
         {{ rating_list | json_script:"rating_data" }}
         <script src="{% static 'coldcall/js/metrics_graph.js' %}"></script>
+    </div>
+    </div>
     </div>
 </body>
 </html>
