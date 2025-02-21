@@ -26,7 +26,14 @@
                     </option>
                 {% endfor %}
             </select>
+            <!-- Hidden input to keep sort when filtering classes -->
+            <input type="hidden" name="sort" value="{{ sort }}">
+            <!-- Hidden input to keep search queries when filtering classes -->
+            <input type="hidden" name="search_first_name" value="{{ first_name }}">
+            <input type="hidden" name="search_last_name" value="{{ last_name }}">
+            <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
         </form>
+    </div>
 
         <!-- Archive Button -->
         {% if selected_class and not selected_class.is_archived %}
