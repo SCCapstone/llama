@@ -41,7 +41,11 @@
           {% for class in classes %}
           <tr>
             <td>
-              <a href="/?class_id={{ class.id }}">{{ class.class_name }}</a>
+                {% if not class.is_archived %}
+                <a href="/?class_id={{ class.id }}">{{ class.class_name }}</a>
+                {% else %}
+                {{ class.class_name }}
+                {% endif %}
             </td>
             <td>{{ class.start_date }}</td>
             <td>{{ class.end_date }}</td>
