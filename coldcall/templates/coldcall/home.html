@@ -45,16 +45,6 @@
             <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
         </form>
     </div>
-
-        <!-- Archive Button -->
-        {% if selected_class and not selected_class.is_archived %}
-            <form method="post" action="{% url 'home' %}" id="archiveForm">
-                {% csrf_token %}
-                <input type="hidden" name="class_id" value="{{ selected_class.id }}">
-                <button type="submit" id="archiveButton">Archive Class</button>
-            </form>
-        {% endif %}
-    </div>
     
     <!-- Randomizer Button -->
     <form method="get" action="{% url 'randomizer' %}">

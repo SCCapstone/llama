@@ -93,20 +93,6 @@ class HomePageView(LoginRequiredMixin, View):
             'seen_onboarding': not seen_onboarding
         }
         return render(request, self.template_name, context)
-    
-    def post(self, request):
-        # Archive a class
-        class_id = request.POST.get('class_id')
-        if class_id:
-            try:
-                class_to_archive = Class.objects.get(id=class_id)
-                class_to_archive.is_archived = True
-                class_to_archive.save()
-            except Class.DoesNotExist:
-                #TODO handle this error
-                pass
-
-        return redirect('home')
 
 #Core functionality, selects a random student from a course to be called on.    
 class StudentRandomizerView(LoginRequiredMixin,View):
