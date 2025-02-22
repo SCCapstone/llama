@@ -1,0 +1,60 @@
+{% include 'coldcall/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'coldcall/manage_classes.css' %}" />
+    <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
+    <title>Manage Classes</title>
+  </head>
+  <body>
+    <!-- Class Filter Dropdown -->
+    <div class="filter-container">
+      <form method="get">
+        <label for="class_filter">Filter Classes:</label>
+        <select
+          id="class_filter"
+          name="class_filter"
+          onchange="this.form.submit()">
+          <option value="" {% if not request.GET.class_filter %}selected{% endif %}>All Classes</option>
+          <option value="active" {% if request.GET.class_filter == 'active' %}selected{% endif %}>Active Classes</option>
+          <option value="archived" {% if request.GET.class_filter == 'archived' %}selected{% endif %}>Archived Classes</option>
+        </select>
+      </form>
+    </div>
+
+    <!-- Display Classes -->
+    <div class="classes-table-container">
+      <table class="classes-table">
+        <thead>
+          <tr>
+            <th>Class Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Active/Archived</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for class in classes %}
+          <tr>
+            <td>
+              <a href="/?class_id={{ class.id }}">{{ class.class_name }}</a>
+            </td>
+            <td>{{ class.start_date }}</td>
+            <td>{{ class.end_date }}</td>
+            <td>{{ class.is_archived|yesno:"Archived,Active" }}</td>
+            <td><a href="{% url 'edit_course' class.id %}">Edit</a></td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="8">No classes found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

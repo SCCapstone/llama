@@ -6,4 +6,6 @@ from .views_data import AddStudentImportView, ExportClassFileView
 from .views_main import CreateAccountView, HomePageView, StudentRandomizerView
 #views to create, modify, and view student info
 from .views_student import AddEditStudentManualView, StudentMetricsView, StudentRatingEditView, StudentUpdateView, StudentDeleteView
+from .views_manage_classes import ManageClassesView
+from .views_course import EditCourseView
 

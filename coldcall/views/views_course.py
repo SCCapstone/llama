@@ -9,53 +9,41 @@ from ..models import Class
 from datetime import datetime
 
 #Allows the user to add a new empty class with a name and dates.
-class AddCourseView(LoginRequiredMixin,TemplateView):
+class AddCourseView(LoginRequiredMixin, TemplateView):
     def get(self, request):
         self.template_name = get_template_dir("add_course", request.is_mobile)
         return render(request, self.template_name)
 
-    def post(self,request):
-        if(request.user.is_authenticated):
+    def post(self, request):
+        if request.user.is_authenticated:
+            self.template_name = get_template_dir("add_course", request.is_mobile)
+            
+            class_name = request.POST.get('name')
             start_date_str = request.POST.get('start_date')
             end_date_str = request.POST.get('end_date')
-
-            start_date = None
-            end_date = None
-
-            # If start_date_str is non empty, convert it to a date object
-            if start_date_str:
-                try:
-                    start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
-                except ValueError:
-                    return HttpResponseBadRequest("Invalid date format. Please use YYYY-MM-DD.")
-                
-            # If end_date_str is non empty, convert it to a date object
-            if end_date_str:
-                try:
-                    end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
-                except ValueError:
-                    return HttpResponseBadRequest("Invalid date format. Please use YYYY-MM-DD.")
             
-            # If start_date and end_date are both provided, check if the end date is before the start date
-            if start_date and end_date and end_date < start_date:
+            start_date = string_to_date(start_date_str)
+            end_date = string_to_date(end_date_str)
+            
+            if not valid_dates(start_date, end_date):
                 error_message = "End date cannot be before start date."
                 return render(request, self.template_name, {
                     'error_message': error_message,
-                    'name': request.POST.get('name'),
+                    'name': class_name,
                     'start_date': start_date_str,
                     'end_date': end_date_str,
                 })
 
             Class.objects.create(
-                professor_key = request.user,
-                class_name = request.POST.get('name'),
-                start_date = start_date,
-                end_date = end_date,
+                professor_key=request.user,
+                class_name=class_name,
+                start_date=start_date,
+                end_date=end_date,
             )
 
             return redirect('/')
         else:
-            return redirect('/accounts/login') #should never reach this, but fall back to redirect   
+            return redirect('/accounts/login')  # should never reach this, but fall back to redirect   
 
 #TODO: This is unused, where is it intended for?
 class ClassDetailsView(View):
@@ -78,3 +66,57 @@ class CourseHomePageView(LoginRequiredMixin,DetailView):
     context_object_name = "course"
     def get(self, request):
         self.template_name = get_template_dir("course_home", request.is_mobile)
+
+class EditCourseView(LoginRequiredMixin, TemplateView):
+    def get(self, request, course_id):
+        self.template_name = get_template_dir("edit_course", request.is_mobile)
+        try:
+            selected_class = Class.objects.get(id=course_id)
+        except Class.DoesNotExist:
+            selected_class = None
+
+        return render(request, self.template_name, {
+            'class': selected_class,
+            'name': selected_class.class_name,
+            'start_date': selected_class.start_date.strftime('%Y-%m-%d') if selected_class.start_date else '',
+            'end_date': selected_class.end_date.strftime('%Y-%m-%d') if selected_class.end_date else '',
+            'is_archived': selected_class.is_archived,
+        })
+
+    def post(self, request, course_id):
+        self.template_name = get_template_dir("edit_course", request.is_mobile)
+        selected_class = Class.objects.get(id=course_id)
+        class_name = request.POST.get('name')
+        start_date_str = request.POST.get('start_date')
+        start_date = string_to_date(start_date_str)
+        end_date_str = request.POST.get('end_date')
+        end_date = string_to_date(end_date_str)
+        is_archived = request.POST.get('is_archived') == 'on'
+
+        if not valid_dates(start_date, end_date):
+            error_message = "End date cannot be before start date."
+            return render(request, self.template_name, {
+                'error_message': error_message,
+                'name': class_name,
+                'start_date': start_date_str,
+                'end_date': end_date_str,
+                'is_archived': is_archived,
+            })
+
+        selected_class.class_name = class_name
+        selected_class.start_date = start_date if start_date else None
+        selected_class.end_date = end_date if end_date else None
+        selected_class.is_archived = bool(is_archived)
+        selected_class.save()
+        return redirect('/manageclasses')
+    
+# Convert date string to date object
+def string_to_date(date_string):
+    if date_string:
+        return datetime.strptime(date_string, '%Y-%m-%d').date()
+        
+# Ensure that the end date is not before the start date
+def valid_dates(start_date, end_date):
+    if start_date and end_date and end_date < start_date:
+        return False
+    return True
