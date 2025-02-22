@@ -32,46 +32,46 @@ h1 {
   background-color: #fff;
 }
 
-.student-table-container {
+.classes-table-container {
   padding: 10px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.student-table {
+.classes-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.student-table th,
-.student-table td {
+.classes-table th,
+.classes-table td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
 }
 
-.student-table th {
+.classes-table th {
   background-color: #f2f2f2;
   font-weight: bold;
 }
 
-.student-table tr:nth-child(even) {
+.classes-table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.student-table tr:hover {
+.classes-table tr:hover {
   background-color: #f1f1f1;
 }
 
-.student-table a {
+.classes-table a {
   color: #73000a;
   text-decoration: none;
   font-weight: bold;
 }
 
-.student-table a:hover {
+.classes-table a:hover {
   text-decoration: underline;
 }
 
@@ -100,31 +100,4 @@ p {
   text-align: center;
   color: #333;
   font-weight: bold;
-}
-
-.sort-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.sort-container label {
-  font-weight: bold;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.search-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.search-container label {
-  font-weight: bold;
-  margin-right: 10px;
-  text-align: center;
-}
-
-.search-container button {
-  display: inline-block;
-  margin-top: 0px;
 }
