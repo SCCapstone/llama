@@ -6,14 +6,25 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/home.css' %}">
+    <link rel="stylesheet" href="{% static 'coldcall/popup.css' %}">
     <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
+    <script src="{% static 'coldcall/js/popup_overlay.js' %}"></script>
     <title>Home</title>
 </head>
 <body>
 
 {% if user.is_authenticated %}
     <h1>Welcome, {{ user.username }}! </h1>
-
+    <!-- Initial user setup/onboarding popup -->
+    {% if seen_onboarding %}
+    <div id="init-popup" class="popup visible">
+        <div id = "init-popup-inner" class="popup-inner">
+            You do not have any classes. Would you like to import or create a new one?
+            <a href="{% url 'add_course'%}">Add Course</a>
+            <button id="close-init" class = "close-popup">Dismiss</button>
+        </div>  
+    </div>
+    {% endif %}
     <!-- Class Filter Dropdown -->
     <div class="filter-container">
         <form method="get">

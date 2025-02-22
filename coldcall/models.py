@@ -118,3 +118,8 @@ class StudentRating(models.Model):
         if not self.attendance:
             return "❗ Absent"
         return str(self.score) + "⭐" + ("⚠️" if not self.prepared else "")
+
+# helper data model containing additional information related to users
+class UserData(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    seen_onboarding = models.BooleanField(default=False)

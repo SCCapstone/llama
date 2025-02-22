@@ -9,7 +9,7 @@ from django.views.generic import FormView
 
 from .view_helper import get_template_dir
 from ..forms import RegisterUserForm
-from ..models import Student, Class
+from ..models import Student, Class, UserData
 
 import json, random
 
@@ -23,6 +23,8 @@ class CreateAccountView(FormView):
         new_user = form.save(commit=False) # need to hash password first
         new_user.password = make_password(form.cleaned_data["password"])
         new_user.save()
+
+        UserData.objects.create(user=new_user)
         return super().form_valid(form)
 
 #Default page upon being logged in, no class selected by default.
@@ -37,9 +39,14 @@ class HomePageView(LoginRequiredMixin, View):
 
         #changed to only display logged in user's students and classes
         #classes = Class.objects.all()
+        user = request.user
+        classes = Class.objects.filter(professor_key=user, is_archived=False)
+        students = Student.objects.filter(class_key__professor_key=user)
 
-        classes = Class.objects.filter(professor_key=request.user, is_archived=False)
-        students = Student.objects.filter(class_key__professor_key=request.user)
+        seen_onboarding = user.userdata.seen_onboarding
+        if(not seen_onboarding):
+            user.userdata.seen_onboarding = True
+            user.userdata.save()
 
         # get the id of the selected class
         selected_class_id = request.GET.get('class_id')
@@ -51,7 +58,7 @@ class HomePageView(LoginRequiredMixin, View):
         # get the students that are in that class
         if selected_class_id:
             selected_class = Class.objects.get(id=selected_class_id)
-            if selected_class.professor_key != request.user:
+            if selected_class.professor_key != user:
                 # prevent user from viewing information by modifying URL
                 students = None
                 selected_class = None
@@ -60,7 +67,7 @@ class HomePageView(LoginRequiredMixin, View):
 
         else: 
             # all classes, limited to classes authenticated user has access to and are not archived
-            students = Student.objects.filter(class_key__professor_key=request.user, class_key__is_archived=False)
+            students = Student.objects.filter(class_key__professor_key=user, class_key__is_archived=False)
             selected_class = None
 
         # Apply sorting
@@ -82,7 +89,8 @@ class HomePageView(LoginRequiredMixin, View):
             'sort': sort_query,
             'first_name': search_first_name_query,
             'last_name': search_last_name_query,
-            'usc_id': search_usc_id_query
+            'usc_id': search_usc_id_query,
+            'seen_onboarding': not seen_onboarding
         }
         return render(request, self.template_name, context)
     
