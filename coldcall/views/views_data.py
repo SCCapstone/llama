@@ -28,8 +28,6 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
         class_id = request.POST.get('class_id')
         student_file = request.FILES.get('students')
         rating_file = request.FILES.get("ratings")
-        print(student_file)
-        print(rating_file)
         
         # Check if the file type is csv
         if not student_file.name.endswith('.csv'):
@@ -82,8 +80,6 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
                 prepared = row.get('prepared', "FALSE").strip()
                 score = row.get('score', '0').strip()
 
-                print(date)
-
                 if not usc_id or not date:
                   continue
 
@@ -92,8 +88,8 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
                     student_key = student,
                     date = datetime.fromisoformat(date),
                     defaults={
-                        'attendance': bool(attendance),
-                        'prepared': bool(prepared),
+                        'attendance': attendance == "TRUE",
+                        'prepared': prepared == "TRUE",
                         'score': int(score) if score.isdigit() else 0
                     }
                 )
