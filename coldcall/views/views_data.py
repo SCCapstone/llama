@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from .view_helper import get_template_dir
-from ..models import Class, Student
+from ..models import Class, Student, StudentRating
 
 import csv
 
@@ -78,18 +78,36 @@ class ExportClassFileView(View):
     
     def post(self, request):
         class_id = request.POST.get('class_id')
-        if class_id: 
-            try: 
-                class_to_export = Class.objects.get(id=class_id, professor_key=request.user)
-                students = class_to_export.student_set.all()
-                response = HttpResponse(content_type='text/csv')
-                response['Content-Disposition'] = f'attachment; filename="{class_to_export.class_name}.csv"'
-                writer = csv.writer(response)
-                writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
-                for student in students:
-                    writer.writerow([student.usc_id, student.email, student.first_name, student.last_name, student.seating, student.total_calls, student.absent_calls, student.total_score])
-                return response
-            except Class.DoesNotExist:
-                return HttpResponseBadRequest("Invalid class ID.")
+        export_type = request.POST.get('export_type')
+        if class_id and export_type: 
+            if export_type == "simple": #just students
+                try: 
+                    class_to_export = Class.objects.get(id=class_id, professor_key=request.user)
+                    students = class_to_export.student_set.all()
+                    response = HttpResponse(content_type='text/csv')
+                    response['Content-Disposition'] = f'attachment; filename="{class_to_export.class_name}.csv"'
+                    writer = csv.writer(response)
+                    writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
+                    for student in students:
+                        writer.writerow([student.usc_id, student.email, student.first_name, student.last_name, student.seating, student.total_calls, student.absent_calls, student.total_score])
+                    return response
+                except Class.DoesNotExist:
+                    return HttpResponseBadRequest("Invalid class ID.")
+            elif export_type == "all": #every student metric with primary key attached
+                try: 
+                    class_to_export = Class.objects.get(id=class_id, professor_key=request.user)
+                    students = class_to_export.student_set.all()
+                    response = HttpResponse(content_type='text/csv')
+                    response['Content-Disposition'] = f'attachment; filename="{class_to_export.class_name}_ratings.csv"'
+                    writer = csv.writer(response)
+                    writer.writerow(['usc_id', 'date', 'attendance', 'prepared', 'score'])
+                    for student in students:
+                        ratings = StudentRating.objects.filter(student_key = student)
+                        for rating in ratings:
+                            writer.writerow([student.usc_id, rating.date, rating.attendance, rating.prepared, rating.score])
+                    return response
+                except Class.DoesNotExist:
+                    return HttpResponseBadRequest("Invalid class ID.")
+                
         else: 
             return HttpResponseBadRequest("No class ID provided.")

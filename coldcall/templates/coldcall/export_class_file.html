@@ -19,15 +19,19 @@
                 <option value="{{ class.id }}">{{ class.class_name }}</option>
             {% endfor %}
         </select>
-        <button type="submit" id="export-button" style="display: none;">Export</button>
+        <button type="submit" class="export-button" id="export-simple" style="display: none;" name="export_type" value="simple">Export Students</button>
+        <button type="submit" class="export-button" id="export-all" style="display: none;" name="export_type" value="all">Export Ratings</button>
     </form>
 
     <script>
         document.getElementById('class_id').addEventListener('change', function() {
             if (this.value !== '') {
-                document.getElementById('export-button').style.display = 'block';
+                document.getElementById('export-simple').style.display = 'block';
+                document.getElementById('export-all').style.display = 'block';
+
             } else {
-                document.getElementById('export-button').style.display = 'none';
+                document.getElementById('export-simple').style.display = 'none';
+                document.getElementById('export-all').style.display = 'none';
             }
         });
     </script>
