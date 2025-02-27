@@ -52,7 +52,9 @@ class Student(models.Model):
     absent_calls = models.IntegerField(default=0)
     total_score = models.IntegerField(default=0)
 
-    def add_rating(self, score, is_present=True, is_prepared=True, in_date=timezone.now()):
+    def add_rating(self, score, is_present=True, is_prepared=True, in_date=None):
+        if in_date is None:
+            in_date = timezone.now() # default value locks time on server start
         new_rating = StudentRating(student_key = self, attendance = is_present, prepared = is_prepared, score = score, date = in_date)
         new_rating.save()
         self.recalculate_all()
@@ -108,7 +110,7 @@ class Student(models.Model):
     
 class StudentRating(models.Model):
     student_key = models.ForeignKey(Student, on_delete=models.CASCADE)
-    date = models.DateField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now)
     attendance = models.BooleanField(default=True)
     prepared = models.BooleanField(default=True)
     score = models.IntegerField(default=5)

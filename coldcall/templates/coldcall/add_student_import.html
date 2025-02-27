@@ -30,7 +30,10 @@
             {% csrf_token %}
             <input type="hidden" name="class_id" value="{{ selected_class.id }}">
             <div class="form-group">
-                <input type="file" name="file" accept=".csv" required>
+                Student File:
+                <input type="file" name="students" accept=".csv" required>
+                Rating File (optional):
+                <input type="file" name="ratings" accept=".csv">
                 <button type="submit">Import</button>
             </div>
         </form>

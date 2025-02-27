@@ -139,7 +139,8 @@ canvas.addEventListener("click", (event) => {
         let distance = Math.sqrt(dx ** 2 + dy ** 2);
 
         if(distance < padding * 1.2) { // dots have a radius of padding, give slightly more leniance on render
-            let txt = `${point.data.date}`;
+            let date = new Date(point.data.date);
+            let txt = `${date.toLocaleString()}`;
             show_hover(point.x, point.y, txt);
         }
     });

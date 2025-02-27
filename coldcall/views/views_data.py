@@ -4,6 +4,8 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import TemplateView
 
+from datetime import datetime
+
 from .view_helper import get_template_dir
 from ..models import Class, Student, StudentRating
 
@@ -24,10 +26,13 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
     
     def post(self, request): 
         class_id = request.POST.get('class_id')
-        file = request.FILES.get('file')
+        student_file = request.FILES.get('students')
+        rating_file = request.FILES.get("ratings")
+        print(student_file)
+        print(rating_file)
         
         # Check if the file type is csv
-        if not file.name.endswith('.csv'):
+        if not student_file.name.endswith('.csv'):
             return HttpResponseBadRequest("Invalid file type. Please select a CSV file.")
         
         try:
@@ -35,7 +40,7 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
         except Class.DoesNotExist:
             return HttpResponseBadRequest("Invalid class ID.")
         
-        decoded_file = file.read().decode('utf-8').splitlines()
+        decoded_file = student_file.read().decode('utf-8').splitlines()
         reader = csv.DictReader(decoded_file)
 
         # Reading CSV file & gathering student information 
@@ -67,9 +72,35 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
                 }
             )                     
 
+        if rating_file is not None:
+            decoded_file = rating_file.read().decode('utf-8').splitlines()
+            reader = csv.DictReader(decoded_file)
+            for row in reader:
+                usc_id = row.get('usc_id', '').strip()
+                date = row.get('date', '').strip()
+                attendance = row.get('attendance', "TRUE").strip()
+                prepared = row.get('prepared', "FALSE").strip()
+                score = row.get('score', '0').strip()
+
+                print(date)
+
+                if not usc_id or not date:
+                  continue
+
+                student = Student.objects.get(usc_id = usc_id)
+                StudentRating.objects.update_or_create(
+                    student_key = student,
+                    date = datetime.fromisoformat(date),
+                    defaults={
+                        'attendance': bool(attendance),
+                        'prepared': bool(prepared),
+                        'score': int(score) if score.isdigit() else 0
+                    }
+                )
+                student.recalculate_all()
         return redirect('/')
 
-# Gives the user a .csv file containing information about ech student in a class
+# Gives the user a .csv file containing information about each student in a class
 class ExportClassFileView(View): 
     def get(self, request): 
         self.template_name = get_template_dir("export_class_file", request.is_mobile)
