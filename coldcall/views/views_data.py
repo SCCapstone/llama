@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.views import View
@@ -10,6 +11,8 @@ from .view_helper import get_template_dir
 from ..models import Class, Student, StudentRating
 
 import csv
+
+import time
 
 #Adds a list of students to a given course using a user provided .csv file
 class AddStudentImportView(LoginRequiredMixin, TemplateView):
@@ -68,32 +71,60 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
                     'absent_calls': int(absent_calls) if absent_calls.isdigit() else 0,
                     'total_score': int(total_score) if total_score.isdigit() else 0
                 }
-            )                     
+            )     
 
-        if rating_file is not None:
+        # handle rating import if file is present    
+        start_time = time.time()
+        if rating_file:
             decoded_file = rating_file.read().decode('utf-8').splitlines()
             reader = csv.DictReader(decoded_file)
+
+            rows = []
+            student_ids = set()        
+
             for row in reader:
                 usc_id = row.get('usc_id', '').strip()
                 date = row.get('date', '').strip()
-                attendance = row.get('attendance', "TRUE").strip()
-                prepared = row.get('prepared', "FALSE").strip()
-                score = row.get('score', '0').strip()
-
+                #ensure valid data is present for key, skip otherwise
                 if not usc_id or not date:
-                  continue
+                    continue
+                rows.append(row)
+                student_ids.add(usc_id)
+            #bulk grab students using SQL IN search
+            students = {
+                student.usc_id: student for student in Student.objects.filter(usc_id__in=student_ids)
+            }
+            #use new set tos tore student references rather than ids
+            updated_students = set()
+            #combine each query into one all-or-nothing query
+            with transaction.atomic():
+                for row in rows:
+                    usc_id = row.get('usc_id', '').strip()
+                    date = row.get('date', '').strip()
+                    attendance = row.get('attendance', "TRUE").strip().upper()
+                    prepared = row.get('prepared', "FALSE").strip().upper()
+                    score = row.get('score', '0').strip()
+                    #grab student from existing set
+                    student = students.get(usc_id)
 
-                student = Student.objects.get(usc_id = usc_id)
-                StudentRating.objects.update_or_create(
-                    student_key = student,
-                    date = datetime.fromisoformat(date),
-                    defaults={
-                        'attendance': attendance == "TRUE",
-                        'prepared': prepared == "TRUE",
-                        'score': int(score) if score.isdigit() else 0
-                    }
-                )
-                student.recalculate_all()
+                    StudentRating.objects.update_or_create(
+                        student_key = student,
+                        date = datetime.fromisoformat(date),
+                        defaults={
+                            'attendance': attendance == "TRUE",
+                            'prepared': prepared == "TRUE",
+                            'score': int(score) if score.isdigit() else 0
+                        }
+                    )
+
+                    updated_students.add(student)
+
+            with transaction.atomic():
+                for student in updated_students:
+                    student.recalculate_all()
+        end_time = time.time()
+        print(f"{end_time - start_time} s")
+
         return redirect('/')
 
 # Gives the user a .csv file containing information about each student in a class
