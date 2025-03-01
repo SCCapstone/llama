@@ -2,8 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-<link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
-<link rel="stylesheet" href="{% static 'coldcall/student_metrics.css' %}">
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+    <link rel="stylesheet" href="{% static 'coldcall/student_metrics.css' %}">
+{%endblock %}
 <head>
     <meta charset="UTF-8">
     <title>Student Metrics - {{ student.first_name }} {{ student.last_name }}</title>

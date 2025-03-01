@@ -4,8 +4,10 @@
   {% load static %}
   <head>
     <meta charset="UTF-8" />
+  {% block styles %}
     <link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
     <link rel="stylesheet" href="{% static 'coldcall/manage_classes.css' %}" />
+  {% endblock %}
     <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
     <title>Manage Classes</title>
   </head>

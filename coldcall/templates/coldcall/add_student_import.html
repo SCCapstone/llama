@@ -2,8 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+
+{% block styles %}
 <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
 <link rel="stylesheet" href="{% static 'coldcall/add_student_import.css' %}">
+{% endblock %}
 <head>
     <meta charset="UTF-8">
     <title>Import Students</title>

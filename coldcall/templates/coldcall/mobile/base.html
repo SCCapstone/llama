@@ -1,8 +1,6 @@
-{% include 'coldcall/base.html' %}
+{% extends 'coldcall/base.html' %}
 {% load static %}
 
-{# TODO: determine whether to include or extend #}
-{# chosen approach depends on how different the mobile layout will be#}
 {% block styles %}
   <link rel="stylesheet" href="{% static 'coldcall/mobile/base.css' %}" />
 {% endblock styles %}

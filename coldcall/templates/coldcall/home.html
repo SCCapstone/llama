@@ -4,9 +4,11 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
+{% block styles %}
     <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/home.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/popup.css' %}">
+{% endblock %}
     <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
     <script src="{% static 'coldcall/js/popup_overlay.js' %}"></script>
     <title>Home</title>

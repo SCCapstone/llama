@@ -1,7 +1,9 @@
 {% include 'coldcall/base.html' %} {% load static %}
-<link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
-<link rel="stylesheet" href="{% static 'coldcall/add_course.css' %}" />
 
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'coldcall/add_course.css' %}" />
+{% endblock %}
 <head>
   <meta charset="UTF-8" />
   <title>Edit Course</title>
