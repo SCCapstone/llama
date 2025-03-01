@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.db.models import Case, ExpressionWrapper, F, FloatField, IntegerField, Value, When
 from django.db.models.functions import Lower
 from django.views import View
 from django.views.generic import FormView
@@ -72,7 +73,29 @@ class HomePageView(LoginRequiredMixin, View):
 
         # Apply sorting
         if students and sort_query:
-            students = students.order_by(Lower(sort_query))
+            if sort_query == "average_score":
+                # use model annotation to calculate average, as get_average_calls() can not be used with order_by()
+
+                #first calculate total_calls - absent calls using its own annotation
+                students = students.annotate(
+                    c = ExpressionWrapper(
+                        F('total_calls') - F('absent_calls'), 
+                        output_field=IntegerField())
+                ) 
+
+                students = students.annotate(
+                    avg = Case(
+                        #prevent divide by 0, always show these students first
+                        When(
+                            c__lte=0,
+                            then=Value(-1)
+                        ),
+                        default=(F('total_score')/(F('c'))), #actual average calculation
+                        output_field=FloatField()
+                    )
+                ).order_by('avg') #final sort, ascending
+            else:
+                students = students.order_by(Lower(sort_query))
 
         # Apply search filters
         if students and search_first_name_query:

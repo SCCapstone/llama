@@ -65,7 +65,7 @@
                 <option value="seating" {% if sort == 'seating' %}selected{% endif %}>Seating</option>
                 <option value="total_calls" {% if sort == 'total_calls' %}selected{% endif %}>Total Calls</option>
                 <option value="absent_calls" {% if sort == 'absent_calls' %}selected{% endif %}>Absent Calls</option>
-                <option value="total_score" {% if sort == 'total_score' %}selected{% endif %}>Total Score</option>
+                <option value="average_score" {% if sort == 'average_score' %}selected{% endif %}>Average Score</option>
             </select>
             <!-- Hidden input to keep class_id when sorting -->
             <input type="hidden" name="class_id" value="{{ selected_class.id }}">
@@ -101,7 +101,7 @@
                     <th>Seating</th>
                     <th>Total Calls</th>
                     <th>Absent Calls</th>
-                    <th>Total Score</th>
+                    <th>Average Score</th>
                     <th>Actions</th>
                     <th>Edit</th>
                 </tr>
@@ -114,7 +114,7 @@
                         <td>{{ student.seating }}</td>
                         <td>{{ student.total_calls }}</td>
                         <td>{{ student.absent_calls }}</td>
-                        <td>{{ student.total_score }}</td>
+                        <td>{{ student.get_average_score }}</td>
                         <td><a href="{% url 'student_metrics' student.id %}">View Metrics</a></td>
                         <td><a href="{% url 'addedit_student_manual_with_id' student.id %}">Edit</a></td>
                     </tr>
