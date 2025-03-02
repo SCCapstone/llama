@@ -38,3 +38,28 @@
 .form-container button[type="submit"]:hover {
     background-color: #555;
 }
+
+h1 {
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+button {
+    background-color: #73000a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+button:hover {
+    background-color: #570007;
+}

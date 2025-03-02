@@ -1,0 +1,8 @@
+/*All changes here will modify every template.
+  These changes can be overwritten, but serve to make a unified design easier.
+  Don't repeat yourself with style rules. 
+*/
+body {
+  background-color: #eee;
+  margin: auto;
+}
