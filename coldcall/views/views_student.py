@@ -180,9 +180,3 @@ class StudentDeleteView(View):
             return redirect('home')
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
-        
-    def drop_student(request, student_id):
-        student = get_object_or_404(Student, id=student_id)
-        student.dropped = True  # Mark the student as dropped
-        student.save()
-        return redirect('home')
