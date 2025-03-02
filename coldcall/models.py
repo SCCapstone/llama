@@ -51,6 +51,7 @@ class Student(models.Model):
     total_calls = models.IntegerField(default=0)
     absent_calls = models.IntegerField(default=0)
     total_score = models.IntegerField(default=0)
+    dropped = models.BooleanField(default=False)
 
     def add_rating(self, score, is_present=True, is_prepared=True, in_date=None):
         if in_date is None:

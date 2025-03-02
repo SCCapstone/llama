@@ -155,6 +155,20 @@ class StudentUpdateView(View):
             return JsonResponse({"error": "Student not found"}, status=404)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
+    
+    def transfer_student(request, student_id):
+        student = get_object_or_404(Student, id=student_id)
+        
+        if request.method == "POST":
+            new_class_id = request.POST.get("new_class_id")
+            new_class = get_object_or_404(Class, id=new_class_id)
+            student.class_key = new_class
+            student.save()
+            return redirect('home')  # Redirect to homepage or student list
+
+        classes = Class.objects.exclude(id=student.class_key.id)  # Exclude current class
+        return render(request, "coldcall/transfer_student.html", {"student": student, "classes": classes})
+
         
 
 class StudentDeleteView(View):
@@ -166,3 +180,9 @@ class StudentDeleteView(View):
             return redirect('home')
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
+        
+    def drop_student(request, student_id):
+        student = get_object_or_404(Student, id=student_id)
+        student.dropped = True  # Mark the student as dropped
+        student.save()
+        return redirect('home')

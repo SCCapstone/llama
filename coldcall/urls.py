@@ -23,6 +23,8 @@ urlpatterns = [
     path("addeditstudents/manual/<int:student_id>", views.AddEditStudentManualView.as_view(), name="addedit_student_manual_with_id"),  
     path("student/<int:student_id>/update", views.StudentUpdateView.as_view(), name="student_update"),
     path("student/<int:student_id>/delete", views.StudentDeleteView.as_view(), name="student_delete"),
+    path('drop_student/<int:student_id>/', views.StudentDeleteView.as_view, name='drop_student'),
+    path('transfer_student/<int:student_id>/', views.StudentUpdateView.as_view(), name='transfer_student'),
 
     # Add course 
     path("addcourse", views.AddCourseView.as_view(), name="add_course"),
