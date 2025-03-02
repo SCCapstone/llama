@@ -9,33 +9,76 @@
 {% endblock %}
 <head>
     <meta charset="UTF-8">
-    <title>Export Class File</title>
+    <title>Export Class Data</title>
 </head>
 <body>
-    <h1>Export Class File</h1>
-    <form method="post" action="{% url 'export_class_file' %}" id="export-form">
-        {% csrf_token %}
-        <label for="class_id">Select Class:</label>
-        <select id="class_id" name="class_id">
-            <option value="">-- Choose a Class --</option>
-            {% for class in classes %}
-                <option value="{{ class.id }}">{{ class.class_name }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit" class="export-button" id="export-simple" style="display: none;" name="export_type" value="simple">Export Students</button>
-        <button type="submit" class="export-button" id="export-all" style="display: none;" name="export_type" value="all">Export Ratings</button>
-    </form>
+    <div class="form-container">
+        <h2>Export Class Data</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Select Classes:</label>
+                <div class="checkbox-group">
+                    {% for class in classes %}
+                        <div class="checkbox-item">
+                            <input type="checkbox" 
+                                   id="class_{{ class.id }}" 
+                                   name="class_id" 
+                                   value="{{ class.id }}"
+                                   class="class-checkbox">
+                            <label for="class_{{ class.id }}">{{ class.class_name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Export Type:</label>
+                <select name="export_type" required>
+                    <option value="simple">Student Information Only</option>
+                    <option value="all">Student Information with Ratings</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>File Format:</label>
+                <select name="file_format" required>
+                    <option value="csv">CSV</option>
+                    <option value="txt">TXT</option>
+                    <option value="excel">Excel</option>
+                </select>
+            </div>
+
+            <div id="selected-classes">
+                <h3>Selected Classes:</h3>
+                <ul id="selected-classes-list"></ul>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Export</button>
+            </div>
+        </form>
+    </div>
 
     <script>
-        document.getElementById('class_id').addEventListener('change', function() {
-            if (this.value !== '') {
-                document.getElementById('export-simple').style.display = 'block';
-                document.getElementById('export-all').style.display = 'block';
-
-            } else {
-                document.getElementById('export-simple').style.display = 'none';
-                document.getElementById('export-all').style.display = 'none';
-            }
+        document.querySelectorAll('.class-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const selectedClassesList = document.getElementById('selected-classes-list');
+                
+                // Clear current list
+                selectedClassesList.innerHTML = '';
+                
+                // Get all checked checkboxes
+                const checkedBoxes = document.querySelectorAll('.class-checkbox:checked');
+                
+                // Add each selected class to the list
+                checkedBoxes.forEach(checked => {
+                    const li = document.createElement('li');
+                    li.textContent = checked.nextElementSibling.textContent;
+                    selectedClassesList.appendChild(li);
+                });
+            });
         });
     </script>
 </body>
