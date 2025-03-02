@@ -170,7 +170,7 @@ class StudentUpdateView(View):
         return render(request, "coldcall/transfer_student.html", {"student": student, "classes": classes})
 
         
-
+#
 class StudentDeleteView(View):
     def post(self, request, student_id):
         try: 
