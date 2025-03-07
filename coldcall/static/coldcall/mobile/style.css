@@ -1,0 +1,75 @@
+/* Changes here will impact every page. */
+:root {
+    --base-color: #AA3939;
+    --button-color: #550000;
+    --triad-1: #7A9F35;
+    --triad-2: #226666;
+    --background-color: #eee;
+    --text-color: #333;
+    --border-color: #ccc;
+  }
+
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.5;
+    padding: 1rem;
+}
+
+p {
+    text-align: center;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+a {
+    color: white;
+    background-color: var(--triad-2);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 1rem;
+    color: #333;
+    font-weight: bold;
+  }
+
+form {
+    margin-bottom: 1rem;
+}
+
+button {
+    padding: 10px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+    margin: 1rem auto;
+}
+
+button:hover {
+    background-color: #5a0008;
+}
+  
+button:active {
+    transform: scale(0.98);
+}

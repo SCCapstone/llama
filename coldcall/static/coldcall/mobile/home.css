@@ -1,0 +1,79 @@
+.filter-container {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.filter-container form {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.filter-container label {
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.filter-container select {
+    padding:auto;
+    border-radius: 4px;
+}
+
+.student-table-container {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.student-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.student-table th, .student-table td {
+    padding:0.8rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.student-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.student-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+.student-table tr:hover {
+    background-color: #ddd;
+}
+
+.sort-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .sort-container label {
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: center;
+  }
+  
+  .search-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-container label {
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: center;
+  }
+  
+  .search-container button {
+    display: inline-block;
+    margin-top: 0px;
+  }
+  
