@@ -32,9 +32,6 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
         class_key_id = request.POST.get('class_key')
         seating = request.POST.get('seating')
         email = request.POST.get('email')
-        total_calls = request.POST.get('total_calls', 0)
-        absent_calls = request.POST.get('absent_calls', 0)
-        total_score = request.POST.get('total_score', 0)
 
         try:
             class_key = Class.objects.get(id=class_key_id)
@@ -59,10 +56,7 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
                 last_name=last_name,
                 class_key=class_key,
                 seating=seating,
-                total_calls=total_calls,
-                absent_calls=absent_calls,
                 email=email,
-                total_score=total_score,
             )
 
         # send the user back to home page

@@ -87,6 +87,8 @@
         total calls updates dynamically based on prior history
         TODO refactor add students to allow importing of call data
         {% endcomment %}
+
+        {% comment %}
         {% if not student %} 
         <div class="form-group">
           <label for="total_calls">Total Calls</label>
@@ -121,6 +123,7 @@
             required />
         </div>
         {% endif %}
+        {% endcomment %}
         <div class="form-group">
           <button type="submit">{% if student %}Update Student{% else %}Add Student{% endif %}</button>
         </div>
