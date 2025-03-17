@@ -21,8 +21,6 @@
 
         var selectedRating = ratingModifiers.None;
         var prevSelected = ratingModifiers.None
-        var absent = false
-        var unprepared = false
  
         // Function to get the CSRF token from cookies
         function getCookie(name) {
@@ -52,12 +50,13 @@
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken  // Add CSRF token here
                 },
-                body: JSON.stringify({ student_id: id, rating: selectedRating, is_absent: absent, is_unprepared: unprepared})
+                body: JSON.stringify({ student_id: id, rating: selectedRating})
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert("Rating saved successfully!");
+                    // TODO: refactor to not use alert()
+                    // alert("Rating saved successfully!");
                     // Optionally reload or update the student data
                     window.location.reload();
                 } else {
@@ -69,34 +68,16 @@
         // Handle formatting of buttons and data management
         function handleRatingAction(studentId, rating, modifier) {
             var workingButton = document.getElementById(rating);
-            
-            // only one star rating selectable at a time
-            if(prevSelected != ratingModifiers.None && !modifier && prevSelected != rating) {
+
+            if(prevSelected != ratingModifiers.None && prevSelected != rating) {
                 // remove additional formatting from previous button
                 document.getElementById(prevSelected).setAttribute("class", "button"); 
             }
-            if(!modifier) {
-                workingButton.setAttribute("class", "button selected");
-                selectedRating = rating;
-                prevSelected = rating;
-            }
 
-            // toggle "modifier" buttons on and off
-            if(modifier) {
-                // invert visual status
-                if(workingButton.getAttribute("class").includes("selected")) {
-                    workingButton.setAttribute("class", "button");
-                } else {
-                    workingButton.setAttribute("class", "button selected");
-                }
-
-                //invert status for post
-                if(rating === ratingModifiers.Absent) {
-                    absent = !absent;
-                } else if (rating === ratingModifiers.Unprepared) {
-                    unprepared = !unprepared;
-                }
-            }
+            workingButton.setAttribute("class", "button selected");
+            selectedRating = rating;
+            prevSelected = rating;
+            
             document.getElementById('comfirm-btn').style.display = 'block';
         }
     </script>

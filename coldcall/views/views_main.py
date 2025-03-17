@@ -178,13 +178,24 @@ class StudentRandomizerView(LoginRequiredMixin,View):
     
     def post(self, request): 
         data = json.loads(request.body)
-        rating = -1 # default rating for absent/unprepared w/ no star chosen
-        if data["rating"] != 'none':
+
+        present = True
+        prepared = True
+
+        rating = data["rating"]
+
+        if rating == "absent":
+            rating = 0
+            present = False
+        elif rating == "unprepared":
+            rating = 0
+            prepared = False
+        elif rating != 'none':
             rating = int(data["rating"][-1]) #negative indexing to get last character
 
         student = Student.objects.get(id=data["student_id"])
         if student:
-            student.add_rating(is_present = not data["is_absent"], is_prepared = not data["is_unprepared"], score = rating)
+            student.add_rating(is_present = present, is_prepared = prepared, score = rating)
             return JsonResponse({"success": True})
         else:
             return JsonResponse({"success": False, "error": "Student not found!"})

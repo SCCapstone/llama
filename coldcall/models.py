@@ -120,7 +120,9 @@ class StudentRating(models.Model):
     def get_formatted_rating(self):
         if not self.attendance:
             return "❗ Absent"
-        return str(self.score) + "⭐" + ("⚠️" if not self.prepared else "")
+        elif not self.prepared:
+            return "⚠️ Unprepared"
+        return str(self.score) + "⭐"
 
 # helper data model containing additional information related to users
 class UserData(models.Model):

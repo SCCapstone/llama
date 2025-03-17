@@ -68,6 +68,7 @@ function draw_points() {
         }
         if(!point.prepared) {
             ctx.fillStyle = 'orange';
+            point.score = 0;
         }
 
         let x = padding + ((i+1) * g_width)/rating_data.length+1;
@@ -79,7 +80,7 @@ function draw_points() {
         ctx.fill();
 
         // don't update weighted average on absent
-        if(point.prepared) {
+        if(point.attendance) {
             // draw running average line 
             ctx.beginPath();
             ctx.setLineDash([4,4]) //4 pixels on, 4 pixels off
