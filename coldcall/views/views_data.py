@@ -14,7 +14,6 @@ import csv
 import io
 from zipfile import ZipFile
 
-import time
 from openpyxl import Workbook
 
 #Adds a list of students to a given course using a user provided .csv file
@@ -57,6 +56,17 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
             total_calls = row.get('total_calls', '0').strip()
             absent_calls = row.get('absent_calls', '0').strip()
             total_score = row.get('total_score', '0').strip()
+            input_class = row.get('class_id', '0').strip()
+
+            input_class = int(input_class) if input_class.isdigit() else 0
+            input_class = Class.objects.get(pk=input_class) if input_class else None
+            
+            #if user has access to provided class in input file, prioritize that first
+            #if not, use currently selected class 
+            #(this allows for the same student to appear across multiple classes)
+            if (input_class is not None and request.user == input_class.professor_key):
+                selected_class = input_class
+            
 
             if not usc_id or not email or not first_name or not last_name:
                 continue; # Skip row if field is empty 
@@ -77,7 +87,6 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
             )     
 
         # handle rating import if file is present    
-        start_time = time.time()
         if rating_file:
             decoded_file = rating_file.read().decode('utf-8').splitlines()
             reader = csv.DictReader(decoded_file)
@@ -125,8 +134,6 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
             with transaction.atomic():
                 for student in updated_students:
                     student.recalculate_all()
-        end_time = time.time()
-        print(f"{end_time - start_time} s")
 
         return redirect('/')
 
@@ -168,33 +175,33 @@ class ExportClassFileView(View):
                     writer = csv.writer(response)
                     
                     if export_type == "simple":
-                        writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
+                        writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id'])
                         for student in class_obj.student_set.all():
                             writer.writerow([student.usc_id, student.email, student.first_name, student.last_name,
-                                          student.seating, student.total_calls, student.absent_calls, student.total_score])
+                                          student.seating, student.total_calls, student.absent_calls, student.total_score, student.class_key.pk])
                     else:  # export_type == "all"
-                        writer.writerow(['usc_id', 'date', 'attendance', 'prepared', 'score'])
+                        writer.writerow(['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id'])
                         for student in class_obj.student_set.all():
                             ratings = StudentRating.objects.filter(student_key=student)
                             for rating in ratings:
                                 writer.writerow([student.usc_id, rating.date, rating.attendance,
-                                               rating.prepared, rating.score])
+                                               rating.prepared, rating.score, student.class_key.pk])
                 else:  # Excel format
                     wb = Workbook()
                     ws = wb.active
                     
                     if export_type == "simple":
-                        ws.append(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
+                        ws.append(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id'])
                         for student in class_obj.student_set.all():
                             ws.append([student.usc_id, student.email, student.first_name, student.last_name,
-                                     student.seating, student.total_calls, student.absent_calls, student.total_score])
+                                     student.seating, student.total_calls, student.absent_calls, student.total_score, student.class_key.pk])
                     else:  # export_type == "all"
-                        ws.append(['usc_id', 'date', 'attendance', 'prepared', 'score'])
+                        ws.append(['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id'])
                         for student in class_obj.student_set.all():
                             ratings = StudentRating.objects.filter(student_key=student)
                             for rating in ratings:
                                 ws.append([student.usc_id, rating.date, rating.attendance,
-                                         rating.prepared, rating.score])
+                                         rating.prepared, rating.score, student.class_key.pk])
                     
                     response = HttpResponse(content_type=content_type)
                     response['Content-Disposition'] = f'attachment; filename="{filename}"'
@@ -214,17 +221,17 @@ class ExportClassFileView(View):
                             writer = csv.writer(output)
                             
                             if export_type == "simple":
-                                writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
+                                writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id'])
                                 for student in class_obj.student_set.all():
                                     writer.writerow([student.usc_id, student.email, student.first_name, student.last_name,
-                                                  student.seating, student.total_calls, student.absent_calls, student.total_score])
+                                                  student.seating, student.total_calls, student.absent_calls, student.total_score, student.class_key.pk])
                             else:  # export_type == "all"
-                                writer.writerow(['usc_id', 'date', 'attendance', 'prepared', 'score'])
+                                writer.writerow(['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id'])
                                 for student in class_obj.student_set.all():
                                     ratings = StudentRating.objects.filter(student_key=student)
                                     for rating in ratings:
                                         writer.writerow([student.usc_id, rating.date, rating.attendance,
-                                                       rating.prepared, rating.score])
+                                                       rating.prepared, rating.score, student.class_key.pk])
                             
                             content = output.getvalue()
                             
@@ -234,17 +241,17 @@ class ExportClassFileView(View):
                             ws = wb.active
                             
                             if export_type == "simple":
-                                ws.append(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score'])
+                                ws.append(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id'])
                                 for student in class_obj.student_set.all():
                                     ws.append([student.usc_id, student.email, student.first_name, student.last_name,
-                                             student.seating, student.total_calls, student.absent_calls, student.total_score])
+                                             student.seating, student.total_calls, student.absent_calls, student.total_score, student.class_key.pk])
                             else:  # export_type == "all"
-                                ws.append(['usc_id', 'date', 'attendance', 'prepared', 'score'])
+                                ws.append(['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id'])
                                 for student in class_obj.student_set.all():
                                     ratings = StudentRating.objects.filter(student_key=student)
                                     for rating in ratings:
                                         ws.append([student.usc_id, rating.date, rating.attendance,
-                                                 rating.prepared, rating.score])
+                                                 rating.prepared, rating.score, student.class_key.pk])
                             
                             wb.save(output)
                             content = output.getvalue()
