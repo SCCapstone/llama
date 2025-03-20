@@ -56,7 +56,7 @@ class Student(models.Model):
     def add_rating(self, score, is_present=True, is_prepared=True, in_date=None):
         if in_date is None:
             in_date = timezone.now() # default value locks time on server start
-        new_rating = StudentRating(student_key = self, attendance = is_present, prepared = is_prepared, score = score, date = in_date)
+        new_rating = StudentRating(student_key = self, attendance = is_present, prepared = is_prepared, score = score, date = in_date, class_key = self.class_key)
         new_rating.save()
         self.recalculate_all()
         pass
@@ -115,6 +115,7 @@ class StudentRating(models.Model):
     attendance = models.BooleanField(default=True)
     prepared = models.BooleanField(default=True)
     score = models.IntegerField(default=5)
+    class_key = models.ForeignKey(Class, on_delete=models.CASCADE, null=True)
 
     #used in student table view
     def get_formatted_rating(self):
