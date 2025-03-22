@@ -108,6 +108,10 @@ class Student(models.Model):
 #            "absent_calls": self.absent_calls,
 #            "total_calls": self.total_calls,
 #        }
+
+    def get_data_list(self):
+        return [self.usc_id, self.email, self.first_name, self.last_name,
+                self.seating, self.total_calls, self.absent_calls, self.total_score, self.class_key.pk]
     
 class StudentRating(models.Model):
     student_key = models.ForeignKey(Student, on_delete=models.CASCADE)
