@@ -20,7 +20,9 @@ STUDENT_FIRST_PREFIX = "First"
 STUDENT_LAST_PREFIX = "Last"
 
 def init_prof():
-    return User.objects.create_user(username=PROF_USERNAME, password=PROF_PASSWORD, first_name = PROF_NAME, last_name = PROF_LASTNAME, email=PROF_EMAIL)
+    prof = User.objects.create_user(username=PROF_USERNAME, password=PROF_PASSWORD, first_name = PROF_NAME, last_name = PROF_LASTNAME, email=PROF_EMAIL)
+    UserData.objects.create(user=prof, seen_onboarding=True)
+    return prof
 
 #creates an empty class with no additional data
 def init_class(prof):
