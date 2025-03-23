@@ -96,6 +96,7 @@
         <table class="student-table">
             <thead>
                 <tr>
+                    <th style="width: 5%"></th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Seating</th>
@@ -109,6 +110,13 @@
             <tbody>
                 {% for student in students %}
                     <tr>
+                        <td>{% if student.get_average_score <= 3.0 %}
+                                <span title="Average score below 60%">⚠️</span>
+                            {% endif %}
+                            {% if student.calculate_attendance_rate <= 75.0 %}
+                                <span title="Attendance rate below 75%">❗</span>
+                            {% endif %}
+                        </td>
                         <td>{{ student.first_name }}</td>
                         <td>{{ student.last_name }}</td>
                         <td>{{ student.seating }}</td>
