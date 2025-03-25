@@ -1,19 +1,58 @@
 {% load static %}
 <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
 
-{% block styles %}
-<link rel="stylesheet" href="{% static 'coldcall/base.css' %}" />
-{% endblock styles %}
+{% comment %} Do not use this approach on any other template.
+Mobile templates are set up to override web templates, but this causes base.html to
+recieve conflicting info.
+For this file, a check for request.is_mobile is used to pass what *would* be the mobile menu.
+{% endcomment %}
 
-{% block menu %}
-<header>
-  <nav class="main-nav">
-    <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
-    <a href="/addcourse" class="nav-link {% if request.path == '/addcourse' %}active{% endif %}">Add Class</a>
-    <a href="/addeditstudents/manual" class="nav-link {% if request.path == '/addeditstudents/manual' %}active{% endif %}">Add Students</a>
-    <a href="/addstudents/import" class="nav-link {% if request.path == '/addstudents/import' %}active{% endif %}">Import From .csv</a>
-    <a href="/exportclassfile" class="nav-link {% if request.path == '/exportclassfile' %}active{% endif %}">Export Class File</a>
-    <a href="/manageclasses" class="nav-link {% if request.path == '/manageclasses' %}active{% endif %}">Manage Classes</a>
-  </nav>
-</header>
-{% endblock menu %}
+{% if request.is_mobile %}
+  <link rel="stylesheet" href="{% static 'coldcall/mobile/base.css' %}" />
+
+  <header>
+    <div class="navbar">
+      <button class="menuButton" onclick="show_menu()">☰</button>
+      <div class="menu" id="menu">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/addcourse">Add Class</a></li>
+          <li><a href="/addeditstudents/manual">Add Students</a></li>
+          <li><a href="/addstudents/import">Import From .csv</a></li>
+          <li><a href="/exportclassfile">Export Class File</a></li>
+          <li><a href="/manageclasses">Manage Classes</a></li>
+          <li><a class="menuButton" onclick="show_menu()">Close Menu</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    function show_menu() {
+      const menu = document.getElementById("menu");
+      menu.classList.toggle("show");
+    }
+
+    document.addEventListener("click", function (event) {
+      const menu = document.getElementById("menu");
+      if (
+        !menu.contains(event.target) &&
+        !event.target.classList.contains("menuButton")
+      ) {
+        menu.classList.remove("show");
+      }
+    });
+  </script>
+{% else %}
+  <link rel="stylesheet" href="{% static 'coldcall/base.css' %}" />
+  <header>
+    <nav class="main-nav">
+      <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+      <a href="/addcourse" class="nav-link {% if request.path == '/addcourse' %}active{% endif %}">Add Class</a>
+      <a href="/addeditstudents/manual" class="nav-link {% if request.path == '/addeditstudents/manual' %}active{% endif %}">Add Students</a>
+      <a href="/addstudents/import" class="nav-link {% if request.path == '/addstudents/import' %}active{% endif %}">Import From .csv</a>
+      <a href="/exportclassfile" class="nav-link {% if request.path == '/exportclassfile' %}active{% endif %}">Export Class File</a>
+      <a href="/manageclasses" class="nav-link {% if request.path == '/manageclasses' %}active{% endif %}">Manage Classes</a>
+    </nav>
+  </header>
+{% endif %}

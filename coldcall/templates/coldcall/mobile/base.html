@@ -4,39 +4,3 @@
 {% block styles %}
   <link rel="stylesheet" href="{% static 'coldcall/mobile/base.css' %}" />
 {% endblock styles %}
-
-{% block menu %}
-<header>
-  <div class="navbar">
-    <button class="menuButton" onclick="show_menu()">☰</button>
-    <div class="menu" id="menu">
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/addcourse">Add Class</a></li>
-        <li><a href="/addeditstudents/manual">Add Students</a></li>
-        <li><a href="/addstudents/import">Import From .csv</a></li>
-        <li><a href="/exportclassfile">Export Class File</a></li>
-        <li><a href="/manageclasses">Manage Classes</a></li>
-        <li><a class="menuButton" onclick="show_menu()">Close Menu</a></li>
-      </ul>
-    </div>
-  </div>
-</header>
-
-<script>
-  function show_menu() {
-    const menu = document.getElementById("menu");
-    menu.classList.toggle("show");
-  }
-
-  document.addEventListener("click", function (event) {
-    const menu = document.getElementById("menu");
-    if (
-      !menu.contains(event.target) &&
-      !event.target.classList.contains("menuButton")
-    ) {
-      menu.classList.remove("show");
-    }
-  });
-</script>
-{% endblock menu %}
