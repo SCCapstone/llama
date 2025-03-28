@@ -43,7 +43,7 @@ p {
 }
 
 button[type="submit"] {
-  width: 100%;
+  width: 20%;
   padding: 10px;
   background-color: #73000a;
   color: white;

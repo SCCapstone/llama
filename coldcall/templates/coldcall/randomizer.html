@@ -67,14 +67,18 @@
 
         // Handle formatting of buttons and data management
         function handleRatingAction(studentId, rating, modifier) {
+            document.querySelectorAll('.star').forEach(star => star.classList.remove('selected'));
+            document.querySelectorAll('.button').forEach(button => button.classList.remove('selected'));
             var workingButton = document.getElementById(rating);
-
-            if(prevSelected != ratingModifiers.None && prevSelected != rating) {
-                // remove additional formatting from previous button
-                document.getElementById(prevSelected).setAttribute("class", "button"); 
+            if (!modifier) {
+                for (let i = 1; i <= parseInt(rating.split('-')[1]); i++) {
+                    document.getElementById('star-' + i).classList.add('selected');
+                }
+            } else {
+                if (prevSelected !== ratingModifiers.None && prevSelected !== rating) {
+                }
+                document.getElementById(rating).classList.add("selected");
             }
-
-            workingButton.setAttribute("class", "button selected");
             selectedRating = rating;
             prevSelected = rating;
             
@@ -113,28 +117,6 @@
             
             
             <div class="seating-grid">
-                <!-- Front Row -->
-                <div class="seat {% if student.seating == 'FL' %}selected{% endif %}">
-                    <div class="seat-label">Front Left</div>
-                    {% for s in seating_map.FL %}
-                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
-                    {% endfor %}
-                </div>
-                
-                <div class="seat {% if student.seating == 'FM' %}selected{% endif %}">
-                    <div class="seat-label">Front Middle</div>
-                    {% for s in seating_map.FM %}
-                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
-                    {% endfor %}
-                </div>
-                
-                <div class="seat {% if student.seating == 'FR' %}selected{% endif %}">
-                    <div class="seat-label">Front Right</div>
-                    {% for s in seating_map.FR %}
-                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
-                    {% endfor %}
-                </div>
-                
                 <!-- Back Row -->
                 <div class="seat {% if student.seating == 'BL' %}selected{% endif %}">
                     <div class="seat-label">Back Left</div>
@@ -156,22 +138,47 @@
                         <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
                     {% endfor %}
                 </div>
+                <!-- Front Row -->
+                <div class="seat {% if student.seating == 'FL' %}selected{% endif %}">
+                    <div class="seat-label">Front Left</div>
+                    {% for s in seating_map.FL %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'FM' %}selected{% endif %}">
+                    <div class="seat-label">Front Middle</div>
+                    {% for s in seating_map.FM %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'FR' %}selected{% endif %}">
+                    <div class="seat-label">Front Right</div>
+                    {% for s in seating_map.FR %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Rating and Action Buttons -->
-    <div class="button-group">
-        <button class="button" id="star-1" onclick="handleRatingAction({{ student.id }}, 'star-1', false)">1 Star</button>
-        <button class="button" id="star-2" onclick="handleRatingAction({{ student.id }}, 'star-2', false)">2 Stars</button>
-        <button class="button" id="star-3" onclick="handleRatingAction({{ student.id }}, 'star-3', false)">3 Stars</button>
-        <button class="button" id="star-4" onclick="handleRatingAction({{ student.id }}, 'star-4', false)">4 Stars</button>
-        <button class="button" id="star-5" onclick="handleRatingAction({{ student.id }}, 'star-5', false)">5 Stars</button>
-        <button class="button" id="absent" onclick="handleRatingAction({{ student.id }}, 'absent', true)">Absent</button>
-        <button class="button" id="unprepared" onclick="handleRatingAction({{ student.id }}, 'unprepared', true)">Unprepared</button>
-        <button class="button" id="skip" onclick="handleRatingAction({{ student.id }}, 'skip', true)">Skip</button>
+
+    <div class="star-group">
+        <span class="star rating" id="star-1" onclick="handleRatingAction({{ student.id }}, 'star-1', false)">★</span>
+        <span class="star rating" id="star-2" onclick="handleRatingAction({{ student.id }}, 'star-2', false)">★</span>
+        <span class="star rating" id="star-3" onclick="handleRatingAction({{ student.id }}, 'star-3', false)">★</span>
+        <span class="star rating" id="star-4" onclick="handleRatingAction({{ student.id }}, 'star-4', false)">★</span>
+        <span class="star rating" id="star-5" onclick="handleRatingAction({{ student.id }}, 'star-5', false)">★</span>
     </div>
 
+    <div class="button-group">
+        <button class="button rating" id="absent" onclick="handleRatingAction({{ student.id }}, 'absent', true)">Absent</button>
+        <button class="button rating" id="unprepared" onclick="handleRatingAction({{ student.id }}, 'unprepared', true)">Unprepared</button>
+        <button class="button rating" id="skip" onclick="handleRatingAction({{ student.id }}, 'skip', true)">Skip</button>
+    </div>
+    
     <!-- New Student Button (shown after action) -->
     <div id="comfirm-btn" class="comfirm-btn" style="display:none;">
         <button onclick="rateStudent({{student.id}});">Choose New Student</button>
