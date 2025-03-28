@@ -6,10 +6,7 @@
     border-radius: 8px;
     background-color: #f9f9f9;
 }
-h1 {
-    text-align: center;
-    color: #333;
-}
+
 .metrics-table {
     width: 100%;
     border-collapse: collapse;

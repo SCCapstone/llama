@@ -13,12 +13,6 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-h1 {
-    text-align: center;
-    margin-top: 40px;
-    color: #333;
-}
-
 .form-group {
     margin-bottom: 15px;
 }
@@ -36,33 +30,4 @@ h1 {
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
-}
-
-button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #73000a;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button[type="submit"]:hover {
-    background-color: #555;
-}
-
-p {
-    text-align: center;
-    color: #333;
-}
-
-a {
-    color: #73000a;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
 }
