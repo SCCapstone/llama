@@ -133,3 +133,9 @@ class StudentRating(models.Model):
 class UserData(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     seen_onboarding = models.BooleanField(default=False)
+
+class StudentNote(models.Model):
+    student_key= models.ForeignKey(Student, on_delete=models.CASCADE)
+    note = models.TextField()
+    date = models.DateTimeField(default=timezone.now)
+    class_key = models.ForeignKey(Class, on_delete=models.CASCADE, null=True)

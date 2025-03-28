@@ -47,4 +47,8 @@ urlpatterns = [
 
     # Edit Course
     path("editcourse/<int:course_id>", views.EditCourseView.as_view(), name="edit_course"),
+
+    # Helper view to add a note
+    path('notes/<int:student_id>/', views.AddNoteView.as_view(), name='add_note'),
+    path('notes/<int:student_id>/<int:note_id>/', views.DeleteNoteView.as_view(), name='delete_note'),
 ]

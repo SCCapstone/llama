@@ -69,11 +69,45 @@
         json_script used to safely turn input data into a js readable json array. 
     {% endcomment %}
     <div class="right-align container">
-    <div class="metrics_div">
-        <canvas id = "metrics_graph"></canvas>
-        {{ rating_list | json_script:"rating_data" }}
-        <script src="{% static 'coldcall/js/metrics_graph.js' %}"></script>
-    </div>
+        <div class="metrics_div">
+            <canvas id = "metrics_graph"></canvas>
+            {{ rating_list | json_script:"rating_data" }}
+            <script src="{% static 'coldcall/js/metrics_graph.js' %}"></script>
+        </div>
+        {% if notes %}
+            <div class = "notes_div">
+                <div class="container table-container">
+                    <table class ="metrics-table">
+                        <thead>
+                            <tr>
+                                <th> Note </th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for n in notes %}
+                                <tr>
+                                    <td>{{ n.note }}</td>
+                                    <td>
+                                        <form method="POST" action="{% url 'delete_note' student.pk n.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit">🗑️</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+        <div class="notes_form container">
+            <form method="POST" action="{% url 'add_note' student.pk %}">
+                {% csrf_token %}
+                <label for="note">Add a note:</label><br>
+                <textarea id="note" name="note" rows="4" cols="50"></textarea><br>
+                <input type="submit" value="Submit">
+        </div>
     </div>
     </div>
 </body>

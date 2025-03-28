@@ -51,3 +51,7 @@ h1 {
     flex: 1;
     max-width: 50%
 }
+
+.notes_form {
+    text-align:center;
+}

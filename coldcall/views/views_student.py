@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import DetailView, TemplateView
 from django.urls import reverse
 
 from .view_helper import get_template_dir
-from ..models import Class, Student, StudentRating
+from ..models import Class, Student, StudentRating, StudentNote
 
 import json
 
@@ -80,6 +80,7 @@ class StudentMetricsView(LoginRequiredMixin,DetailView):
         context['attendance_rate'] = attendance_rate
         context['performance_summary'] = performance
         context['student_perf'] = StudentRating.objects.filter(student_key = student.pk)
+        context['notes'] = StudentNote.objects.filter(student_key = student.pk)
         
         ratings = StudentRating.objects.filter(student_key = student.pk).order_by('date').values('date', 'score', 'attendance', 'prepared')
         # convert ratings into json parsable object, date isn't serializable[?]
@@ -174,3 +175,27 @@ class StudentDeleteView(View):
             return redirect('home')
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
+        
+class AddNoteView(View):
+    def post(self, request, student_id):
+        student = get_object_or_404(Student, id=student_id)
+        note_content = request.POST.get('note')
+
+        if note_content:
+            new_note = StudentNote(student_key=student, note=note_content, class_key=student.class_key)
+            new_note.save()
+            return redirect('student_metrics', pk=student_id)
+        
+
+class DeleteNoteView(View):
+    def post(self, request, student_id, note_id):
+            note = get_object_or_404(StudentNote, pk=note_id)
+            
+            if note.student_key.class_key.professor_key != request.user:
+                return HttpResponseForbidden("You are not allowed to delete this note.")
+            
+            # Delete the note
+            note.delete()
+            
+            # Redirect back to the student's notes page
+            return redirect('student_metrics', pk=student_id)
