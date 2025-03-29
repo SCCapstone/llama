@@ -16,7 +16,7 @@ For this file, a check for request.is_mobile is used to pass what *would* be the
       <div class="menu" id="menu">
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/addcourse">Add Class</a></li>
+          <li><a href="/addclass">Add Class</a></li>
           <li><a href="/addeditstudents/manual">Add Students</a></li>
           <li><a href="/addstudents/import">Import From .csv</a></li>
           <li><a href="/exportclassfile">Export Class File</a></li>
@@ -48,7 +48,7 @@ For this file, a check for request.is_mobile is used to pass what *would* be the
   <header>
     <nav class="main-nav">
       <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
-      <a href="/addcourse" class="nav-link {% if request.path == '/addcourse' %}active{% endif %}">Add Class</a>
+      <a href="/addclass" class="nav-link {% if request.path == '/addclass' %}active{% endif %}">Add Class</a>
       <a href="/addeditstudents/manual" class="nav-link {% if request.path == '/addeditstudents/manual' %}active{% endif %}">Add Students</a>
       <a href="/addstudents/import" class="nav-link {% if request.path == '/addstudents/import' %}active{% endif %}">Import From .csv</a>
       <a href="/exportclassfile" class="nav-link {% if request.path == '/exportclassfile' %}active{% endif %}">Export Class File</a>

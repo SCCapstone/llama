@@ -13,8 +13,8 @@ urlpatterns = [
     # Home
     path("",views.HomePageView.as_view(), name="home"),
     
-    # Opening the specified course 
-    path("<int:course_id>/", views.CourseHomePageView.as_view(), name="course_home"),
+    # Opening the specified class 
+    path("<int:class_id>/", views.ClassHomePageView.as_view(), name="class_home"),
 
     # Students
     path("student/<int:pk>", views.StudentMetricsView.as_view(), name="student_metrics"),
@@ -26,8 +26,8 @@ urlpatterns = [
     path('drop_student/<int:student_id>/', views.StudentDeleteView.as_view, name='drop_student'),
     path('transfer_student/<int:student_id>/', views.StudentUpdateView.as_view(), name='transfer_student'),
 
-    # Add course 
-    path("addcourse", views.AddCourseView.as_view(), name="add_course"),
+    # Add class 
+    path("addclass", views.AddClassView.as_view(), name="add_class"),
 
     # Import From 
     path("addstudents/import", views.AddStudentImportView.as_view(), name="add_student_import"),
@@ -45,8 +45,8 @@ urlpatterns = [
     # Manage Classes
     path("manageclasses", views.ManageClassesView.as_view(), name="manage_classes"),
 
-    # Edit Course
-    path("editcourse/<int:course_id>", views.EditCourseView.as_view(), name="edit_course"),
+    # Edit Class
+    path("editclass/<int:class_id>", views.EditClassView.as_view(), name="edit_class"),
 
     # Helper view to add a note
     path('notes/<int:student_id>/', views.AddNoteView.as_view(), name='add_note'),

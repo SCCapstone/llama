@@ -16,7 +16,7 @@ from zipfile import ZipFile
 
 from openpyxl import Workbook
 
-#Adds a list of students to a given course using a user provided .csv file
+#Adds a list of students to a given class using a user provided .csv file
 class AddStudentImportView(LoginRequiredMixin, TemplateView):
 
     def get(self, request): 

@@ -9,14 +9,14 @@ from ..models import Class
 from datetime import datetime
 
 #Allows the user to add a new empty class with a name and dates.
-class AddCourseView(LoginRequiredMixin, TemplateView):
+class AddClassView(LoginRequiredMixin, TemplateView):
     def get(self, request):
-        self.template_name = get_template_dir("add_course", request.is_mobile)
+        self.template_name = get_template_dir("add_class", request.is_mobile)
         return render(request, self.template_name)
 
     def post(self, request):
         if request.user.is_authenticated:
-            self.template_name = get_template_dir("add_course", request.is_mobile)
+            self.template_name = get_template_dir("add_class", request.is_mobile)
             
             class_name = request.POST.get('name')
             start_date_str = request.POST.get('start_date')
@@ -49,29 +49,29 @@ class AddCourseView(LoginRequiredMixin, TemplateView):
 class ClassDetailsView(View):
     def get(self, request, class_id):
         try:
-            course = Class.objects.get(id=class_id, professor_key=request.user)
-            students = course.student_set.all()
+            working_class = Class.objects.get(id=class_id, professor_key=request.user)
+            students = working_class.student_set.all()
             return JsonResponse({
-                "class_name": course.class_name,
-                "is_active": course.is_active(),
-                "total_students": course.total_students(),
+                "class_name": working_class.class_name,
+                "is_active": working_class.is_active(),
+                "total_students": working_class.total_students(),
                 "students": [{"id": s.id, "name": str(s), "score": s.total_score} for s in students],
             })
         except Class.DoesNotExist:
             return JsonResponse({"error": "Class not found or unauthorized"}, status=404)
 
 #Extension of home page when a class is selected.
-class CourseHomePageView(LoginRequiredMixin,DetailView):
+class ClassHomePageView(LoginRequiredMixin,DetailView):
     model = Class
-    context_object_name = "course"
+    context_object_name = "class"
     def get(self, request):
-        self.template_name = get_template_dir("course_home", request.is_mobile)
+        self.template_name = get_template_dir("class_home", request.is_mobile)
 
-class EditCourseView(LoginRequiredMixin, TemplateView):
-    def get(self, request, course_id):
-        self.template_name = get_template_dir("edit_course", request.is_mobile)
+class EditClassView(LoginRequiredMixin, TemplateView):
+    def get(self, request, class_id):
+        self.template_name = get_template_dir("edit_class", request.is_mobile)
         try:
-            selected_class = Class.objects.get(id=course_id)
+            selected_class = Class.objects.get(id=class_id)
         except Class.DoesNotExist:
             selected_class = None
 
@@ -83,9 +83,9 @@ class EditCourseView(LoginRequiredMixin, TemplateView):
             'is_archived': selected_class.is_archived,
         })
 
-    def post(self, request, course_id):
-        self.template_name = get_template_dir("edit_course", request.is_mobile)
-        selected_class = Class.objects.get(id=course_id)
+    def post(self, request, class_id):
+        self.template_name = get_template_dir("edit_class", request.is_mobile)
+        selected_class = Class.objects.get(id=class_id)
         class_name = request.POST.get('name')
         start_date_str = request.POST.get('start_date')
         start_date = string_to_date(start_date_str)

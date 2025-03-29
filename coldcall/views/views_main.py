@@ -117,7 +117,7 @@ class HomePageView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
-#Core functionality, selects a random student from a course to be called on.    
+#Core functionality, selects a random student from a class to be called on.    
 class StudentRandomizerView(LoginRequiredMixin,View):
 
     def get(self, request):

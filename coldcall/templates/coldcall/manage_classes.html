@@ -52,7 +52,7 @@
             <td>{{ class.start_date }}</td>
             <td>{{ class.end_date }}</td>
             <td>{{ class.is_archived|yesno:"Archived,Active" }}</td>
-            <td><a href="{% url 'edit_course' class.id %}">Edit</a></td>
+            <td><a href="{% url 'edit_class' class.id %}">Edit</a></td>
           </tr>
           {% empty %}
           <tr>

@@ -151,7 +151,7 @@ class TestCreateClass(StaticLiveServerTestCase):
             self.driver.quit()
 
     def test_create_no_date(self):
-        self.driver.get(f"{self.live_server_url}/addcourse")
+        self.driver.get(f"{self.live_server_url}/addclass")
         self.driver.find_element(By.NAME, "name").send_keys(CLASS_NAME)
 
         self.driver.find_element(By.XPATH, "//button[@type='submit']").click()

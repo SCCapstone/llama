@@ -1,23 +1,24 @@
-{% include 'coldcall/base.html' %} {% load static %}
+{% include 'coldcall/base.html' %} 
+
+{% load static %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
-  <link rel="stylesheet" href="{% static 'coldcall/add_course.css' %}" />
+<link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
+<link rel="stylesheet" href="{% static 'coldcall/add_class.css' %}" />
 {% endblock %}
 <head>
   <meta charset="UTF-8" />
-  <title>Edit Course</title>
+  <title>Create Class</title>
 </head>
 <body>
   <form method="post" class="form-container">
     {% csrf_token %}
-    <label for="class_name">Class Name:</label>
+    <label for="name">Class Name:</label>
     <input
       type="text"
       id="name"
       name="name"
       maxlength="200"
-      required
       value="{{ name }}" />
     <label for="start_date">Start Date:</label>
     <input
@@ -33,11 +34,9 @@
       name="end_date"
       maxlength="200"
       value="{{ end_date }}" />
-    <label for="archived">Archived:</label>
-    <input type="checkbox" id="is_archived" name="is_archived" {% if is_archived == True %} checked {% endif %} />
     {% if error_message %}
     <p><strong>{{ error_message }}</strong></p>
     {% endif %}
-    <button type="submit">Update</button>
+    <button type="submit">Submit</button>
   </form>
 </body>
