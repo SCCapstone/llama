@@ -26,6 +26,8 @@ button {
   font-weight: bold;
   display: block;
   margin: 20px auto;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 button:hover {
@@ -54,7 +56,13 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #555;
+  background-color: #500;
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button[type="submit"]:active {
+  transform: scale(0.98);
 }
 
 a {

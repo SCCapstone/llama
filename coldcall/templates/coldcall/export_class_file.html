@@ -12,11 +12,10 @@
     <title>Export Class Data</title>
 </head>
 <body>
-    <div class="form-container">
+    <div id="export-form">
         <h2>Export Class Data</h2>
         <form method="post">
             {% csrf_token %}
-            
             <div class="form-group">
                 <label>Select Classes:</label>
                 <div class="checkbox-group">
