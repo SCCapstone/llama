@@ -138,12 +138,12 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
         return redirect('/')
 
 class ExportClassFileView(View):
-    def get(self, request):
+    def get(self, request, class_id=None):
         self.template_name = get_template_dir("export_class_file", request.is_mobile)
         classes = Class.objects.filter(professor_key=request.user)
-        return render(request, self.template_name, {'classes': classes})
+        return render(request, self.template_name, {'classes': classes, 'class_id': class_id})
     
-    def post(self, request):
+    def post(self, request, class_id=None):
         class_ids = request.POST.getlist('class_id')
         export_type = request.POST.get('export_type')
         file_format = request.POST.get('file_format', 'csv')

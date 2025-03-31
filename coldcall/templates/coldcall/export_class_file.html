@@ -25,7 +25,8 @@
                                    id="class_{{ class.id }}" 
                                    name="class_id" 
                                    value="{{ class.id }}"
-                                   class="class-checkbox">
+                                   class="class-checkbox"
+                                   {% if class.id == class_id %}checked{% endif %}/>
                             <label for="class_{{ class.id }}">{{ class.class_name }}</label>
                         </div>
                     {% endfor %}

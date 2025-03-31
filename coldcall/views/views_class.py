@@ -41,7 +41,7 @@ class AddClassView(LoginRequiredMixin, TemplateView):
                 end_date=end_date,
             )
 
-            return redirect('/')
+            return redirect('manage_classes')
         else:
             return redirect('/accounts/login')  # should never reach this, but fall back to redirect   
 
