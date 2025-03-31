@@ -14,21 +14,20 @@
   <body>
     <!-- Class Filter Dropdown -->
     <div class="filter-container">
-      <form method="get">
-        <label for="class_filter">Filter Classes:</label>
-        <select
-          id="class_filter"
-          name="class_filter"
-          onchange="this.form.submit()">
-          <option value="" {% if not request.GET.class_filter %}selected{% endif %}>All Classes</option>
-          <option value="active" {% if request.GET.class_filter == 'active' %}selected{% endif %}>Active Classes</option>
-          <option value="archived" {% if request.GET.class_filter == 'archived' %}selected{% endif %}>Archived Classes</option>
-        </select>
-      </form>
-    </div>
-
-    <!-- Display Classes -->
-    <div class="classes-table-container">
+      <div>
+        <a href="{% url 'add_class' %}" class="add-class-button" style="display: inline-block; width: 10px, 20Px; padding: 10px; background-color: #73000a; color: white; text-align: center; text-decoration: none; border-radius: 4px; cursor: pointer; font-size: 16px;">Add Class</a>
+        <form method="get">
+          <label for="class_filter">Filter Classes:</label>
+          <select
+            id="class_filter"
+            name="class_filter"
+            onchange="this.form.submit()">
+            <option value="" {% if not request.GET.class_filter %}selected{% endif %}>All Classes</option>
+            <option value="active" {% if request.GET.class_filter == 'active' %}selected{% endif %}>Active Classes</option>
+            <option value="archived" {% if request.GET.class_filter == 'archived' %}selected{% endif %}>Archived Classes</option>
+          </select>
+        </form>
+      </div> 
       <table class="classes-table">
         <thead>
           <tr>
@@ -37,6 +36,7 @@
             <th>End Date</th>
             <th>Active/Archived</th>
             <th>Edit</th>
+            <th>Export</th>
           </tr>
         </thead>
         <tbody>
@@ -53,6 +53,7 @@
             <td>{{ class.end_date }}</td>
             <td>{{ class.is_archived|yesno:"Archived,Active" }}</td>
             <td><a href="{% url 'edit_class' class.id %}">Edit</a></td>
+            <td><a href="{% url 'export_class_file_with_id' class.id %}">Export</a></td>
           </tr>
           {% empty %}
           <tr>
