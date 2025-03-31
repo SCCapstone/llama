@@ -19,9 +19,8 @@ from openpyxl import Workbook
 #Adds a list of students to a given class using a user provided .csv file
 class AddStudentImportView(LoginRequiredMixin, TemplateView):
 
-    def get(self, request): 
+    def get(self, request, class_id=None): 
         self.template_name = get_template_dir("add_student_import", request.is_mobile)
-        class_id = request.GET.get('class_id')
         if class_id: 
             selected_class = Class.objects.get(id=class_id)
         else: 
@@ -29,7 +28,7 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
         classes = Class.objects.filter(professor_key = request.user)
         return render(request, self.template_name, {'classes': classes, 'selected_class': selected_class})
     
-    def post(self, request): 
+    def post(self, request, class_id=None): 
         class_id = request.POST.get('class_id')
         student_file = request.FILES.get('students')
         rating_file = request.FILES.get("ratings")

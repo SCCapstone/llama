@@ -124,7 +124,7 @@
                         <td>{{ student.absent_calls }}</td>
                         <td>{{ student.get_average_score }}</td>
                         <td><a href="{% url 'student_metrics' student.id %}">View Metrics</a></td>
-                        <td><a href="{% url 'addedit_student_manual_with_id' student.id %}">Edit</a></td>
+                        <td><a href="{% url 'edit_student' student.id %}">Edit</a></td>
                     </tr>
                 {% empty %}
                     <tr>

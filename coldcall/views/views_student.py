@@ -10,9 +10,43 @@ from ..models import Class, Student, StudentRating, StudentNote
 
 import json
 
-#Allows the user to add a new student to a class.
-class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
-     # added this to help get classes for the add new student manual page
+class AddStudentManualView(LoginRequiredMixin, TemplateView):
+    def get(self, request, class_id=None):
+        self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
+        classes = Class.objects.filter(professor_key = request.user)
+        try:
+            class_key = Class.objects.get(id=class_id)
+        except Class.DoesNotExist:
+            class_key = None
+
+        return render(request, self.template_name, {'classes': classes, 'class_key': class_key})
+    def post(self, request, class_id=None):
+        self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
+        usc_id = request.POST.get('usc_id').upper()
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        class_key_id = request.POST.get('class_key')
+        seating = request.POST.get('seating')
+        email = request.POST.get('email')
+
+        try:
+            class_key = Class.objects.get(id=class_key_id)
+        except Class.DoesNotExist:
+            return HttpResponseBadRequest("Invalid class ID.")
+
+        Student.objects.create(
+            usc_id=usc_id,
+            first_name=first_name,
+            last_name=last_name,
+            class_key=class_key,
+            seating=seating,
+            email=email,
+        )
+
+        # Clear the form fields and allow the user to add another student
+        return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user)})
+
+class EditStudentView(LoginRequiredMixin, TemplateView):
     def get(self, request, student_id=None):
         self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
         classes = Class.objects.filter(professor_key = request.user)
@@ -22,10 +56,8 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
             student = None
 
         return render(request, self.template_name, {'classes': classes, 'student': student})
-    
     def post(self, request, student_id=None):
-        # made to handle form submission. I was getting errors when submitting add
-        # student form
+        self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
         usc_id = request.POST.get('usc_id').upper()
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -48,19 +80,11 @@ class AddEditStudentManualView(LoginRequiredMixin,TemplateView):
             student.seating = seating
             student.email = email
             student.save()
-        # create a new student if no ID is provided
         else:
-            Student.objects.create(
-                usc_id=usc_id,
-                first_name=first_name,
-                last_name=last_name,
-                class_key=class_key,
-                seating=seating,
-                email=email,
-            )
+            return HttpResponseBadRequest("Student ID is required for updating.")
 
         # send the user back to home page
-        return redirect('/')
+        return redirect('/')            
 
 #Providdes a read-only table of a student's data.
 class StudentMetricsView(LoginRequiredMixin,DetailView):

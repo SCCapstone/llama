@@ -19,8 +19,8 @@ urlpatterns = [
     # Students
     path("student/<int:pk>", views.StudentMetricsView.as_view(), name="student_metrics"),
     path("student/<int:pk>/<int:performance_id>", views.StudentRatingEditView.as_view(), name="edit_rating"),
-    path("addeditstudents/manual", views.AddEditStudentManualView.as_view(), name="addedit_student_manual"),
-    path("addeditstudents/manual/<int:student_id>", views.AddEditStudentManualView.as_view(), name="addedit_student_manual_with_id"),  
+    path("addstudents/manual/<int:class_id>", views.AddStudentManualView.as_view(), name="add_student_manual"),
+    path("editstudent/<int:student_id>", views.EditStudentView.as_view(), name="edit_student"),
     path("student/<int:student_id>/update", views.StudentUpdateView.as_view(), name="student_update"),
     path("student/<int:student_id>/delete", views.StudentDeleteView.as_view(), name="student_delete"),
     path('drop_student/<int:student_id>/', views.StudentDeleteView.as_view, name='drop_student'),
@@ -31,6 +31,7 @@ urlpatterns = [
 
     # Import From 
     path("addstudents/import", views.AddStudentImportView.as_view(), name="add_student_import"),
+    path("addstudents/import/<int:class_id>", views.AddStudentImportView.as_view(), name="add_student_import_with_id"),
 
     # Export To File 
     path("exportclassfile", views.ExportClassFileView.as_view(), name="export_class_file"),

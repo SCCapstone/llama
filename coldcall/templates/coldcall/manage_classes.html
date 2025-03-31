@@ -31,33 +31,38 @@
       <table class="classes-table">
         <thead>
           <tr>
-            <th>Class Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Active/Archived</th>
-            <th>Edit</th>
-            <th>Export</th>
+        <th>Class Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Active/Archived</th>
+        <th>Edit</th>
+        <th>Export</th>
+        <th>Add Students</th>
           </tr>
         </thead>
         <tbody>
           {% for class in classes %}
           <tr>
-            <td>
-                {% if not class.is_archived %}
-                <a href="/?class_id={{ class.id }}">{{ class.class_name }}</a>
-                {% else %}
-                {{ class.class_name }}
-                {% endif %}
-            </td>
-            <td>{{ class.start_date }}</td>
-            <td>{{ class.end_date }}</td>
-            <td>{{ class.is_archived|yesno:"Archived,Active" }}</td>
-            <td><a href="{% url 'edit_class' class.id %}">Edit</a></td>
-            <td><a href="{% url 'export_class_file_with_id' class.id %}">Export</a></td>
+        <td>
+            {% if not class.is_archived %}
+            <a href="/?class_id={{ class.id }}">{{ class.class_name }}</a>
+            {% else %}
+            {{ class.class_name }}
+            {% endif %}
+        </td>
+        <td>{{ class.start_date }}</td>
+        <td>{{ class.end_date }}</td>
+        <td>{{ class.is_archived|yesno:"Archived,Active" }}</td>
+        <td><a href="{% url 'edit_class' class.id %}">Edit</a></td>
+        <td><a href="{% url 'export_class_file_with_id' class.id %}">Export</a></td>
+        <td>
+          <a href="{% url 'add_student_manual' class.id %}">Manual</a> |
+          <a href="{% url 'add_student_import_with_id' class.id %}">Import CSV</a>
+        </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="8">No classes found</td>
+        <td colspan="8">No classes found</td>
           </tr>
           {% endfor %}
         </tbody>
