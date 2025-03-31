@@ -1,4 +1,3 @@
-{% extends 'coldcall/home.html'%}
 {% include 'coldcall/mobile/base.html' %}
 
 
@@ -8,5 +7,143 @@
     <link rel="stylesheet" href="{% static 'coldcall/mobile/style.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/mobile/home.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/mobile/popup.css' %}">
-
 {% endblock %}
+
+<script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
+    <script src="{% static 'coldcall/js/popup_overlay.js' %}"></script>
+    <title>Home</title>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+    <div class="top-title">
+    <h1>Welcome, {{ user.username }}! </h1>
+    </div>
+    {% if seen_onboarding %}
+    <div id="init-popup" class="popup visible">
+        <div id = "init-popup-inner" class="popup-inner">
+            You do not have any classes. Would you like to import or create a new one?
+            <a href="{% url 'add_class'%}">Add Class</a>
+            <button id="close-init" class = "close-popup">Dismiss</button>
+        </div>  
+    </div>
+    {% endif %}
+    <!-- Class Filter Dropdown -->
+    <div class="filter-container">
+        <form method="get">
+            <label for="class_id">Select Class:</label>
+            <select id="class_id" name="class_id" onchange="this.form.submit()">
+                <option value="">All Classes</option>
+                {% for class in classes %}
+                    <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                        {{ class.class_name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <!-- Hidden input to keep sort when filtering classes -->
+            <input type="hidden" name="sort" value="{{ sort }}">
+            <!-- Hidden input to keep search queries when filtering classes -->
+            <input type="hidden" name="search_first_name" value="{{ first_name }}">
+            <input type="hidden" name="search_last_name" value="{{ last_name }}">
+            <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
+        </form>
+    </div>
+    
+    <form method="get" action="{% url 'randomizer' %}">
+        <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+        <button type="submit">Randomize Students</button>
+    </form>
+
+    <!-- Display Students for the Selected Class -->
+    <div class="student-table-container">
+        <table class="student-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%"></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Seating</th>
+                    <th>Total Calls</th>
+                    <th>Absent Calls</th>
+                    <th>Average Score</th>
+                    <th>Actions</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{% if student.get_average_score <= 3.0 %}
+                                <span title="Average score below 60%">⚠️</span>
+                            {% endif %}
+                            {% if student.calculate_attendance_rate <= 75.0 %}
+                                <span title="Attendance rate below 75%">❗</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ student.first_name }}</td>
+                        <td>{{ student.last_name }}</td>
+                        <td>{{ student.seating }}</td>
+                        <td>{{ student.total_calls }}</td>
+                        <td>{{ student.absent_calls }}</td>
+                        <td>{{ student.get_average_score }}</td>
+                        <td><a href="{% url 'student_metrics' student.id %}">View Metrics</a></td>
+                        <td><a href="{% url 'edit_student' student.id %}">Edit</a></td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No students found for this class.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+{% else %}
+    <p>You need to <a href="{% url 'login' %}">log in</a> to view your classes and students.</p>
+{% endif %}
+
+<!-- Sort Students -->
+<div class="sort-container">
+    <form method="get">
+        <label for="sort">Sort Students:</label>
+        <select id="sort" name="sort" onchange="this.form.submit()">
+            <option value="" {% if not sort %}selected{% endif %}>Default</option>
+            <option value="first_name" {% if sort == 'first_name' %}selected{% endif %}>First Name</option>
+            <option value="last_name" {% if sort == 'last_name' %}selected{% endif %}>Last Name</option>
+            <option value="seating" {% if sort == 'seating' %}selected{% endif %}>Seating</option>
+            <option value="total_calls" {% if sort == 'total_calls' %}selected{% endif %}>Total Calls</option>
+            <option value="absent_calls" {% if sort == 'absent_calls' %}selected{% endif %}>Absent Calls</option>
+            <option value="average_score" {% if sort == 'average_score' %}selected{% endif %}>Average Score</option>
+        </select>
+        <!-- Hidden input to keep class_id when sorting -->
+        <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+        <!-- Hidden input to keep search queries when sorting -->
+        <input type="hidden" name="search_first_name" value="{{ first_name }}">
+        <input type="hidden" name="search_last_name" value="{{ last_name }}">
+        <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
+    </form>
+
+    <form method="get">
+        <label for="search">Search Students:</label>
+        <input type="text" id="search_first_name" name="search_first_name" value="{{ first_name }}" placeholder="First Name">
+        <input type="text" id="search_last_name" name="search_last_name" value="{{ last_name }}" placeholder="Last Name">
+        <input type="text" id="search_usc_id" name="search_usc_id" value="{{ usc_id }}" placeholder="USC ID">
+        <!-- Hidden input to keep class_id when searching -->
+        <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+        <!-- Hidden input to keep sort when searching -->
+        <input type="hidden" name="sort" value="{{ sort }}">
+        <button type="submit" onclick="this.form.submit()">Search</button>
+    </form>
+
+</div>
+
+</body>
+<script>
+    buttonConfirm('archiveButton', 'archiveForm', 'Are you sure you want to archive this class?');
+</script>
+</html>

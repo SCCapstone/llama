@@ -1,28 +1,43 @@
 .filter-container {
+  margin-top: 2%;
   margin-bottom: 1rem;
   text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 7%;
 }
 
 .filter-container form {
-  max-width: 100%;
+  margin-top: 1%;
+  max-width: 80%;
   margin: 0 auto;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
-  margin-top: 20px;
+  height: 100px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-container select
+ {
+  max-width: 70%;
+  font-size: 1.3em;
+  padding: 0.5em;
+  border: 1px solid #ddd;
+  padding: auto;
+  border-radius: 12px;
+  align-items: center;
+  margin-top: 3%;
 }
 
 .filter-container label {
   font-weight: bold;
   margin-right: 10px;
   text-align: center;
-}
-
-.filter-container select {
-  padding: auto;
-  border-radius: 4px;
+  font-size: 1.6em;
 }
 
 .student-table-container {
@@ -57,7 +72,7 @@
 }
 
 .sort-container {
-  max-width: 100%;
+  max-width: 80%;
   margin: 0 auto;
   padding: 10px;
   border: 1px solid #ddd;
@@ -66,10 +81,31 @@
   margin-top: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sort-container select, .sort-container input {
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  font-size: 1.6em;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  padding: 0.5em;
+  border: 1px solid #ddd;
+  width: 100%;
 }
 
 .sort-container label {
+  margin-top: 20px;
+  margin-bottom: 10px;
   font-weight: bold;
+  font-size: 1.6em;
   margin-right: 10px;
   text-align: center;
 }
@@ -84,6 +120,9 @@
   margin-top: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
+  display: block;
+  justify-content: center;
+  align-items: center;
 }
 
 .search-container label {
@@ -114,4 +153,10 @@
 
 .search-container button:hover {
   background-color: #0056b3;
+}
+
+.top-title {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 20px;
 }

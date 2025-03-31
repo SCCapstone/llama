@@ -1,9 +1,81 @@
-{% extends 'coldcall/export_class_file.html'%}
 {% include 'coldcall/mobile/base.html' %}
 
 {% load static %}
 
-{% block styles %}
+
+{% include 'coldcall/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    {% block styles %}
     <link rel="stylesheet" href="{% static 'coldcall/mobile/style.css' %}" />
     <link rel="stylesheet" href="{% static 'coldcall/mobile/manage_classes.css' %}" />
-{% endblock %}
+    {% endblock %}
+    <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
+    <title>Manage Classes</title>
+  </head>
+  <body>
+    <!-- Class Filter Dropdown -->
+    <div class="filter-container">
+      <div>
+        <a href="{% url 'add_class' %}" class="add-class-button" style="display: inline-block; width: 10px, 20Px; padding: 10px; background-color: #73000a; color: white; text-align: center; text-decoration: none; border-radius: 4px; cursor: pointer; font-size: 16px;">Add Class</a>
+        <form method="get">
+          <label for="class_filter">Filter Classes:</label>
+          <select
+            id="class_filter"
+            name="class_filter"
+            onchange="this.form.submit()">
+            <option value="active" {% if not request.GET.class_filter or request.GET.class_filter == 'active' %}selected{% endif %}>Active Classes</option>
+            <option value="archived" {% if request.GET.class_filter == 'archived' %}selected{% endif %}>Archived Classes</option>
+            <option value="all" {% if request.GET.class_filter == 'all' %}selected{% endif %}>All Classes</option>
+          </select>
+        </form>
+      </div> 
+      <table class="classes-table">
+        <thead>
+          <tr>
+        <th>Class Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Active/Archived</th>
+        <th>Edit</th>
+        <th>Export</th>
+        <th>Add Students</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for class in classes %}
+          <tr>
+        <td>
+            {% if not class.is_archived %}
+            <a href="/?class_id={{ class.id }}">{{ class.class_name }}</a>
+            {% else %}
+            {{ class.class_name }}
+            {% endif %}
+        </td>
+        <td>{{ class.start_date }}</td>
+        <td>{{ class.end_date }}</td>
+        <td>{{ class.is_archived|yesno:"Archived,Active" }}</td>
+        <td><a href="{% url 'edit_class' class.id %}">Edit</a></td>
+        <td><a href="{% url 'export_class_file_with_id' class.id %}">Export</a></td>
+        <td>
+          <!-- Only allow students to be added to active classes -->
+          {% if not class.is_archived %}
+          <a href="{% url 'add_student_manual' class.id %}">Manual</a> |
+          <a href="{% url 'add_student_import_with_id' class.id %}">Import CSV</a>
+          {% endif %}
+        </td>
+          </tr>
+          {% empty %}
+          <tr>
+        <td colspan="8">No classes found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
+

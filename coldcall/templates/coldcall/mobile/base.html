@@ -1,6 +1,16 @@
-{% extends 'coldcall/base.html' %}
 {% load static %}
 
 {% block styles %}
   <link rel="stylesheet" href="{% static 'coldcall/mobile/base.css' %}" />
 {% endblock styles %}
+
+{% block content %}
+  <div class="bottom-nav">
+    <a href="/" class="nav-item">
+      Home
+    </a>
+    <a href="/manageclasses" class="nav-item">
+      Manage Classes
+    </a> 
+  </div>
+{% endblock content %}
