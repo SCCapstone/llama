@@ -56,8 +56,11 @@
         <td><a href="{% url 'edit_class' class.id %}">Edit</a></td>
         <td><a href="{% url 'export_class_file_with_id' class.id %}">Export</a></td>
         <td>
+          <!-- Only allow students to be added to active classes -->
+          {% if not class.is_archived %}
           <a href="{% url 'add_student_manual' class.id %}">Manual</a> |
           <a href="{% url 'add_student_import_with_id' class.id %}">Import CSV</a>
+          {% endif %}
         </td>
           </tr>
           {% empty %}

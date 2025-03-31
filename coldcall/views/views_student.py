@@ -13,13 +13,14 @@ import json
 class AddStudentManualView(LoginRequiredMixin, TemplateView):
     def get(self, request, class_id=None):
         self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
-        classes = Class.objects.filter(professor_key = request.user)
-        try:
-            class_key = Class.objects.get(id=class_id)
-        except Class.DoesNotExist:
-            class_key = None
+        if class_id: 
+            selected_class = Class.objects.get(id=class_id)
+        else: 
+            selected_class = None
 
-        return render(request, self.template_name, {'classes': classes, 'class_key': class_key})
+        classes = Class.objects.filter(professor_key = request.user, is_archived=False)
+
+        return render(request, self.template_name, {'classes': classes, 'selected_class': selected_class})
     def post(self, request, class_id=None):
         self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
         usc_id = request.POST.get('usc_id').upper()
