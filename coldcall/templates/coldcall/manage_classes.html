@@ -22,9 +22,9 @@
             id="class_filter"
             name="class_filter"
             onchange="this.form.submit()">
-            <option value="" {% if not request.GET.class_filter %}selected{% endif %}>All Classes</option>
-            <option value="active" {% if request.GET.class_filter == 'active' %}selected{% endif %}>Active Classes</option>
+            <option value="active" {% if not request.GET.class_filter or request.GET.class_filter == 'active' %}selected{% endif %}>Active Classes</option>
             <option value="archived" {% if request.GET.class_filter == 'archived' %}selected{% endif %}>Archived Classes</option>
+            <option value="all" {% if request.GET.class_filter == 'all' %}selected{% endif %}>All Classes</option>
           </select>
         </form>
       </div> 

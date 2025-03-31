@@ -16,8 +16,10 @@ class ManageClassesView(LoginRequiredMixin, View):
             classes = Class.objects.filter(professor_key=request.user, is_archived=True)
         elif classes and class_filter == 'active':
             classes = Class.objects.filter(professor_key=request.user, is_archived=False)
-        else:
+        elif classes and class_filter == 'all':
             classes = Class.objects.filter(professor_key=request.user)
+        else:
+            classes = Class.objects.filter(professor_key=request.user, is_archived=False) # default to active
 
         context = {
             'classes': classes,
