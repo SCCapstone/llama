@@ -1,0 +1,76 @@
+{% include 'coldcall/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+    <link rel="stylesheet" href="{% static 'coldcall/mobile/profile.css' %}">
+{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings</title>
+</head>
+<body>
+
+<div class="profile-container-mobile">
+    <h1>Profile Settings</h1>
+    
+    <div class="profile-info-mobile">
+        <div class="profile-image-mobile">
+            {% if user.userdata.profile_picture %}
+                <div class="profile-picture-container">
+                    <img src="{{ user.userdata.profile_picture.url }}" alt="Profile picture" class="profile-picture">
+                </div>
+            {% else %}
+                <div class="profile-icon-large">👤</div>
+            {% endif %}
+            <p>{{ user.username }}</p>
+            
+            <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data" class="upload-form-mobile">
+                {% csrf_token %}
+                <label for="profile_picture_upload_mobile" class="upload-button-mobile">Change Photo</label>
+                <input type="file" id="profile_picture_upload_mobile" name="profile_picture" accept="image/*" style="display:none" onchange="this.form.submit()">
+            </form>
+        </div>
+        
+        <div class="profile-details-mobile">
+            <form method="post" action="{% url 'profile' %}">
+                {% csrf_token %}
+                
+                <div class="form-group-mobile">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" value="{{ user.email }}" readonly class="read-only">
+                    <p class="field-note">Email cannot be changed</p>
+                </div>
+                
+                <div class="form-group-mobile">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+                </div>
+                
+                <div class="form-group-mobile">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+                </div>
+                
+                <div class="form-group-mobile">
+                    <label>Password:</label>
+                    <div class="password-reset-mobile">
+                        <span>••••••••</span>
+                        <button type="button" class="reset-button-mobile" disabled>Reset Password</button>
+                    </div>
+                    <p class="field-note">Password reset functionality coming soon</p>
+                </div>
+                
+                <div class="form-actions-mobile">
+                    <button type="submit" class="save-button-mobile">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

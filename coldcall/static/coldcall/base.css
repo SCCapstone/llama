@@ -76,13 +76,65 @@ header {
 
 .main-nav {
     display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     max-width: 1200px;
     width: 100%;
     padding: 0 20px;
+    position: relative;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+}
+
+.profile-link .nav-link {
+    padding: 8px 10px;
+    min-width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    display: block;
+}
+
+.profile-nav-container {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-picture-nav {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    max-width: 24px; /* Enforce maximum width */
+    max-height: 24px; /* Enforce maximum height */
 }
 
 .nav-link {

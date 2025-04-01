@@ -133,6 +133,12 @@ class StudentRating(models.Model):
 class UserData(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     seen_onboarding = models.BooleanField(default=False)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    
+    def get_profile_picture_url(self):
+        if self.profile_picture and hasattr(self.profile_picture, 'url'):
+            return self.profile_picture.url
+        return None
 
 class StudentNote(models.Model):
     student_key= models.ForeignKey(Student, on_delete=models.CASCADE)

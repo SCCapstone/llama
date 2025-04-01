@@ -53,4 +53,7 @@ urlpatterns = [
     # Helper view to add a note
     path('notes/<int:student_id>/', views.AddNoteView.as_view(), name='add_note'),
     path('notes/<int:student_id>/<int:note_id>/', views.DeleteNoteView.as_view(), name='delete_note'),
+    
+    # Profile
+    path('profile/', views.ProfileView.as_view(), name='profile'),
 ]

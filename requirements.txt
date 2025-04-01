@@ -5,3 +5,4 @@ sqlparse==0.5.1
 tzdata==2024.2
 selenium==4.28.1
 openpyxl==3.1.5
+pillow==11.2.0

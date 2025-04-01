@@ -1,4 +1,3 @@
-
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
@@ -199,3 +198,36 @@ class StudentRandomizerView(LoginRequiredMixin,View):
             return JsonResponse({"success": True})
         else:
             return JsonResponse({"success": False, "error": "Student not found!"})
+
+#Profile page for user to view and edit their information
+class ProfileView(LoginRequiredMixin, View):
+    login_url = '/accounts/login'
+    
+    def get(self, request):
+        self.template_name = get_template_dir("profile", request.is_mobile)
+        context = {
+            'user': request.user,
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        user = request.user
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        
+        if first_name:
+            user.first_name = first_name
+        if last_name:
+            user.last_name = last_name
+            
+        user.save()
+        
+        # Handle profile picture upload
+        if 'profile_picture' in request.FILES:
+            profile_picture = request.FILES['profile_picture']
+            # Update or create UserData model with the new picture
+            user_data, created = UserData.objects.get_or_create(user=user)
+            user_data.profile_picture = profile_picture
+            user_data.save()
+        
+        return redirect('profile')
