@@ -41,6 +41,10 @@
 }
 
 .student-table-container {
+  align-items: center;
+  justify-content: center;
+  max-width: 80%;
+  margin: 0 auto;
   padding: 10px;
   background-color: #f9f9f9;
   border-radius: 0.5rem;
@@ -48,14 +52,18 @@
 }
 
 .student-table {
-  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  width: 90%;
   border-collapse: collapse;
 }
 
 .student-table th, .student-table td {
   padding: 0.8rem;
   border: 1px solid var(--border-color);
-  text-align: left;
+  text-align: center;
 }
 
 .student-table th {
