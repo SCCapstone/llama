@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
@@ -8,7 +9,7 @@ from django.views import View
 from django.views.generic import FormView
 
 from .view_helper import get_template_dir
-from ..forms import RegisterUserForm
+from ..forms import LoginUserForm, RegisterUserForm
 from ..models import Student, Class, UserData
 
 import json, random
@@ -26,6 +27,11 @@ class CreateAccountView(FormView):
 
         UserData.objects.create(user=new_user)
         return super().form_valid(form)
+
+class LoginView(DjangoLoginView):
+    template_name = "registration/login.html"
+    form_class = LoginUserForm
+    success_url = "/"
 
 #Default page upon being logged in, no class selected by default.
 class HomePageView(LoginRequiredMixin, View):

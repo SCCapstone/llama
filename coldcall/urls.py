@@ -7,8 +7,10 @@ from . import views
 #commented above out because i was having errors with making login - cade
 urlpatterns = [
     # Account management
-    path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register', views.CreateAccountView.as_view(), name="register"),
+    path('accounts/login', views.LoginView.as_view(), name="login"),
+    path('accounts/login/', views.LoginView.as_view(), name="login"),
+    path('accounts/', include('django.contrib.auth.urls')),
     
     # Home
     path("",views.HomePageView.as_view(), name="home"),
