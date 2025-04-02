@@ -1,4 +1,3 @@
-{% extends 'coldcall/randomizer.html'%}
 {% include 'coldcall/mobile/base.html' %}
 
 {% load static %}
@@ -7,3 +6,191 @@
     <link rel="stylesheet" href="{% static 'coldcall/mobile/style.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/mobile/randomizer.css' %}">
 {% endblock %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Randomizer</title>
+    <meta name="csrf-token" content="{{ csrf_token }}"> <!-- CSRF token in meta tag -->
+    <script>
+        const ratingModifiers = {
+            Absent: "absent",
+            Unprepared: "unprepared",
+            Skip: "skip",
+            None: "none"
+        }
+
+        var selectedRating = ratingModifiers.None;
+        var prevSelected = ratingModifiers.None
+ 
+        // Function to get the CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Check if this cookie string begins with the name we want
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Store CSRF token in a variable
+        const csrfToken = getCookie('csrftoken');
+
+        // Function to handle AJAX requests for rating actions
+        function rateStudent(id) {
+            fetch(`/randomizer`, { // called within coldcall coldcall environment
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken  // Add CSRF token here
+                },
+                body: JSON.stringify({ student_id: id, rating: selectedRating})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // TODO: refactor to not use alert()
+                    // alert("Rating saved successfully!");
+                    // Optionally reload or update the student data
+                    window.location.reload();
+                } else {
+                    alert("Error saving rating: " + data.error);
+                }
+            });
+        }
+
+        // Handle formatting of buttons and data management
+        function handleRatingAction(studentId, rating, modifier) {
+            document.querySelectorAll('.star').forEach(star => star.classList.remove('selected'));
+            document.querySelectorAll('.button').forEach(button => button.classList.remove('selected'));
+            var workingButton = document.getElementById(rating);
+            if (!modifier) {
+                for (let i = 1; i <= parseInt(rating.split('-')[1]); i++) {
+                    document.getElementById('star-' + i).classList.add('selected');
+                }
+            } else {
+                if (prevSelected !== ratingModifiers.None && prevSelected !== rating) {
+                }
+                document.getElementById(rating).classList.add("selected");
+            }
+            selectedRating = rating;
+            prevSelected = rating;
+            
+            document.getElementById('comfirm-btn').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Randomly Select a Student</h1>
+
+    <!-- Class Selection Dropdown -->
+    <form method="get" class="class-select">
+        <label for="class_id">Select Class:</label>
+        <select id="class_id" name="class_id" onchange="this.form.submit()">
+            <option value="">-- Choose a Class --</option>
+            {% for class in classes %}
+                <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                    {{ class.class_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- Display Student Information if a Student is Selected -->
+    {% if student %}
+    <div class="student-info">
+        <h2>{{ student.first_name }} {{ student.last_name }}</h2>
+        <p>Seat Number: {{ student.seating }}</p>
+        <p>Prior Calls: {{ student.total_calls }}</p>
+        <p>Average Rating: {{ avg_rating }} / 5</p>
+
+        
+        <div class="classroom-container">
+            
+            
+            <div class="seating-grid">
+                <!-- Back Row -->
+                <div class="seat {% if student.seating == 'BL' %}selected{% endif %}">
+                    <div class="seat-label">Back Left</div>
+                    {% for s in seating_map.BL %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'BM' %}selected{% endif %}">
+                    <div class="seat-label">Back Middle</div>
+                    {% for s in seating_map.BM %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'BR' %}selected{% endif %}">
+                    <div class="seat-label">Back Right</div>
+                    {% for s in seating_map.BR %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                <!-- Front Row -->
+                <div class="seat {% if student.seating == 'FL' %}selected{% endif %}">
+                    <div class="seat-label">Front Left</div>
+                    {% for s in seating_map.FL %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'FM' %}selected{% endif %}">
+                    <div class="seat-label">Front Middle</div>
+                    {% for s in seating_map.FM %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="seat {% if student.seating == 'FR' %}selected{% endif %}">
+                    <div class="seat-label">Front Right</div>
+                    {% for s in seating_map.FR %}
+                        <div class="student-name">{{ s.first_name }} {{ s.last_name }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating and Action Buttons -->
+
+    <div class="star-group">
+        <span class="star rating" id="star-1" onclick="handleRatingAction({{ student.id }}, 'star-1', false)">★</span>
+        <span class="star rating" id="star-2" onclick="handleRatingAction({{ student.id }}, 'star-2', false)">★</span>
+        <span class="star rating" id="star-3" onclick="handleRatingAction({{ student.id }}, 'star-3', false)">★</span>
+        <span class="star rating" id="star-4" onclick="handleRatingAction({{ student.id }}, 'star-4', false)">★</span>
+        <span class="star rating" id="star-5" onclick="handleRatingAction({{ student.id }}, 'star-5', false)">★</span>
+    </div>
+
+    <div class="button-group">
+        <button class="button rating" id="absent" onclick="handleRatingAction({{ student.id }}, 'absent', true)">Absent</button>
+        <button class="button rating" id="unprepared" onclick="handleRatingAction({{ student.id }}, 'unprepared', true)">Unprepared</button>
+        <button class="button rating" id="skip" onclick="handleRatingAction({{ student.id }}, 'skip', true)">Skip</button>
+    </div>
+    
+    <!-- New Student Button (shown after action) -->
+    <div id="comfirm-btn" class="comfirm-btn" style="display:none;">
+        <button onclick="rateStudent({{student.id}});">Choose New Student</button>
+    </div>
+    {% else %}
+    <p>Select a class to randomly choose a student.</p>
+    {% endif %}
+
+    {% if empty and id_present %}
+        <p> This class has no students! Please add some through <a href="/addstudents/manual/{{ selected_class.id }}">here.</a></p>
+    {% endif %}
+</div>
+
+</body>
+</html>

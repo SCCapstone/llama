@@ -9,6 +9,17 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.container a {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #5a0008;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
 .class-select {
     margin-bottom: 20px;
     font-weight: bold;

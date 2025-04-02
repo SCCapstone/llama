@@ -1,4 +1,4 @@
-{% extends 'coldcall/export_class_file.html'%}
+
 {% include 'coldcall/mobile/base.html' %}
 
 {% load static %}
@@ -7,3 +7,79 @@
     <link rel="stylesheet" href="{% static 'coldcall/mobile/style.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/mobile/export_class_file.css' %}">
 {% endblock %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Export Class Data</title>
+</head>
+<body>
+    <div id="export-form">
+        <h2>Export Class Data</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Select Classes:</label>
+                <div class="checkbox-group">
+                    {% for class in classes %}
+                        <div class="checkbox-item">
+                            <input type="checkbox" 
+                                   id="class_{{ class.id }}" 
+                                   name="class_id" 
+                                   value="{{ class.id }}"
+                                   class="class-checkbox"
+                                   {% if class.id == class_id %}checked{% endif %}/>
+                            <label for="class_{{ class.id }}">{{ class.class_name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Export Type:</label>
+                <select name="export_type" required>
+                    <option value="simple">Student Information Only</option>
+                    <option value="all">Student Information with Ratings</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>File Format:</label>
+                <select name="file_format" required>
+                    <option value="csv">CSV</option>
+                    <option value="txt">TXT</option>
+                    <option value="excel">Excel</option>
+                </select>
+            </div>
+
+            <div id="selected-classes">
+                <h3>Selected Classes:</h3>
+                <ul id="selected-classes-list"></ul>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Export</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.querySelectorAll('.class-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const selectedClassesList = document.getElementById('selected-classes-list');
+                
+                // Clear current list
+                selectedClassesList.innerHTML = '';
+                
+                // Get all checked checkboxes
+                const checkedBoxes = document.querySelectorAll('.class-checkbox:checked');
+                
+                // Add each selected class to the list
+                checkedBoxes.forEach(checked => {
+                    const li = document.createElement('li');
+                    li.textContent = checked.nextElementSibling.textContent;
+                    selectedClassesList.appendChild(li);
+                });
+            });
+        });
+    </script>
+</body>

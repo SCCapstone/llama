@@ -1,72 +1,99 @@
-.form-container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 10px;
+#export-form {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9;
-    margin-top: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.form-container h2 {
+#export-form h2 {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.8em;
     margin-bottom: 20px;
+    color: #333;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
     font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #333;
+    text-align: center;
 }
 
-.form-group select,
-.form-group input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
 }
 
-.form-group button {
+.checkbox-item {
+    display: flex;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+select {
     width: 100%;
     padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     font-size: 1em;
-    cursor: pointer;
-}
-
-.form-group button:hover {
-    background-color: #0056b3;
+    margin-top: 10px;
 }
 
 #selected-classes {
     margin-top: 20px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 6px;
 }
 
 #selected-classes h3 {
-    font-size: 1.2em;
+    font-size: 1.5em;
     margin-bottom: 10px;
+    color: #333;
 }
 
 #selected-classes-list {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 #selected-classes-list li {
-    background-color: #f1f1f1;
-    padding: 8px;
+    font-size: 1em;
+    color: #555;
     margin-bottom: 5px;
-    border-radius: 4px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #5a0008;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #73000a;
 }

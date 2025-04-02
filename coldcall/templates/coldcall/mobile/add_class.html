@@ -1,4 +1,3 @@
-{% extends 'coldcall/add_class.html'%}
 {% include 'coldcall/mobile/base.html' %}
 
 {% load static %}
@@ -7,3 +6,39 @@
     <link rel="stylesheet" href="{% static 'coldcall/mobile/style.css' %}" />
     <link rel="stylesheet" href="{% static 'coldcall/mobile/add_class.css' %}" />
 {% endblock %}
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Create Class</title>
+  </head>
+  <body>
+    <form method="post" class="form-container">
+      {% csrf_token %}
+      <label for="name">Class Name:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        maxlength="200"
+        value="{{ name }}" />
+      <label for="start_date">Start Date:</label>
+      <input
+        type="date"
+        id="start_date"
+        name="start_date"
+        maxlength="200"
+        value="{{ start_date }}" />
+      <label for="end_date">End Date:</label>
+      <input
+        type="date"
+        id="end_date"
+        name="end_date"
+        maxlength="200"
+        value="{{ end_date }}" />
+      {% if error_message %}
+      <p><strong>{{ error_message }}</strong></p>
+      {% endif %}
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+  

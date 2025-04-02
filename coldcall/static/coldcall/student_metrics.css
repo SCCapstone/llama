@@ -5,6 +5,9 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
+    align-items: center;
+    display: block;
+    justify-content: center;
 }
 
 .metrics-table {
@@ -25,6 +28,8 @@
 .table-container {
     max-height: 35vh;
     overflow-y: auto;
+    align-items: center;
+    justify-content: center;
 }
 
 #metrics_graph {

@@ -1,34 +1,128 @@
-#import-form {
-    max-width: 400px;
-    margin: 50px auto;
+body {
+    font-family: Arial, sans-serif;
     background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 20px;
+    color: #333;
+}
+
+#import-form {
+    max-width: 90%;
+    margin: 20px auto;
     padding: 20px;
+    background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-#import-form label {
+
+.import-form-container {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.import-form-container h2 {
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.import-form-container p {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.import-form-container .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.import-form-container input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+    background-color: white;
+}
+
+.import-form-container input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px;
-}
-#import-form select,
-#import-form input[type="file"] {
-    width: 100%;
-    padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    font-size: 1.2em;
+    color: #333;
+    align-items: center;
+    justify-content: center;
 }
-#import-button {
+
+.form-group input[type="file"] {
     width: 100%;
     padding: 10px;
-    background-color: #73000a;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: white;
 }
-#import-button:hover {
-    background-color: #555;
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #5a0008;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #73000a;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    #import-form,
+    .import-form-container {
+        padding: 15px;
+    }
+
+    button {
+        font-size: 1em;
+    }
 }

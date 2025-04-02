@@ -1,4 +1,3 @@
-{% extends 'coldcall/add_student_import.html'%}
 {% include 'coldcall/mobile/base.html' %}
 
 {% load static %}
@@ -7,3 +6,46 @@
     <link rel="stylesheet" href="{% static 'coldcall/mobile/style.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/mobile/add_student_import.css' %}">
 {% endblock %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Import Students</title>
+</head>
+<body>
+    <h1>Import Students</h1>
+    <div class="import-form-container">
+        <form id="import-form" method="get">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="class_id">Select Class:</label>
+                <select id="class_id" name="class_id" onchange="this.form.submit()">
+                    <option value="">-- Choose a Class --</option>
+                    {% for class in classes %}
+                        <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                            {{ class.class_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
+    
+    {% if selected_class %}
+    <div class="import-form-container">
+        <form id="import-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+            <div class="form-group">
+                <label for="students">Student File:</label>
+                <input type="file" id="students" name="students" accept=".csv" required>
+            </div>
+            <div class="form-group">
+                <label for="ratings">Rating File (optional):</label>
+                <input type="file" id="ratings" name="ratings" accept=".csv">
+            </div>
+            <button type="submit">Import</button>
+        </form>
+    </div>
+    {% endif %}
+</body>
+</html>
