@@ -1,0 +1,87 @@
+.form-container {
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 15%;
+  }
+  
+  .form-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 5em;
+    color: black;
+    text-align: center;
+  }
+  
+  .form-container input[type="text"],
+  .form-container input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1.5em;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .form-container input[type="checkbox"] {
+    transform: scale(1.2);
+    align-items: center;
+    justify-content: center;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 6%;
+  }
+  
+  .form-container p {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .form-container button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #5a0008;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.8em;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 4%;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .form-container button:hover {
+    background-color: #73000a;
+  }
+  
+  @media (max-width: 600px) {
+    .form-container {
+      padding: 15px;
+    }
+  
+    .form-container label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 1.5em;
+        color: black;
+        text-align: center;
+    }
+  
+    .form-container button {
+      font-size: 1em;
+    }
+  }

@@ -15,6 +15,47 @@
     margin-bottom: 20px;
 }
 
+.table-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.table-container h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-container th,
+.table-container td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-container a {
+    background-color: #5a0008;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 .form-group {
     margin-bottom: 15px;
 }
@@ -40,7 +81,7 @@
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
+    background-color: #5a0008;
     color: white;
     font-size: 1em;
     cursor: pointer;
@@ -69,4 +110,37 @@
     padding: 8px;
     margin-bottom: 5px;
     border-radius: 4px;
+}
+
+filter-container {
+    display: block;
+    align-items: center;
+    margin-bottom: 7%;
+    padding: 10px;
+    justify-content: center;
+}
+.filter-container label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+.filter-container select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+    align-items: center;
+    text-align: center;
+}
+
+.filter-container button, a{
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #5a0008;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    align-items: center;
+    text-align: center;
 }

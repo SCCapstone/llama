@@ -1,0 +1,46 @@
+{% include 'coldcall/mobile/base.html' %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'coldcall/mobile/base.css' %}" />
+  <link rel="stylesheet" href="{% static 'coldcall/mobile/edit_class.css' %}" />
+{% endblock %}
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Class</title>
+</head>
+<body>
+  <form method="post" class="form-container">
+    {% csrf_token %}
+    <label for="class_name">Class Name:</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      maxlength="200"
+      required
+      value="{{ name }}" />
+    <label for="start_date">Start Date:</label>
+    <input
+      type="date"
+      id="start_date"
+      name="start_date"
+      maxlength="200"
+      value="{{ start_date }}" />
+    <label for="end_date">End Date:</label>
+    <input
+      type="date"
+      id="end_date"
+      name="end_date"
+      maxlength="200"
+      value="{{ end_date }}" />
+    <label for="archived">Archived:</label>
+    <input type="checkbox" id="is_archived" name="is_archived" {% if is_archived == True %} checked {% endif %} />
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <button type="submit">Update</button>
+  </form>
+</body>
