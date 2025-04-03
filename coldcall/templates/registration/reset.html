@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'coldcall/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+</head>
+
+<div class="form-container">
+  <form method="POST" class="form-group" action="{% url 'password_reset' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Reset</button>
+  </form>
+</div>

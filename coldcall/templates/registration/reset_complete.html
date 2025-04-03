@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Reset Complete</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'coldcall/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+</head>
+
+<div class ='form-container'>
+    Your password has successfully been changed. Would you like to <a href="{% url 'login' %}">login?</a></p>
+</div>

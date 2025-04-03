@@ -139,3 +139,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/' # go to homepage after login
 LOGOUT_REDIRECT_URL = '/accounts/login/' # go to login page after logout
+
+# For development purposes:
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# If you have a valid STMP server running, uncomment the following lines and fill in your SMTP settings:
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

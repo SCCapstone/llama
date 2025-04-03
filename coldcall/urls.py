@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from . import views
 
@@ -10,8 +11,21 @@ urlpatterns = [
     path('accounts/register', views.CreateAccountView.as_view(), name="register"),
     path('accounts/login', views.LoginView.as_view(), name="login"),
     path('accounts/login/', views.LoginView.as_view(), name="login"),
-    path('accounts/', include('django.contrib.auth.urls')),
+
+    # override django's default password reset views to custom templates
+    path('accounts/reset_password/',
+         auth_views.PasswordResetView.as_view(
+             template_name='registration/reset.html',
+             email_template_name='registration/reset_email.html',
+             subject_template_name='registration/reset_subject.txt'
+         ),
+         name='password_reset'),
+    path('accounts/reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name='registration/reset_sent.html'), name='password_reset_done'),
+    path('accounts/reset_password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/reset_confirm.html'), name='password_reset_confirm'),
+    path('accounts/reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/reset_complete.html'), name='password_reset_complete'),
     
+    # no overrides, use defaul auth view
+    path('accounts/logout', auth_views.LogoutView.as_view(), name="logout"),
     # Home
     path("",views.HomePageView.as_view(), name="home"),
     
