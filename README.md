@@ -41,6 +41,13 @@ DEBUG=TRUE
 
 Additional configuration may be required depending on operating system setup. For this, we connected Gunicorn to [nginx](https://nginx.org/en/).
 
+This project requires the use of external services. By default, reCAPTCHA will use test keys unsuitable for production. To use your own keys, add the following to `.env`.
+```
+RECAPTCHA_PUBLIC_KEY = key
+RECAPTCHA_PRIVATE_KEY = key
+```
+By default, email requests will be sent to the console. For proper password reset functionality, a SMTP server is required, whether self-hosted or from a service such as Mailgun. Configuration will vary depending on service, but further information can be found at https://docs.djangoproject.com/en/5.1/topics/email/.
+
 The current dev server is deployed at https://capsto.me/.
 
 # Testing
