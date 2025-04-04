@@ -1,11 +1,15 @@
 .form-container {
-    max-width: 100%;
+    max-width: 95%;
     margin: 0 auto;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
     margin-top: 20px;
+    align-items: center;
+    text-align: center;
+    height: 44%;
+    margin-top: 7%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -13,15 +17,21 @@
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
+    justify-content: center;
+    font-size: 1.5em;
+    margin-top: 2%;
 }
 
 .form-container input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 7%;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
+    height: 7%;
+    text-align: center;
+    font-size: 1.5em;
 }
 
 .form-container button[type="submit"] {
@@ -33,6 +43,9 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    height: 8%;
+    font-size: 1.8em;
+    margin-top: 5%;
 }
 
 .form-container button[type="submit"]:hover {

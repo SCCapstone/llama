@@ -17,7 +17,6 @@
   <body>
     <!-- Class Filter Dropdown -->
     <div class="filter-container">
-      <div>
         <a href="{% url 'add_class' %}" class="add-class-button">Add Class</a>
         <form method="get">
           <label for="class_filter">Filter Classes:</label>
@@ -31,13 +30,12 @@
           </select>
         </form>
       </div> 
+
       <div class="table-container">
       <table class="classes-table">
         <thead>
           <tr>
         <th>Class Name</th>
-        <th>Start Date</th>
-        <th>Active/Archived</th>
         <th>Edit</th>
         <th>Export</th>
         <th>Add Students</th>
@@ -53,8 +51,6 @@
             {{ class.class_name }}
             {% endif %}
         </td>
-        <td>{{ class.start_date }}</td>
-        <td>{{ class.is_archived|yesno:"Archived,Active" }}</td>
         <td><a href="{% url 'edit_class' class.id %}">Edit</a></td>
         <td><a href="{% url 'export_class_file_with_id' class.id %}">Export</a></td>
         <td>
@@ -72,7 +68,6 @@
           {% endfor %}
         </tbody>
       </table>
-    </div>
     </div>
   </body>
 </html>

@@ -166,17 +166,17 @@
     <!-- Rating and Action Buttons -->
 
     <div class="star-group">
-        <span class="star rating" id="star-1" onclick="handleRatingAction({{ student.id }}, 'star-1', false)">★</span>
-        <span class="star rating" id="star-2" onclick="handleRatingAction({{ student.id }}, 'star-2', false)">★</span>
-        <span class="star rating" id="star-3" onclick="handleRatingAction({{ student.id }}, 'star-3', false)">★</span>
-        <span class="star rating" id="star-4" onclick="handleRatingAction({{ student.id }}, 'star-4', false)">★</span>
-        <span class="star rating" id="star-5" onclick="handleRatingAction({{ student.id }}, 'star-5', false)">★</span>
+        <span class="star-rating" id="star-1" onclick="handleRatingAction({{ student.id }}, 'star-1', false)">★</span>
+        <span class="star-rating" id="star-2" onclick="handleRatingAction({{ student.id }}, 'star-2', false)">★</span>
+        <span class="star-rating" id="star-3" onclick="handleRatingAction({{ student.id }}, 'star-3', false)">★</span>
+        <span class="star-rating" id="star-4" onclick="handleRatingAction({{ student.id }}, 'star-4', false)">★</span>
+        <span class="star-rating" id="star-5" onclick="handleRatingAction({{ student.id }}, 'star-5', false)">★</span>
     </div>
 
     <div class="button-group">
-        <button class="button rating" id="absent" onclick="handleRatingAction({{ student.id }}, 'absent', true)">Absent</button>
-        <button class="button rating" id="unprepared" onclick="handleRatingAction({{ student.id }}, 'unprepared', true)">Unprepared</button>
-        <button class="button rating" id="skip" onclick="handleRatingAction({{ student.id }}, 'skip', true)">Skip</button>
+        <button class="button-rating" id="absent" onclick="handleRatingAction({{ student.id }}, 'absent', true)">Absent</button>
+        <button class="button-rating" id="unprepared" onclick="handleRatingAction({{ student.id }}, 'unprepared', true)">Unprepared</button>
+        <button class="button-rating" id="skip" onclick="handleRatingAction({{ student.id }}, 'skip', true)">Skip</button>
     </div>
     
     <!-- New Student Button (shown after action) -->

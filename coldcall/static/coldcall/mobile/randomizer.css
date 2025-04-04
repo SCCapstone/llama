@@ -7,6 +7,27 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 80%;
+}
+
+.container h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+.container label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+.container select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .container a {
@@ -31,6 +52,17 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
+    height: 60%;
+}
+
+.student-info h2 {
+    font-size: 1.9em;
+    margin-bottom: 10px;
+}
+
+.student-info p {
+    font-size: 1.7em;
+    margin: 5px 0;
 }
 
 .button-group, .new-student-btn {
@@ -47,6 +79,27 @@
     font-size: 1em;
     cursor: pointer;
     color: #fff;
+}
+
+.star-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+    height: 10%;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 90%;
+    height: 100%;
+    align-items: center;
+    justify-self: center;
+    font-size: 2.5em;
+    border-radius: 10px;
 }
 
 #star-1 { background-color: #d9534f; } /* Red for 1 star */
@@ -88,16 +141,21 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     margin: 20px;
+    justify-content: center;
+    align-items: center;
 }
 
 .seat {
     border: 2px solid #666;
     padding: 15px;
-    min-height: 50px;
+    width: 260px;
+    height: 110px;
     border-radius: 10px;
     transition: all 0.3s ease;
     background: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+    font-size: 2em;
 }
 
 .seat:hover {
@@ -154,4 +212,18 @@
     .seat-label {
         font-size: 14px;
     }
+}
+
+.button-rating {
+    background-color: #5a0008;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 8%;
+    font-size: 1.8em;
+    margin-top: 5%;
+    width: 100%;
+    border-radius: 10px;
 }
