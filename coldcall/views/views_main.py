@@ -1,5 +1,7 @@
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.views import LoginView as DjangoLoginView
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -237,3 +239,21 @@ class ProfileView(LoginRequiredMixin, View):
             user_data.save()
         
         return redirect('profile')
+    
+class ChangePasswordView(View):
+    def post(self, request):
+        user = request.user
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('password')
+        if not check_password(old_password, user.password):
+            messages.error(request, "Current password is incorrect!")
+            return redirect('profile')
+        elif len(new_password) >= 8:
+            user.password = make_password(new_password)
+            user.save()
+            messages.success(request, "Password changed successfully!")
+            update_session_auth_hash(request, user)
+            return redirect('profile')
+        else:
+            messages.error(request, "Password must be at least 8 characters long!")
+            return redirect('profile')

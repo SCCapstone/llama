@@ -26,6 +26,8 @@ urlpatterns = [
     
     # no overrides, use defaul auth view
     path('accounts/logout', auth_views.LogoutView.as_view(), name="logout"),
+
+    path('accounts/change_password/', views.ChangePasswordView.as_view(), name='password_change'),
     # Home
     path("",views.HomePageView.as_view(), name="home"),
     

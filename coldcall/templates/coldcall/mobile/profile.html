@@ -55,17 +55,25 @@
                     <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
                 </div>
                 
-                <div class="form-group-mobile">
-                    <label>Password:</label>
-                    <div class="password-reset-mobile">
-                        <span>••••••••</span>
-                        <button type="button" class="reset-button-mobile" disabled>Reset Password</button>
-                    </div>
-                    <p class="field-note">Password reset functionality coming soon</p>
-                </div>
-                
                 <div class="form-actions-mobile">
                     <button type="submit" class="save-button-mobile">Save Changes</button>
+                </div>
+            </form>
+
+            <form method="post" action="{% url 'password_change' %}">
+                {% csrf_token %}
+                <div class="form-group-mobile">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    <label for="password">Password:</label>
+                    <div class="password-reset-mobile">
+                        <input type="password" id="old_password" name="old_password" placeholder="Current Password"></input>
+                        <input type="password" id="password" name="password" placeholder="New Password"></input>
+                        <button type="submit" class="save-button">Change Password</button>
+                    </div>
                 </div>
             </form>
         </div>
