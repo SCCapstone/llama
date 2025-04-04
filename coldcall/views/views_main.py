@@ -190,8 +190,10 @@ class StudentRandomizerView(LoginRequiredMixin,View):
         prepared = True
 
         rating = data["rating"]
-
-        if rating == "absent":
+        if rating == "skip":
+            messages.success(request, "Student has been skipped.")
+            return JsonResponse({"success": True})
+        elif rating == "absent":
             rating = 0
             present = False
         elif rating == "unprepared":
@@ -203,8 +205,10 @@ class StudentRandomizerView(LoginRequiredMixin,View):
         student = Student.objects.get(id=data["student_id"])
         if student:
             student.add_rating(is_present = present, is_prepared = prepared, score = rating)
+            messages.success(request, f"Rating for {student.first_name} {student.last_name} has been successfully saved.")
             return JsonResponse({"success": True})
         else:
+            messages.error(request, "Student not found!")
             return JsonResponse({"success": False, "error": "Student not found!"})
 
 #Profile page for user to view and edit their information

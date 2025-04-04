@@ -60,7 +60,7 @@
                     // Optionally reload or update the student data
                     window.location.reload();
                 } else {
-                    alert("Error saving rating: " + data.error);
+                    // alert("Error saving rating: " + data.error);
                 }
             });
         }
@@ -112,7 +112,11 @@
         <p>Prior Calls: {{ student.total_calls }}</p>
         <p>Average Rating: {{ avg_rating }} / 5</p>
 
-        
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
         <div class="classroom-container">
             
             
