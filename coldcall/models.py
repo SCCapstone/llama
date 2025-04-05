@@ -2,9 +2,13 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 import datetime
-from  django.utils import timezone
+import os
+import uuid
 
+from django.utils import timezone
 from django.shortcuts import render
+
+from PIL import Image
 
 class Class(models.Model):
     professor_key = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -130,15 +134,30 @@ class StudentRating(models.Model):
         return str(self.score) + "⭐"
 
 # helper data model containing additional information related to users
+
+# hash filenames to prevent users from guessing other users' profile pictures
+def hash_filename(instance, filename):
+    extension = os.path.splitext(filename)[1]
+    new_name = uuid.uuid4().hex
+
+    return f"profile_pictures/{new_name}{extension}"
 class UserData(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     seen_onboarding = models.BooleanField(default=False)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    profile_picture = models.ImageField(upload_to=hash_filename, null=True, blank=True)
     
     def get_profile_picture_url(self):
         if self.profile_picture and hasattr(self.profile_picture, 'url'):
             return self.profile_picture.url
         return None
+    
+    # reduce resolution of profile picture and compress it
+    def save(self, *args, **kwargs):
+        super(UserData, self).save(*args, **kwargs)
+        if self.profile_picture:
+            pfp = Image.open(self.profile_picture.path)
+            pfp.thumbnail((256, 256))
+            pfp.save(self.profile_picture.path, quality=20, optimize=True)
 
 class StudentNote(models.Model):
     student_key= models.ForeignKey(Student, on_delete=models.CASCADE)
