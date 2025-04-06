@@ -15,7 +15,7 @@
     <!-- Class Filter Dropdown -->
     <div class="filter-container">
       <div>
-        <a href="{% url 'add_class' %}" class="add-class-button" style="display: inline-block; width: 10px, 20Px; padding: 10px; background-color: #73000a; color: white; text-align: center; text-decoration: none; border-radius: 4px; cursor: pointer; font-size: 16px;">Add Class</a>
+        <a href="{% url 'add_class' %}" style="display: inline-block; width: 10px, 20Px; padding: 10px; background-color: #73000a; color: white; text-align: center; text-decoration: none; border-radius: 4px; cursor: pointer; font-size: 16px;">Add Class</a>
         <form method="get">
           <label for="class_filter">Filter Classes:</label>
           <select
@@ -26,8 +26,20 @@
             <option value="archived" {% if request.GET.class_filter == 'archived' %}selected{% endif %}>Archived Classes</option>
             <option value="all" {% if request.GET.class_filter == 'all' %}selected{% endif %}>All Classes</option>
           </select>
+          <input type="hidden" name="class_name" value="{{ class_name }}">
         </form>
-      </div> 
+    </div> 
+
+    <!-- Search Classes -->
+    <div class = "search-container">
+      <form method="get">
+          <label for="search">Search Classes:</label>
+          <input type="text" id="search_class_name" name="class_name" value="{{ class_name }}" placeholder="Class Name">
+          <!-- Hidden input to keep is_archived when searching -->
+          <input type="hidden" name="class_filter" value="{{ class_filter }}">
+          <button type="submit" onclick="this.form.submit()">Search</button>
+      </form>
+  </div>
       <table class="classes-table">
         <thead>
           <tr>

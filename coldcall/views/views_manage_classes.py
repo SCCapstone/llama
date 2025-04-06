@@ -21,9 +21,15 @@ class ManageClassesView(LoginRequiredMixin, View):
         else:
             classes = Class.objects.filter(professor_key=request.user, is_archived=False) # default to active
 
+        # Apply Searching
+        search_query = request.GET.get('class_name', '').strip()
+        if search_query and classes:
+            classes = classes.filter(class_name__icontains=search_query)
+
         context = {
             'classes': classes,
             'class_filter': class_filter,
+            'class_name': search_query,
         }
 
         return render(request, self.template_name, context)
