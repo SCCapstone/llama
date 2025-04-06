@@ -1,86 +1,81 @@
-{% extends 'coldcall/mobile/base.html' %}
-{% load static %}
+{% include 'coldcall/mobile/base.html' %}
 
+{% load static %}
+    
 {% block styles %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'coldcall/style.css' %}">
+    <link rel="stylesheet" href="{% static 'coldcall/mobile/style.css' %}">
     <link rel="stylesheet" href="{% static 'coldcall/mobile/profile.css' %}">
 {% endblock %}
 
-{% block content %}
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Settings</title>
 </head>
+
 <body>
-
-<div class="profile-container-mobile">
-    <h1>Profile Settings</h1>
-    
-    <div class="profile-info-mobile">
-        <div class="profile-image-mobile">
-            {% if user.userdata.profile_picture %}
-                <div class="profile-picture-container">
-                    <img src="{{ user.userdata.profile_picture.url }}" alt="Profile picture" class="profile-picture">
-                </div>
-            {% else %}
-                <div class="profile-icon-large">👤</div>
-            {% endif %}
-            <p>{{ user.username }}</p>
-            
-            <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data" class="upload-form-mobile">
-                {% csrf_token %}
-                <label for="profile_picture_upload_mobile" class="upload-button-mobile">Change Photo</label>
-                <input type="file" id="profile_picture_upload_mobile" name="profile_picture" accept="image/*" style="display:none" onchange="this.form.submit()">
-            </form>
-        </div>
+    <div class="profile-container-mobile">
+        <h1>Profile Settings</h1>
         
-        <div class="profile-details-mobile">
-            <form method="post" action="{% url 'profile' %}">
-                {% csrf_token %}
-                
-                <div class="form-group-mobile">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" value="{{ user.email }}" readonly class="read-only">
-                    <p class="field-note">Email cannot be changed</p>
-                </div>
-                
-                <div class="form-group-mobile">
-                    <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
-                </div>
-                
-                <div class="form-group-mobile">
-                    <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
-                </div>
-                
-                <div class="form-actions-mobile">
-                    <button type="submit" class="save-button-mobile">Save Changes</button>
-                </div>
-            </form>
-
-            <form method="post" action="{% url 'password_change' %}">
-                {% csrf_token %}
-                <div class="form-group-mobile">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <p>{{ message }}</p>
-                        {% endfor %}
-                    {% endif %}
-                    <label for="password">Password:</label>
-                    <div class="password-reset-mobile">
-                        <input type="password" id="old_password" name="old_password" placeholder="Current Password"></input>
-                        <input type="password" id="password" name="password" placeholder="New Password"></input>
-                        <button type="submit" class="save-button">Change Password</button>
+        <div class="profile-info-mobile">
+            <div class="profile-image-mobile">
+                {% if user.userdata.profile_picture %}
+                    <div class="profile-picture-container">
+                        <img src="{{ user.userdata.profile_picture.url }}" alt="Profile picture" class="profile-picture">
                     </div>
-                </div>
-            </form>
+                {% else %}
+                    <div class="profile-icon-large">👤</div>
+                {% endif %}
+                <p>{{ user.username }}</p>
+                
+                <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data" class="upload-form-mobile">
+                    {% csrf_token %}
+                    <label for="profile_picture_upload_mobile" class="upload-button-mobile">Change Photo</label>
+                    <input type="file" id="profile_picture_upload_mobile" name="profile_picture" accept="image/*" style="display:none" onchange="this.form.submit()">
+                </form>
+            </div>
+            
+            <div class="profile-details-mobile">
+                <form method="post" action="{% url 'profile' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-group-mobile">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" value="{{ user.email }}" readonly class="read-only">
+                        <p class="field-note">Email cannot be changed</p>
+                    </div>
+                    
+                    <div class="form-group-mobile">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+                    </div>
+                    
+                    <div class="form-group-mobile">
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+                    </div>
+                    
+                    <div class="form-actions-mobile">
+                        <button type="submit" class="save-button-mobile">Save Changes</button>
+                    </div>
+                </form>
+    
+                <form method="post" action="{% url 'password_change' %}">
+                    {% csrf_token %}
+                    <div class="form-group-mobile">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        <label for="password">Password:</label>
+                        <div class="password-reset-mobile">
+                            <input type="password" id="old_password" name="old_password" placeholder="Current Password"></input>
+                            <input type="password" id="password" name="password" placeholder="New Password"></input>
+                            <button type="submit" class="save-button">Change Password</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
 </body>
-{{ block.super }}
-{% endblock %}
