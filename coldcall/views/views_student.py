@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.http import HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -35,17 +36,43 @@ class AddStudentManualView(LoginRequiredMixin, TemplateView):
             class_key = Class.objects.get(id=class_key_id)
         except Class.DoesNotExist:
             return HttpResponseBadRequest("Invalid class ID.")
+        
+        #helper function to ensure input is valid
+        def same_length_arr(*arrays):
+            lengths = [len(arr) for arr in arrays]
+            return all(length == lengths[0] for length in lengths)
+        
+        # convert all into lists if user provided multiple inputs
+        usc_id = usc_id.split(",")
+        first_name = first_name.split(",")
+        last_name = last_name.split(",")
+        email = email.split(",")
 
-        Student.objects.create(
-            usc_id=usc_id,
-            first_name=first_name,
-            last_name=last_name,
-            class_key=class_key,
-            seating=seating,
-            email=email,
-        )
+        if not same_length_arr(usc_id, first_name, last_name, email):
+            messages.error(request, "All fields must have the same number of entries.")
+            return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user)})
+        
+        # add all students at once, abort on failure
+        with transaction.atomic():
+            for i in range(len(usc_id)):
+                if len(usc_id[i]) > 9:
+                    messages.error(request, "USC ID must be 9 characters long.")
+                    return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user)})
+                
+                student = Student(
+                    usc_id=usc_id[i],
+                    first_name=first_name[i],
+                    last_name=last_name[i],
+                    class_key=class_key,
+                    seating=seating,
+                    email=email[i]
+                )
+                student.save()
 
-        messages.success(request, f"Student {first_name} {last_name} added successfully!")
+        if len(usc_id) == 1:
+            messages.success(request, f"Student {first_name[0]} {last_name[0]} added successfully!")
+        else:
+            messages.success(request, f"{len(usc_id)} students added successfully!")
 
         # Clear the form fields and allow the user to add another student
         return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user)})

@@ -21,6 +21,10 @@
       {% endfor %}
     {% endif %}
     <h2>{% if student %}Edit Student{% else %}Add New Student{% endif %}</h2>
+
+    {% if not student %}
+      <p> Multiple students can be added at once by entering a comma separated list of names in the first name and last name fields. <br> Example: <br> First Name: John, Jane <br> Last Name: Doe, Smith</p>
+    {% endif %}
     <form method="post">
       {% csrf_token %}
 
@@ -45,13 +49,12 @@
       </div>
 
       <div class="form-group">
-        <label for="usc_id">USC ID</label>
+        <label for="usc_id">USC ID (Max. 9 characters)</label>
         <input
           type="text"
           id="usc_id"
           name="usc_id"
           value="{{ student.usc_id|default:'' }}"
-          maxlength="9"
           required />
       </div>
 
