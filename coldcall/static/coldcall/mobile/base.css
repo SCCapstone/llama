@@ -36,7 +36,9 @@
     border-style: solid;
     border-radius: 10px;
     margin-bottom: 6%;
-    max-width: 41%;
+    max-width: 30%;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   
   .nav-item.active {
@@ -46,4 +48,11 @@
   
   .nav-item:hover {
     background-color: #5a0008;
+  }
+
+  .profile-picture-nav {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
   }
