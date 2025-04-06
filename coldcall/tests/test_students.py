@@ -3,15 +3,15 @@ from django.contrib.auth.models import User
 from coldcall.models import *
 
 from .test_helper import *
-
+# tests related to the student model and its methods
 class TestEmptyStudent(TestCase):
     def setUp(self):
         Student.objects.create(class_key = init_class(init_prof()), first_name = "John", last_name = "Doe")
-    
+    # ensure no errors occur when calculating attendance with no saved data
     def test_empty_attendance(self):
         s = Student.objects.get(first_name="John")
         self.assertEqual(0, s.calculate_attendance_rate())
-
+    # ensure no divide by zero error occurs with no data
     def test_empty_avg_score(self):
         s = Student.objects.get(first_name="John")
         self.assertEqual(0, s.get_average_score())

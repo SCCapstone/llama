@@ -8,17 +8,15 @@ from coldcall.models import *
 from ..tests.test_helper import *
 from .selenium_helper import *
 
-
-
 from selenium.webdriver.support.ui import Select 
 from selenium.common.exceptions import NoSuchElementException
 
-
-
+# to run just these tests, use the command:
 #python manage.py test coldcall.selenium_tests.test_accounts.TestRegister --settings=llama.test_settings
 class TestRegister(StaticLiveServerTestCase):
     def setUp(self):
         self.driver = webdriver.Chrome()
+        # if an error occurs, the test will wait 2 seconds before aborting, allowing time for the page to load
         self.driver.implicitly_wait(2)
 
     def tearDown(self):
@@ -35,7 +33,7 @@ class TestRegister(StaticLiveServerTestCase):
         self.driver.find_element(By.NAME, "password").send_keys("password")
 
         self.driver.find_element(By.CSS_SELECTOR, "button").click()
-
+        # Will redirect to login if registration successful, otherwise stays on register page
         self.assertNotEqual(self.driver.current_url, f"{self.live_server_url}/accounts/register")
 
     def test_register_invalid(self):
@@ -49,7 +47,7 @@ class TestRegister(StaticLiveServerTestCase):
 
         self.driver.find_element(By.CSS_SELECTOR, "button").click()
         error_text = self.driver.find_element(By.CLASS_NAME, "errorlist").text
-
+        # Check if the error message contains the expected text
         self.assertIn("Enter a valid username", error_text)
 #python manage.py test coldcall.selenium_tests.test_accounts.TestLogin --settings=llama.test_settings
 class TestLogin(StaticLiveServerTestCase):
@@ -64,7 +62,7 @@ class TestLogin(StaticLiveServerTestCase):
 
     def test_valid_login(self):
         self.driver.get(f"{self.live_server_url}/accounts/login")
-        
+        # use same username and password as in init_prof()
         self.driver.find_element(By.NAME, "username").send_keys(PROF_USERNAME)
         self.driver.find_element(By.NAME, "password").send_keys(PROF_PASSWORD)
         
@@ -112,32 +110,33 @@ class TestLogout(StaticLiveServerTestCase):
 
 #TODO: move to separate file later
 
-class TestHamburgerMenu(StaticLiveServerTestCase):
-    def setUp(self):
-        self.driver = webdriver.Chrome()
-        self.driver.implicitly_wait(2)
-        init_prof()
-        automatic_login(self)
+#  hamburger menu is no longer used, remove
+# class TestHamburgerMenu(StaticLiveServerTestCase):
+#     def setUp(self):
+#         self.driver = webdriver.Chrome()
+#         self.driver.implicitly_wait(2)
+#         init_prof()
+#         automatic_login(self)
 
-    def tearDown(self):
-        if self.driver:
-            self.driver.quit()
+#     def tearDown(self):
+#         if self.driver:
+#             self.driver.quit()
 
-    def test_open_menu(self):
-        self.driver.find_element(By.CLASS_NAME, "menuButton").click()
+#     def test_open_menu(self):
+#         self.driver.find_element(By.CLASS_NAME, "menuButton").click()
 
-        visibility = self.driver.find_element(By.XPATH, '//*[@id="menu"]').get_attribute("class")
+#         visibility = self.driver.find_element(By.XPATH, '//*[@id="menu"]').get_attribute("class")
 
-        self.assertIn("show", visibility)
+#         self.assertIn("show", visibility)
 
-    def test_close_menu(self):
-        found_button = self.driver.find_element(By.CLASS_NAME, "menuButton")
-        found_button.click()
-        found_button.click()
+#     def test_close_menu(self):
+#         found_button = self.driver.find_element(By.CLASS_NAME, "menuButton")
+#         found_button.click()
+#         found_button.click()
 
-        visibility = self.driver.find_element(By.XPATH, '//*[@id="menu"]').get_attribute("class")
+#         visibility = self.driver.find_element(By.XPATH, '//*[@id="menu"]').get_attribute("class")
 
-        self.assertNotIn("show", visibility)
+#         self.assertNotIn("show", visibility)
 
 class TestCreateClass(StaticLiveServerTestCase):
     def setUp(self):
