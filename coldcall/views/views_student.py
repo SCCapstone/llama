@@ -200,6 +200,17 @@ class StudentDeleteView(View):
             return redirect('home')
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
+
+class StudentDropView(View):
+    def post(self, request, student_id):
+        try: 
+            student = get_object_or_404(Student, id=student_id)
+            student.dropped = not student.dropped  # Toggle the dropped status
+            student.save()
+        
+            return redirect('home')
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
         
 class AddNoteView(View):
     def post(self, request, student_id):

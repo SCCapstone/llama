@@ -48,7 +48,7 @@ class Seating:
 class Student(models.Model):
     usc_id = models.CharField(max_length=9, null=True)
     email = models.EmailField(max_length=100, null = True) 
-    class_key = models.ForeignKey(Class, on_delete=models.CASCADE)
+    class_key = models.ForeignKey(Class, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     seating = models.CharField(choices=Seating().choices, default="NA", max_length=3)

@@ -90,3 +90,24 @@
   display: inline-block;
   margin-top: 0px;
 }
+
+.toggle-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.toggle-container label {
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.dropped-student {
+  background-color: #ffe6e6 !important; /* Light red background */
+  color: #666; /* Greyed out text */
+  text-decoration: line-through; /* Strikethrough text */
+}
+
+.dropped-student:hover {
+  background-color: #ffcccc !important; /* Slightly darker red on hover */
+}

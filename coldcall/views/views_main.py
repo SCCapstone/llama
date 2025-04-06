@@ -62,7 +62,7 @@ class HomePageView(LoginRequiredMixin, View):
         search_first_name_query = request.GET.get('search_first_name', '') # default to empty string
         search_last_name_query = request.GET.get('search_last_name', '') # default to empty string
         search_usc_id_query = request.GET.get('search_usc_id', '') # default to empty string
-
+        
         # get the students that are in that class
         if selected_class_id:
             selected_class = Class.objects.get(id=selected_class_id)
@@ -77,7 +77,7 @@ class HomePageView(LoginRequiredMixin, View):
             # all classes, limited to classes authenticated user has access to and are not archived
             students = Student.objects.filter(class_key__professor_key=user, class_key__is_archived=False)
             selected_class = None
-
+            
         # Apply sorting
         if students and sort_query:
             if sort_query == "average_score":

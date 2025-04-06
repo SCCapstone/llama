@@ -109,8 +109,12 @@
             </thead>
             <tbody>
                 {% for student in students %}
-                    <tr>
-                        <td>{% if student.get_average_score <= 3.0 %}
+                    <tr {% if student.dropped %}class="dropped-student"{% endif %}>
+                        <td>
+                            {% if student.dropped %}
+                                <span title="Student has been dropped">🚫</span>
+                            {% endif %}
+                            {% if student.get_average_score <= 3.0 %}
                                 <span title="Average score below 60%">⚠️</span>
                             {% endif %}
                             {% if student.calculate_attendance_rate <= 75.0 %}

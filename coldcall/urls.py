@@ -41,7 +41,7 @@ urlpatterns = [
     path("editstudent/<int:student_id>", views.EditStudentView.as_view(), name="edit_student"),
     path("student/<int:student_id>/update", views.StudentUpdateView.as_view(), name="student_update"),
     path("student/<int:student_id>/delete", views.StudentDeleteView.as_view(), name="student_delete"),
-    path('drop_student/<int:student_id>/', views.StudentDeleteView.as_view, name='drop_student'),
+    path("student/<int:student_id>/drop", views.StudentDropView.as_view(), name="student_drop"),
     path('transfer_student/<int:student_id>/', views.StudentUpdateView.as_view(), name='transfer_student'),
 
     # Add class 

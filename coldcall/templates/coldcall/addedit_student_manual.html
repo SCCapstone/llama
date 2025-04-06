@@ -136,12 +136,20 @@
       <div class="form-group">
         <button type="button" id="delete-button" class="delete-button">Delete Student</button>
       </div>
+      
+      <form id="drop-student-form" action="{% url 'student_drop' student.id %}" method="post" style="display:none;">
+        {% csrf_token %}
+      </form>
+      <div class="form-group">
+        <button type="button" id="drop-button" class="delete-button">{% if student.dropped %}Undrop Student{% else %}Drop Student{% endif %}</button>
+      </div>
       {% endif %}
     </div>
 
     <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
     <script>
       buttonConfirm('delete-button', 'delete-student-form', 'Please confirm if you want to delete student: {{ student.first_name }} {{ student.last_name }}');
+      buttonConfirm('drop-button', 'drop-student-form', '{% if student.dropped %}Please confirm if you want to undrop student: {{ student.first_name }} {{ student.last_name }}{% else %}Please confirm if you want to drop student: {{ student.first_name }} {{ student.last_name }} from class{% endif %}');
     </script>
   </body>
 </html>
