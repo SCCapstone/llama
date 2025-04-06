@@ -15,6 +15,11 @@
 </head>
 <body>
   <div class="form-container">
+    {% if messages %}
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    {% endif %}
     <h2>{% if student %}Edit Student{% else %}Add New Student{% endif %}</h2>
     <form method="post">
       {% csrf_token %}

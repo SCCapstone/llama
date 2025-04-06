@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -43,6 +44,8 @@ class AddStudentManualView(LoginRequiredMixin, TemplateView):
             seating=seating,
             email=email,
         )
+
+        messages.success(request, f"Student {first_name} {last_name} added successfully!")
 
         # Clear the form fields and allow the user to add another student
         return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user)})

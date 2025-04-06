@@ -147,7 +147,7 @@ class StudentRandomizerView(LoginRequiredMixin,View):
                 if selected_class.professor_key != request.user:
                     selected_class = None
                 else: 
-                    students = list(Student.objects.filter(class_key=selected_class))
+                    students = list(Student.objects.filter(class_key=selected_class, dropped=False))
                     # randomly select a student if there are students in the selected class
                     if students:
                         # set maximum calls requirement to 3 higher than the lowest in the class 
