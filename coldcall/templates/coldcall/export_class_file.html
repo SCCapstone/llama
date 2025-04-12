@@ -62,23 +62,29 @@
     </div>
 
     <script>
-        document.querySelectorAll('.class-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const selectedClassesList = document.getElementById('selected-classes-list');
-                
-                // Clear current list
-                selectedClassesList.innerHTML = '';
-                
-                // Get all checked checkboxes
-                const checkedBoxes = document.querySelectorAll('.class-checkbox:checked');
-                
-                // Add each selected class to the list
-                checkedBoxes.forEach(checked => {
-                    const li = document.createElement('li');
-                    li.textContent = checked.nextElementSibling.textContent;
-                    selectedClassesList.appendChild(li);
-                });
+        function updateSelectedClasses() {
+            const selectedClassesList = document.getElementById('selected-classes-list');
+            
+            // Clear current list
+            selectedClassesList.innerHTML = '';
+            
+            // Get all checked checkboxes
+            const checkedBoxes = document.querySelectorAll('.class-checkbox:checked');
+            
+            // Add each selected class to the list
+            checkedBoxes.forEach(checked => {
+                const li = document.createElement('li');
+                li.textContent = checked.nextElementSibling.textContent;
+                selectedClassesList.appendChild(li);
             });
+        }
+
+        // Run the function on page load
+        document.addEventListener('DOMContentLoaded', updateSelectedClasses);
+
+        // Add event listeners to checkboxes
+        document.querySelectorAll('.class-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedClasses);
         });
     </script>
 </body>
