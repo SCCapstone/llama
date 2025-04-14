@@ -4,12 +4,19 @@
   {% load static %}
 {% block styles %}
   <link rel="stylesheet" href="{% static 'coldcall/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'coldcall/student_rating_edit.css' %}" />
 {% endblock %}
+
+{% block content %}
   <head>
     <meta charset="UTF-8">
     <title>Edit Rating</title>
   </head>
 
+<div class="top-title">
+    <h1>Edit Rating</h1>
+</div>
+<div class="container">
 <body>
     <form method="post">
         {% csrf_token %}
@@ -22,4 +29,9 @@
         <button type="submit">Save</button>
     </form>
 </body>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
+{% endblock %}
 </html>

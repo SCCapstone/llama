@@ -1,0 +1,29 @@
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1.2em;
+    color: #333;
+    background-color: #f9f9f9;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: block;
+    max-width: 70%;
+}
+
+.container input[type="text"],
+.container input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1em;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.container input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}

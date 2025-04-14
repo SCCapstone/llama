@@ -1,8 +1,37 @@
-{% extends 'coldcall/student_rating_edit.html'%}
 {% include 'coldcall/mobile/base.html' %}
-
-{% load static %}
-
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
 {% block styles %}
   <link rel="stylesheet" href="{% static 'coldcall/mobile/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'coldcall/mobile/student_rating_edit.css' %}" />
 {% endblock %}
+
+{% block content %}
+  <head>
+    <meta charset="UTF-8">
+    <title>Edit Rating</title>
+  </head>
+
+<div class="top-title">
+    <h1>Edit Rating</h1>
+</div>
+<div class="container">
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <input type="number" id="rating" name="rating" min="1" max="5" value = {{rating.score}}>
+        <label for="rating">Rating</label>
+        <input type="checkbox" id="present" name="present" {%if rating.attendance%} checked {% endif %}>
+        <label for="present">Present</label>
+        <input type="checkbox" id="prepared" name="prepared" {%if rating.prepared %} checked {% endif %}>
+        <label for="prepared">Prepared</label>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{% static 'coldcall/js/button_confirm.js' %}"></script>
+{% endblock %}
+</html>
