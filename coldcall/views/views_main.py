@@ -10,7 +10,7 @@ from django.db.models.functions import Lower
 from django.views import View
 from django.views.generic import FormView
 
-from .view_helper import get_template_dir
+from .view_helper import get_template_dir, get_demo_dir
 from ..forms import LoginUserForm, RegisterUserForm
 from ..models import Student, Class, UserData
 
@@ -39,7 +39,7 @@ class LoginView(DjangoLoginView):
 class HomePageView(LoginRequiredMixin, View):
 
     # user needs to login first
-    login_url = '/accounts/login'
+    login_url = '/demo/'
 
     def get(self, request):
         self.template_name = get_template_dir("home", request.is_mobile)
@@ -261,3 +261,8 @@ class ChangePasswordView(View):
         else:
             messages.error(request, "Password must be at least 8 characters long!")
             return redirect('profile')
+        
+class DemoView(View):
+    def get(self, request):
+        self.template_name = get_demo_dir()
+        return render(request, self.template_name)

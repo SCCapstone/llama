@@ -7,6 +7,9 @@ def get_template_dir(in_str, mobile):
     else:
         return BASE_TEMPLATE_DIR + in_str + ".html"
     
+def get_demo_dir():
+    return BASE_TEMPLATE_DIR + "demo/demo.html"
+    
 #ExportClassFileView constants
 STUDENT_ATTRIBUTES = ['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id']
 RATING_ATTRIBUTES = ['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id']
