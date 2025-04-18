@@ -75,7 +75,7 @@ class AddStudentManualView(LoginRequiredMixin, TemplateView):
             messages.success(request, f"{len(usc_id)} students added successfully!")
 
         # Clear the form fields and allow the user to add another student
-        return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user)})
+        return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'selected_class': class_key})
 
 class EditStudentView(LoginRequiredMixin, TemplateView):
     def get(self, request, student_id=None):
