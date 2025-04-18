@@ -15,6 +15,11 @@
 <body>
     <div id="export-form">
         <h2>Export Class Data</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
         <form method="post">
             {% csrf_token %}
             <div class="form-group">

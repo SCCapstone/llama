@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import TemplateView
@@ -28,20 +29,25 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
         classes = Class.objects.filter(professor_key = request.user, is_archived=False)
         return render(request, self.template_name, {'classes': classes, 'selected_class': selected_class})
     
-    def post(self, request, class_id=None): 
+    def post(self, request, class_id=None):
+        self.template_name = get_template_dir("add_student_import", request.is_mobile) 
         class_id = request.POST.get('class_id')
         student_file = request.FILES.get('students')
         rating_file = request.FILES.get("ratings")
         
-        # Check if the file type is csv
-        if not student_file.name.endswith('.csv'):
-            return HttpResponseBadRequest("Invalid file type. Please select a CSV file.")
-        
+                
         try:
             selected_class = Class.objects.get(id=class_id)
         except Class.DoesNotExist:
-            return HttpResponseBadRequest("Invalid class ID.")
+            messages.error(request, "Invalid class ID.")
+            return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'selected_class': None})
         
+        # Check if the file type is csv
+        if not student_file.name.endswith('.csv'):
+            messages.error(request, "Invalid file type. Please select a CSV file.")
+            return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'selected_class': selected_class})
+
+
         decoded_file = student_file.read().decode('utf-8').splitlines()
         reader = csv.DictReader(decoded_file)
 
@@ -143,12 +149,14 @@ class ExportClassFileView(View):
         return render(request, self.template_name, {'classes': classes, 'class_id': class_id})
     
     def post(self, request, class_id=None):
+        self.template_name = get_template_dir("export_class_file", request.is_mobile)
         class_ids = request.POST.getlist('class_id')
         export_type = request.POST.get('export_type')
         file_format = request.POST.get('file_format', 'csv')
 
         if not class_ids or not export_type:
-            return HttpResponseBadRequest("No class ID provided.")
+            messages.error(request, "No class ID provided.")
+            return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'class_id': class_id})
         
         try:
             content_types = {
@@ -227,7 +235,8 @@ class ExportClassFileView(View):
             
             return response
         except Exception as e:
-            return HttpResponseBadRequest(f"Error: {str(e)}")
+            messages.error(request, f"Error: {str(e)}")
+            return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'class_id': class_id})
 
 # TODO: Test above to ensure it functions the same, then remove commented section
 # Gives the user a .csv file containing information about each student in a class
