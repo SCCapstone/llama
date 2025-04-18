@@ -232,7 +232,11 @@ class ProfileView(LoginRequiredMixin, View):
         if last_name:
             user.last_name = last_name
             
-        user.save()
+        try:
+            user.save()
+            messages.success(request, "Profile updated successfully!")
+        except Exception as e:
+            messages.error(request, f"Error updating profile: {e}")
         
         # Handle profile picture upload
         if 'profile_picture' in request.FILES:
