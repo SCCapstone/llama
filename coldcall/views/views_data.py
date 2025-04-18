@@ -188,7 +188,7 @@ class ExportClassFileView(View):
             #export a single file, not to zip
             if len(class_ids) == 1:
                 class_obj = Class.objects.get(id=class_ids[0], professor_key=request.user)
-                filename = f"{class_obj.class_name}_{datetime.now().strftime('%Y%m%d')}{extension}"
+                filename = f"{class_obj.class_name}_{datetime.now().strftime('%Y%m%d')}{"" if export_type == "simple" else "_ratings"}{extension}"
                 response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
                 rows = generate_file(class_obj)
@@ -227,11 +227,11 @@ class ExportClassFileView(View):
                         content = output.getvalue()
 
                     timestamp = datetime.now().strftime('%Y%m%d')
-                    filename = f"{class_obj.class_name}_{timestamp}{extension}"
+                    filename = f"{class_obj.class_name}_{timestamp}{"" if export_type == "simple" else "_ratings"}{extension}"
                     zip_file.writestr(filename, content)
 
             response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
-            response['Content-Disposition'] = f'attachment; filename="class_exports.zip"'
+            response['Content-Disposition'] = f'attachment; filename="class_exports_{datetime.now().strftime('%Y%m%d')}.zip"'
             
             return response
         except Exception as e:
