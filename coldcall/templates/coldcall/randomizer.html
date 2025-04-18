@@ -114,9 +114,11 @@
         <select id="class_id" name="class_id" onchange="this.form.submit()">
             <option value="">-- Choose a Class --</option>
             {% for class in classes %}
-                <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
-                    {{ class.class_name }}
-                </option>
+                {% if not class.is_archived %}
+                    <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                        {{ class.class_name }}
+                    </option>
+                {% endif %}
             {% endfor %}
         </select>
     </form>
