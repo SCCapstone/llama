@@ -81,8 +81,11 @@
             }
             selectedRating = rating;
             prevSelected = rating;
-            
-            document.getElementById('comfirm-btn').style.display = 'block';
+            if (rating === ratingModifiers.Skip) {
+                rateStudent(studentId);
+            } else {
+                document.getElementById('comfirm-btn').style.display = 'block';
+            }
         }
     </script>
 </head>
