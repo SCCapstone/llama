@@ -42,11 +42,11 @@ class AddStudentManualView(LoginRequiredMixin, TemplateView):
             lengths = [len(arr) for arr in arrays]
             return all(length == lengths[0] for length in lengths)
         
-        # convert all into lists if user provided multiple inputs
-        usc_id = usc_id.split(",")
-        first_name = first_name.split(",")
-        last_name = last_name.split(",")
-        email = email.split(",")
+        # convert all into lists if user provided multiple inputs, remove whitespace
+        usc_id = [s.strip() for s in usc_id.split(",")]
+        first_name = [s.strip() for s in first_name.split(",")]
+        last_name = [s.strip() for s in last_name.split(",")]
+        email = [s.strip() for s in email.split(",")]
 
         if not same_length_arr(usc_id, first_name, last_name, email):
             messages.error(request, "All fields must have the same number of entries.")
