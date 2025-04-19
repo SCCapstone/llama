@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import UniqueConstraint
 
 import datetime
 import os
@@ -33,6 +34,11 @@ class Class(models.Model):
             "attendance_rate": (student.total_calls - student.absent_calls) / student.total_calls * 100 if student.total_calls else 0
         } for student in students]
         return performance_data
+    
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['professor_key', 'class_name', 'start_date', 'end_date'], name='unique_class_name_per_professor')
+        ]
 
 class Seating:
     choices = (

@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("", include("coldcall.urls")),
-    # path('admin/', admin.site.urls)
+    # path('admin/', admin.site.urls) enable for django admin for model management, not recommended for production
 ]
 
 # Serve media files in development
