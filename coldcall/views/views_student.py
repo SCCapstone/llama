@@ -128,7 +128,7 @@ class StudentMetricsView(LoginRequiredMixin,DetailView):
         context = super().get_context_data(**kwargs)
         #self.object returns Student object(Student object(pk))
         #grab pk to fix this
-        student = Student(self.object).pk
+        student = self.object
         attendance_rate = student.calculate_attendance_rate()
         performance = student.performance_summary()
         context['attendance_difference'] = student.total_calls - student.absent_calls

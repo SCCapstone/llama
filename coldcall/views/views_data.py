@@ -6,7 +6,9 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import TemplateView
 
-from datetime import datetime
+from django.utils.timezone import is_aware
+from datetime import datetime, timezone
+from dateutil.parser import parse
 
 from .view_helper import get_template_dir, STUDENT_ATTRIBUTES, RATING_ATTRIBUTES
 from ..models import Class, Student, StudentRating
@@ -121,12 +123,20 @@ class AddStudentImportView(LoginRequiredMixin, TemplateView):
                     attendance = row.get('attendance', "TRUE").strip().upper()
                     prepared = row.get('prepared', "FALSE").strip().upper()
                     score = row.get('score', '0').strip()
+
+                    try:
+                        date = parse(date)
+                        if not date.tzinfo:
+                            date = date.replace(tzinfo=timezone.utc)
+                    except Exception:
+                        pass
+
                     #grab student from existing set
                     student = students.get(usc_id)
 
                     StudentRating.objects.update_or_create(
                         student_key = student,
-                        date = datetime.fromisoformat(date),
+                        date = date,
                         defaults={
                             'attendance': attendance == "TRUE",
                             'prepared': prepared == "TRUE",
@@ -167,6 +177,14 @@ class ExportClassFileView(View):
             extensions = {'csv': '.csv', 'txt': '.txt', 'excel': '.xlsx'}
             content_type = content_types.get(file_format, 'text/csv')
             extension = extensions.get(file_format, '.csv')
+
+            def format_iso_date(date):
+                if isinstance(date, datetime):
+                    if is_aware(date):
+                        return date.isoformat()
+                    return date.replace(tzinfo=None).isoformat
+                return date
+
         
             # Generates the rows for the given class
             # Simple only exports a list of student attributes, otherwise export student ratings
@@ -178,7 +196,7 @@ class ExportClassFileView(View):
                     else:
                         for rating in student.studentrating_set.all():
                             rows.append([student.usc_id, 
-                                         rating.date.replace(tzinfo=None) if isinstance(rating.date, datetime) and rating.date is not None else rating.date, 
+                                         format_iso_date(rating.date), 
                                          rating.attendance, rating.prepared, rating.score, student.class_key.pk])
 
                 return rows
