@@ -134,16 +134,12 @@ class StudentMetricsView(LoginRequiredMixin,DetailView):
         context['attendance_difference'] = student.total_calls - student.absent_calls
         context['attendance_rate'] = attendance_rate
         context['performance_summary'] = performance
-        context['student_perf'] = StudentRating.objects.filter(student_key = student.pk)
+        context['student_perf'] = StudentRating.objects.filter(student_key = student.pk).order_by('date')
         context['notes'] = StudentNote.objects.filter(student_key = student.pk)
         
-        ratings = StudentRating.objects.filter(student_key = student.pk).order_by('date').values('date', 'score', 'attendance', 'prepared')
+        ratings_list = list(context['student_perf'].values('date', 'score', 'attendance', 'prepared'))
         # convert ratings into json parsable object, date isn't serializable[?]
-        ratings_list = list(ratings)
-        # for rating in ratings_list:
-        #     rating['date'] = rating['date'].strftime("%Y-%m-%d")
-        
-        # context['rating_list'] = json.dumps(ratings_list)
+
         context['rating_list'] = ratings_list
         return context
 
