@@ -60,6 +60,7 @@ class Student(models.Model):
     seating = models.CharField(choices=Seating().choices, default="NA", max_length=3)
     total_calls = models.IntegerField(default=0)
     absent_calls = models.IntegerField(default=0)
+    unprepared_calls = models.IntegerField(default=0)
     total_score = models.IntegerField(default=0)
     dropped = models.BooleanField(default=False)
 
@@ -79,7 +80,7 @@ class Student(models.Model):
     def get_average_score(self):
         if self.total_calls - self.absent_calls <= 0:
             return 0
-        return round(self.total_score/(self.total_calls-self.absent_calls), 2)
+        return round(self.total_score/(self.total_calls-self.absent_calls-self.unprepared_calls), 2)
     
     def performance_summary(self):
         attendance_rate = self.calculate_attendance_rate()
@@ -93,6 +94,7 @@ class Student(models.Model):
     def recalculate_all(self):
         self.recalculate_total_calls()
         self.recalculate_absent_calls()
+        self.recalculate_unprepared_calls()
         self.recalculate_total_score()
         return self
         
@@ -106,8 +108,13 @@ class Student(models.Model):
         self.save()
         return self.absent_calls
     
+    def recalculate_unprepared_calls(self):
+        self.unprepared_calls = len(StudentRating.objects.filter(student_key = self, prepared = False))
+        self.save()
+        return self.unprepared_calls
+    
     def recalculate_total_score(self):
-        self.total_score = sum(s.score for s in StudentRating.objects.filter(student_key = self, attendance = True))
+        self.total_score = sum(s.score for s in StudentRating.objects.filter(student_key = self, attendance = True, prepared = True))
         self.save()
         return self.total_score
 

@@ -79,8 +79,8 @@ function draw_points() {
         ctx.arc(x, y, padding*.5, 0, 2*Math.PI);
         ctx.fill();
 
-        // don't update weighted average on absent
-        if(point.attendance) {
+        // don't update weighted average on absent or unprpared
+        if(point.attendance && point.prepared) {
             // draw running average line 
             ctx.beginPath();
             ctx.setLineDash([4,4]) //4 pixels on, 4 pixels off
