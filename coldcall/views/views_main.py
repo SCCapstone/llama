@@ -103,6 +103,9 @@ class HomePageView(LoginRequiredMixin, View):
                 ).order_by('avg') #final sort, ascending
             else:
                 students = students.order_by(Lower(sort_query))
+        else:
+            # Making sure that non-dropped students are displayed first then dropped students
+            students = students.order_by('dropped', Lower('last_name'))
 
         # Apply search filters
         if students and search_first_name_query:

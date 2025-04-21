@@ -130,6 +130,9 @@ class Student(models.Model):
         return [self.usc_id, self.email, self.first_name, self.last_name,
                 self.seating, self.total_calls, self.absent_calls, self.total_score, self.class_key.pk]
     
+    class Meta:
+        ordering = ['dropped', 'last_name']
+
 class StudentRating(models.Model):
     student_key = models.ForeignKey(Student, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
