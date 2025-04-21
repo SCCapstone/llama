@@ -12,6 +12,9 @@
     <a href="/manageclasses" class="nav-item">
       Manage Classes
     </a>
+    <a href="/randomizer" class="nav-item">
+      Randomize
+    </a>
     <a href="/profile/" class="nav-item">
       {% if user.is_authenticated and user.userdata.profile_picture %}
         <img src="{{ user.userdata.profile_picture.url }}" alt="Profile" class="profile-picture-nav">
