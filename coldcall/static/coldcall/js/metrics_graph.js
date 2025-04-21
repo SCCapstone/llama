@@ -96,10 +96,56 @@ function draw_points() {
     }
 }
 
+function calculate_linear_regression(data) {
+    let n = data.length;
+    if (n == 0) return null;
+
+    let sum_x = 0, sum_y = 0, sum_xy = 0, sum_x2 = 0;
+
+    for (let i = 0; i < n; i++) {
+        let x = i+1;
+        let y = data[i].score;
+
+        sum_x += x;
+        sum_y += y;
+        sum_xy += x*y;
+        sum_x2 += x*x;
+    }
+    // line of best fit formula
+    let slope = ((n * sum_xy) - (sum_x * sum_y)) / ((n * sum_x2) - (sum_x * sum_x));
+    let intercept = (sum_y - (slope * sum_x)) / n;
+
+    return { slope, intercept };
+}
+
+function draw_best_fit() {
+    let data = rating_data.filter(p => p.attendance && p.prepared)
+        .map((p, i) => ({score: p.score, index: i+1}));
+
+    if(data.length < 2) return;
+
+    let { slope, intercept } = calculate_linear_regression(data);
+
+    let x1 = padding;
+    let y1 = g_height + padding - (((slope * 1 + intercept) * g_height) / max_score);
+
+    let x2 = padding + (rating_data.length * g_width) / rating_data.length;
+    let y2 = g_height + padding - (((slope * rating_data.length + intercept) * g_height) / max_score);
+
+    ctx.beginPath();
+    ctx.setLineDash([2, 2]);
+    ctx.strokeStyle = "blue";
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+}
+
+
 function draw_all() {
     ctx.clearRect(0, 0, c_width, c_height); // clears canvas on each draw
     init_graph();
     draw_points();
+    draw_best_fit();
 }
 
 function show_hover(x, y, txt) {
