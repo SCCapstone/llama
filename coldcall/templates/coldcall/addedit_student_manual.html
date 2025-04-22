@@ -71,9 +71,11 @@
           <label for="class_key">Class</label>
           <select id="class_key" name="class_key" required>
             {% for class in classes %}
-              <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
-                {{ class.class_name }}
-              </option>
+              {% if not class.is_archived %}
+                <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                  {{ class.class_name }}
+                </option>
+              {% endif %}
             {% endfor %}
           </select>
         </div>

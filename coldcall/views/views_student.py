@@ -83,10 +83,11 @@ class EditStudentView(LoginRequiredMixin, TemplateView):
         classes = Class.objects.filter(professor_key = request.user)
         try:
             student = Student.objects.get(id=student_id)
+            selected_class = student.class_key
         except Student.DoesNotExist:
             student = None
 
-        return render(request, self.template_name, {'classes': classes, 'student': student})
+        return render(request, self.template_name, {'classes': classes, 'student': student, 'selected_class': selected_class})
     def post(self, request, student_id=None):
         self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
         usc_id = request.POST.get('usc_id').upper()
