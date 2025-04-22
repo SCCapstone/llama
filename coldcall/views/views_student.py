@@ -50,14 +50,14 @@ class AddStudentManualView(LoginRequiredMixin, TemplateView):
 
         if not same_length_arr(usc_id, first_name, last_name, email):
             messages.error(request, "All fields must have the same number of entries.")
-            return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user)})
+            return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'usc_id': array_to_string(usc_id), 'first_name': array_to_string(first_name), 'last_name': array_to_string(last_name), 'email': array_to_string(email), 'seating': seating, 'selected_class': class_key})
         
         # add all students at once, abort on failure
         with transaction.atomic():
             for i in range(len(usc_id)):
                 if len(usc_id[i]) > 9:
                     messages.error(request, "USC ID must be 9 characters long.")
-                    return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user)})
+                    return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'usc_id': array_to_string(usc_id), 'first_name': array_to_string(first_name), 'last_name': array_to_string(last_name), 'email': array_to_string(email), 'seating': seating, 'selected_class': class_key})
                 
                 student = Student(
                     usc_id=usc_id[i],
@@ -87,7 +87,16 @@ class EditStudentView(LoginRequiredMixin, TemplateView):
         except Student.DoesNotExist:
             student = None
 
-        return render(request, self.template_name, {'classes': classes, 'student': student, 'selected_class': selected_class})
+        return render(request, self.template_name, {
+            'student': student,
+            'classes': classes,
+            'usc_id': student.usc_id,
+            'first_name': student.first_name,
+            'last_name': student.last_name,
+            'email': student.email,
+            'seating': student.seating,
+            'selected_class': selected_class
+        })
     def post(self, request, student_id=None):
         self.template_name = get_template_dir("addedit_student_manual", request.is_mobile)
         usc_id = request.POST.get('usc_id').upper()
@@ -111,6 +120,9 @@ class EditStudentView(LoginRequiredMixin, TemplateView):
             student.class_key = class_key
             student.seating = seating
             student.email = email
+            if len(usc_id) > 9:
+                messages.error(request, "USC ID must be 9 characters long.")
+                return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'student': student, 'usc_id': usc_id, 'first_name': first_name, 'last_name': last_name, 'email': email, 'seating': seating, 'selected_class': class_key})
             student.save()
         else:
             return HttpResponseBadRequest("Student ID is required for updating.")
@@ -262,3 +274,6 @@ class DeleteNoteView(View):
             
             # Redirect back to the student's notes page
             return redirect('student_metrics', pk=student_id)
+    
+def array_to_string(array):
+    return ', '.join(array) if isinstance(array, list) else array
