@@ -88,12 +88,12 @@
         </form>
     </div>
 
-    <!-- Icon Legend -->
+    <!-- Icon Legend with all items initially hidden -->
     <div class="icon-legend">
         <span class="legend-title">Icons:</span>
-        <span class="legend-item"><span class="emoji">🚫</span> Student has been dropped</span>
-        <span class="legend-item"><span class="emoji">⚠️</span> Average score below 60%</span>
-        <span class="legend-item"><span class="emoji">❗</span> Attendance rate below 75%</span>
+        <span class="legend-item" id="dropped-legend" style="display: none"><span class="emoji">🚫</span> Student has been dropped</span>
+        <span class="legend-item" id="low-score-legend" style="display: none"><span class="emoji">⚠️</span> Average score below 60%</span>
+        <span class="legend-item" id="low-attendance-legend" style="display: none"><span class="emoji">❗</span> Attendance rate below 75%</span>
     </div>
     
     <!-- Display Students for the Selected Class -->
@@ -110,18 +110,18 @@
                     <th>Edit</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="student-table-body">
                 {% for student in students %}
                     <tr {% if student.dropped %}class="dropped-student"{% endif %}>
                         <td>
                             {% if student.dropped %}
-                                <span title="Student has been dropped">🚫</span>
+                                <span title="Student has been dropped" class="icon-dropped">🚫</span>
                             {% endif %}
                             {% if student.get_average_score is not None and student.get_average_score > 0 and student.get_average_score <= 3.0 %}
-                                <span title="Average score below 60%">⚠️</span>
+                                <span title="Average score below 60%" class="icon-low-score">⚠️</span>
                             {% endif %}
                             {% if student.calculate_attendance_rate is not None and student.calculate_attendance_rate > 0 and student.calculate_attendance_rate <= 75.0 %}
-                                <span title="Attendance rate below 75%">❗</span>
+                                <span title="Attendance rate below 75%" class="icon-low-attendance">❗</span>
                             {% endif %}
                         </td>
                         <td>{{ student.first_name }}</td>
@@ -149,6 +149,32 @@
 {% else %}
     <p>You need to <a href="{% url 'login' %}">log in</a> to view your classes and students.</p>
 {% endif %}
+
+<script>
+// Immediately execute the script to show the used icons in the legend
+(function() {
+    // Check if icons are present in the table
+    var hasDropped = document.querySelector('.icon-dropped') !== null;
+    var hasLowScore = document.querySelector('.icon-low-score') !== null;
+    var hasLowAttendance = document.querySelector('.icon-low-attendance') !== null;
+    
+    // Show legend items present icons
+    if (hasDropped) {
+        document.getElementById('dropped-legend').style.display = 'inline-block';
+    }
+    if (hasLowScore) {
+        document.getElementById('low-score-legend').style.display = 'inline-block';
+    }
+    if (hasLowAttendance) {
+        document.getElementById('low-attendance-legend').style.display = 'inline-block';
+    }
+    
+    // Hide legend if no icons are present
+    if (!hasDropped && !hasLowScore && !hasLowAttendance) {
+        document.querySelector('.icon-legend').style.display = 'none';
+    }
+})();
+</script>
 
 </body>
 <script>

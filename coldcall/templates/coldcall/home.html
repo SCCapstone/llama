@@ -86,21 +86,21 @@
                     <option value="absent_calls" {% if sort == 'absent_calls' %}selected{% endif %}>Absent Calls</option>
                     <option value="average_score" {% if sort == 'average_score' %}selected{% endif %}>Average Score</option>
                 </select>
-                <!-- Hidden input to keep class_id when sorting -->
+                <!-- Hidden input to keep class_id -->
                 <input type="hidden" name="class_id" value="{{ selected_class.id }}">
-                <!-- Hidden input to keep search queries when sorting -->
+                <!-- Hidden input to keep search queries -->
                 <input type="hidden" name="search_first_name" value="{{ first_name }}">
                 <input type="hidden" name="search_last_name" value="{{ last_name }}">
                 <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
             </form>
         </div>
         
-        <!-- Icon Legend -->
+        <!-- Dynamic Icon Legend -->
         <div class="icon-legend">
             <span class="legend-title">Icons:</span>
-            <span class="legend-item"><span class="emoji">🚫</span> Student has been dropped</span>
-            <span class="legend-item"><span class="emoji">⚠️</span> Average score below 60%</span>
-            <span class="legend-item"><span class="emoji">❗</span> Attendance rate below 75%</span>
+            <span class="legend-item" id="dropped-legend" style="display: none"><span class="emoji">🚫</span> Student has been dropped</span>
+            <span class="legend-item" id="low-score-legend" style="display: none"><span class="emoji">⚠️</span> Average score below 60%</span>
+            <span class="legend-item" id="low-attendance-legend" style="display: none"><span class="emoji">❗</span> Attendance rate below 75%</span>
         </div>
         
         <table class="student-table">
@@ -122,13 +122,13 @@
                     <tr {% if student.dropped %}class="dropped-student"{% endif %}>
                         <td>
                             {% if student.dropped %}
-                                <span title="Student has been dropped">🚫</span>
+                                <span title="Student has been dropped" class="icon-dropped">🚫</span>
                             {% endif %}
                             {% if student.get_average_score is not None and student.get_average_score > 0 and student.get_average_score <= 3.0 %}
-                                <span title="Average score below 60%">⚠️</span>
+                                <span title="Average score below 60%" class="icon-low-score">⚠️</span>
                             {% endif %}
                             {% if student.calculate_attendance_rate is not None and student.calculate_attendance_rate > 0 and student.calculate_attendance_rate <= 75.0 %}
-                                <span title="Attendance rate below 75%">❗</span>
+                                <span title="Attendance rate below 75%" class="icon-low-attendance">❗</span>
                             {% endif %}
                         </td>
                         <td>{{ student.first_name }}</td>
@@ -152,6 +152,32 @@
 {% else %}
     <p>You need to <a href="{% url 'login' %}">log in</a> to view your classes and students.</p>
 {% endif %}
+
+<script>
+// Immediately execute this script to show only the used icons in the legend
+(function() {
+    // Check if icons are present in the table
+    var hasDropped = document.querySelector('.icon-dropped') !== null;
+    var hasLowScore = document.querySelector('.icon-low-score') !== null;
+    var hasLowAttendance = document.querySelector('.icon-low-attendance') !== null;
+    
+    // Show the legend items for icons that are present
+    if (hasDropped) {
+        document.getElementById('dropped-legend').style.display = 'inline-block';
+    }
+    if (hasLowScore) {
+        document.getElementById('low-score-legend').style.display = 'inline-block';
+    }
+    if (hasLowAttendance) {
+        document.getElementById('low-attendance-legend').style.display = 'inline-block';
+    }
+    
+    // Hide the entire legend if no icons are present
+    if (!hasDropped && !hasLowScore && !hasLowAttendance) {
+        document.querySelector('.icon-legend').style.display = 'none';
+    }
+})();
+</script>
 
 </body>
 <script>
