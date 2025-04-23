@@ -26,12 +26,14 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-left: 3.5rem;
+  margin-right: 3.5rem;
 }
 
 .student-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .student-table th,
@@ -65,30 +67,52 @@
 }
 
 .sort-container {
-  text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.sort-container form {
+  display: inline-block;
 }
 
 .sort-container label {
   font-weight: bold;
   margin-right: 10px;
-  text-align: center;
+  display: inline-block;
+}
+
+.sort-container select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  width: 150px;
 }
 
 .search-container {
-  text-align: center;
-  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .search-container label {
   font-weight: bold;
   margin-right: 10px;
-  text-align: center;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.search-container input[type="text"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  margin-right: 5px;
+  width: 150px;
 }
 
 .search-container button {
   display: inline-block;
-  margin-top: 0px;
+  vertical-align: middle;
 }
 
 .toggle-container {
@@ -109,4 +133,53 @@
 
 .dropped-student:hover {
   background-color: #ffcccc !important; 
+}
+
+.search-icon-button {
+  width: auto; 
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.search-icon {
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+}
+
+.search-icon-button:hover {
+  background-color: #f0f0f0;
+}
+
+.icon-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px;
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.legend-title {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.emoji {
+  font-size: 18px;
+  margin-right: 5px;
 }

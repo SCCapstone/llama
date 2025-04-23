@@ -50,16 +50,46 @@ For this file, a check for request.is_mobile is used to pass what *would* be the
         <a href="/randomizer" class="nav-link {% if request.path == '/randomizer' %}active{% endif %}">Randomize</a>
       </div>
       <div class="profile-link">
-        <a href="/profile/" class="nav-link {% if request.path == '/profile/' %}active{% endif %}">
-          {% if user.is_authenticated and user.userdata.profile_picture %}
-            <div class="profile-nav-container">
-              <img src="{{ user.userdata.profile_picture.url }}" alt="Profile" class="profile-picture-nav">
-            </div>
-          {% else %}
-            <span class="profile-icon">👤</span>
-          {% endif %}
-        </a>
+        <div class="dropdown" id="profileDropdown">
+          <a href="#" class="nav-link profile-trigger {% if request.path == '/profile/' %}active{% endif %}" id="profileTrigger">
+            {% if user.is_authenticated and user.userdata.profile_picture %}
+              <div class="profile-nav-container">
+                <img src="{{ user.userdata.profile_picture.url }}" alt="Profile" class="profile-picture-nav">
+              </div>
+            {% else %}
+              <span class="profile-icon">👤</span>
+            {% endif %}
+          </a>
+          <div class="dropdown-content" id="profileDropdownContent">
+            <a href="/profile/" class="dropdown-item">Profile</a>
+            <form action="{% url 'logout' %}" method="post" class="logout-form">
+              {% csrf_token %}
+              <button type="submit" class="logout-button">Logout</button>
+            </form>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const profileTrigger = document.getElementById('profileTrigger');
+      const dropdownContent = document.getElementById('profileDropdownContent');
+      
+      // Toggle dropdown on click
+      profileTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        dropdownContent.style.display = 
+          dropdownContent.style.display === 'block' ? 'none' : 'block';
+      });
+      
+      // Close the dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!document.getElementById('profileDropdown').contains(e.target)) {
+          dropdownContent.style.display = 'none';
+        }
+      });
+    });
+  </script>
 {% endif %}

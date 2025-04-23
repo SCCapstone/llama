@@ -54,45 +54,55 @@
         <button type="submit">Randomize Students</button>
     </form>
 
-    <!-- Sort Students -->
-    <div class="sort-container">
-        <form method="get">
-            <label for="sort">Sort Students:</label>
-            <select id="sort" name="sort" onchange="this.form.submit()">
-                <option value="" {% if not sort %}selected{% endif %}>Default</option>
-                <option value="first_name" {% if sort == 'first_name' %}selected{% endif %}>First Name</option>
-                <option value="last_name" {% if sort == 'last_name' %}selected{% endif %}>Last Name</option>
-                <option value="seating" {% if sort == 'seating' %}selected{% endif %}>Seating</option>
-                <option value="total_calls" {% if sort == 'total_calls' %}selected{% endif %}>Total Calls</option>
-                <option value="absent_calls" {% if sort == 'absent_calls' %}selected{% endif %}>Absent Calls</option>
-                <option value="average_score" {% if sort == 'average_score' %}selected{% endif %}>Average Score</option>
-            </select>
-            <!-- Hidden input to keep class_id when sorting -->
-            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
-            <!-- Hidden input to keep search queries when sorting -->
-            <input type="hidden" name="search_first_name" value="{{ first_name }}">
-            <input type="hidden" name="search_last_name" value="{{ last_name }}">
-            <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
-        </form>
-    </div>
-
-    <!-- Search Students -->
-    <div class = "search-container">
-        <form method="get">
-            <label for="search">Search Students:</label>
-            <input type="text" id="search_first_name" name="search_first_name" value="{{ first_name }}" placeholder="First Name">
-            <input type="text" id="search_last_name" name="search_last_name" value="{{ last_name }}" placeholder="Last Name">
-            <input type="text" id="search_usc_id" name="search_usc_id" value="{{ usc_id }}" placeholder="USC ID">
-            <!-- Hidden input to keep class_id when searching -->
-            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
-            <!-- Hidden input to keep sort when searching -->
-            <input type="hidden" name="sort" value="{{ sort }}">
-            <button type="submit" onclick="this.form.submit()">Search</button>
-        </form>
-    </div>
-
     <!-- Display Students for the Selected Class -->
     <div class="student-table-container">
+        <!-- Search Students -->
+        <div class="search-container">
+            <form method="get">
+                <label for="search">Search Students:</label>
+                <input type="text" id="search_first_name" name="search_first_name" value="{{ first_name }}" placeholder="First Name">
+                <input type="text" id="search_last_name" name="search_last_name" value="{{ last_name }}" placeholder="Last Name">
+                <input type="text" id="search_usc_id" name="search_usc_id" value="{{ usc_id }}" placeholder="USC ID">
+                <!-- Hidden input to keep class_id when searching -->
+                <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+                <!-- Hidden input to keep sort when searching -->
+                <input type="hidden" name="sort" value="{{ sort }}">
+                <button type="submit" class="search-icon-button">
+                    <img src="{% static 'coldcall/icons/search.png' %}" alt="Search" class="search-icon">
+                </button>
+            </form>
+        </div>
+        
+        <!-- Sort Students -->
+        <div class="sort-container">
+            <form method="get">
+                <label for="sort">Sort Students:</label>
+                <select id="sort" name="sort" onchange="this.form.submit()">
+                    <option value="" {% if not sort %}selected{% endif %}>Default</option>
+                    <option value="first_name" {% if sort == 'first_name' %}selected{% endif %}>First Name</option>
+                    <option value="last_name" {% if sort == 'last_name' %}selected{% endif %}>Last Name</option>
+                    <option value="seating" {% if sort == 'seating' %}selected{% endif %}>Seating</option>
+                    <option value="total_calls" {% if sort == 'total_calls' %}selected{% endif %}>Total Calls</option>
+                    <option value="absent_calls" {% if sort == 'absent_calls' %}selected{% endif %}>Absent Calls</option>
+                    <option value="average_score" {% if sort == 'average_score' %}selected{% endif %}>Average Score</option>
+                </select>
+                <!-- Hidden input to keep class_id when sorting -->
+                <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+                <!-- Hidden input to keep search queries when sorting -->
+                <input type="hidden" name="search_first_name" value="{{ first_name }}">
+                <input type="hidden" name="search_last_name" value="{{ last_name }}">
+                <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
+            </form>
+        </div>
+        
+        <!-- Icon Legend -->
+        <div class="icon-legend">
+            <span class="legend-title">Icons:</span>
+            <span class="legend-item"><span class="emoji">🚫</span> Student has been dropped</span>
+            <span class="legend-item"><span class="emoji">⚠️</span> Average score below 60%</span>
+            <span class="legend-item"><span class="emoji">❗</span> Attendance rate below 75%</span>
+        </div>
+        
         <table class="student-table">
             <thead>
                 <tr>
@@ -138,12 +148,6 @@
             </tbody>
         </table>
     </div>
-
-    <!-- Logout form -->
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
 
 {% else %}
     <p>You need to <a href="{% url 'login' %}">log in</a> to view your classes and students.</p>
