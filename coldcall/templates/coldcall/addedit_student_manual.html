@@ -33,7 +33,7 @@
             type="text"
             id="first_name"
             name="first_name"
-            value="{{ student.first_name|default:'' }}"
+            value="{{ first_name|default:'' }}"
             required />
         </div>
 
@@ -43,7 +43,7 @@
             type="text"
             id="last_name"
             name="last_name"
-            value="{{ student.last_name|default:'' }}"
+            value="{{ last_name|default:'' }}"
             required />
         </div>
 
@@ -53,7 +53,7 @@
             type="text"
             id="usc_id"
             name="usc_id"
-            value="{{ student.usc_id|default:'' }}"
+            value="{{ usc_id|default:'' }}"
             required />
         </div>
 
@@ -63,7 +63,7 @@
             type="text"
             id="email"
             name="email"
-            value="{{ student.email|default:'' }}"
+            value="{{ email|default:'' }}"
             required />
         </div>
 
@@ -71,9 +71,11 @@
           <label for="class_key">Class</label>
           <select id="class_key" name="class_key" required>
             {% for class in classes %}
-              <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
-                {{ class.class_name }}
-              </option>
+              {% if not class.is_archived %}
+                <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                  {{ class.class_name }}
+                </option>
+              {% endif %}
             {% endfor %}
           </select>
         </div>
@@ -81,13 +83,13 @@
         <div class="form-group">
           <label for="seating">Seating</label>
           <select id="seating" name="seating">
-            <option value="FR" {% if student and student.seating == 'FR' %}selected{% endif %}>Front Right</option>
-                    <option value="FM" {% if student and student.seating == 'FM' %}selected{% endif %}>Front Middle</option>
-                    <option value="FL" {% if student and student.seating == 'FL' %}selected{% endif %}>Front Left</option>
-                    <option value="BR" {% if student and student.seating == 'BR' %}selected{% endif %}>Back Right</option>
-                    <option value="BM" {% if student and student.seating == 'BM' %}selected{% endif %}>Back Middle</option>
-                    <option value="BL" {% if student and student.seating == 'BL' %}selected{% endif %}>Back Left</option>
-                    <option value="NA" {% if student and student.seating == 'NA' %}selected{% endif %}>None</option>
+            <option value="FR" {% if student and seating == 'FR' %}selected{% endif %}>Front Right</option>
+                    <option value="FM" {% if student and seating == 'FM' %}selected{% endif %}>Front Middle</option>
+                    <option value="FL" {% if student and seating == 'FL' %}selected{% endif %}>Front Left</option>
+                    <option value="BR" {% if student and seating == 'BR' %}selected{% endif %}>Back Right</option>
+                    <option value="BM" {% if student and seating == 'BM' %}selected{% endif %}>Back Middle</option>
+                    <option value="BL" {% if student and seating == 'BL' %}selected{% endif %}>Back Left</option>
+                    <option value="NA" {% if student and seating == 'NA' %}selected{% endif %}>None</option>
           </select>
         </div>
         {% comment %} Should not display on edit student page:
