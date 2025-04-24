@@ -40,9 +40,12 @@ function init_graph() {
     ctx.lineTo(g_width + padding, g_height + padding);
     ctx.stroke();
 
-    // draw horizontal lines
+    // draw horizontal lines and text
     ctx.strokeStyle = "gray"
     for(let i = min_score; i <= max_score; i++) {
+        ctx.font = "12px Arial";
+        ctx.fillText(5-i, padding-10, (i * g_height) / max_score + padding);
+
         ctx.beginPath();
         
         ctx.moveTo(padding, padding);

@@ -74,6 +74,16 @@
             {{ rating_list | json_script:"rating_data" }}
             <script src="{% static 'coldcall/js/metrics_graph.js' %}"></script>
         </div>
+
+        <div class="metrics-key">
+            <strong>Key:</strong>
+            <span class="key-item"><span class="color-dot" style="background-color: green;"></span> Present</span>
+            <span class="key-item"><span class="color-dot" style="background-color: orange;"></span> Unprepared</span>
+            <span class="key-item"><span class="color-dot" style="background-color: red;"></span> Absent</span>
+            <span class="key-item"><span class="line-dot" style="border-top: 2px solid black;"></span> Running Average</span>
+            <span class="key-item"><span class="line-dot" style="border-top: 2px solid blue;"></span> Trend</span>
+        </div>
+            
         {% if notes %}
             <div class = "notes_div">
                 <div class="container table-container">

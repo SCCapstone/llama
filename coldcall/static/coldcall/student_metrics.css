@@ -57,3 +57,34 @@
 .notes_form {
     text-align:center;
 }
+
+.metrics-key {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.key-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.line-dot {
+    width: 20px;
+    height: 0;
+    border-top: 2px solid black;
+    display: inline-block;
+}
