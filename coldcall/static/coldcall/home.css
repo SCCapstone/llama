@@ -65,10 +65,19 @@
   text-decoration: underline;
 }
 
-.sort-container {
+/* New wrapper to make filters display side by side */
+.filters-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 15px;
+}
+
+.sort-container {
   padding: 10px;
   border-radius: 5px;
+  flex: 0 0 auto;
 }
 
 .sort-container form {
@@ -92,6 +101,7 @@
 .search-container {
   padding: 10px;
   border-radius: 5px;
+  flex: 1 1 auto;
 }
 
 .search-container label {
