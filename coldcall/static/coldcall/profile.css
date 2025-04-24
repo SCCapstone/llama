@@ -184,8 +184,8 @@
     text-align: left;
 }
 
-/* Profile icon styling in header */
-.profile-link a {
+/* Profile icon styling in header - make selector more specific */
+.profile-link a.profile-trigger {
     display: flex;
     justify-content: center;
     align-items: center;
