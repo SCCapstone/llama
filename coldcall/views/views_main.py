@@ -135,6 +135,18 @@ class StudentRandomizerView(LoginRequiredMixin,View):
         # get all classes to populate the dropdown
         classes = Class.objects.filter(professor_key = request.user)
         class_id = request.GET.get('class_id')  # selected class ID from query parameters
+        refresh = request.GET.get('refresh', 'false')  # Check if this is a refresh request
+        
+        # Clear absent students on explicit refresh parameter or when the page loads initially
+        if refresh == 'true' or 'absent_students' not in request.session:
+            request.session['absent_students'] = []
+            request.session.modified = True
+
+        # Reset absent students list if a new class is selected
+        if class_id and class_id != request.session.get('last_class_id'):
+            request.session['absent_students'] = []
+            request.session['last_class_id'] = class_id
+            request.session.modified = True
 
         # initialize variables for the selected class and student
         student = None
@@ -151,17 +163,22 @@ class StudentRandomizerView(LoginRequiredMixin,View):
                     selected_class = None
                 else: 
                     students = list(Student.objects.filter(class_key=selected_class, dropped=False))
+                    
+                    # Filter out students marked as absent in this session
+                    active_students = [s for s in students if str(s.id) not in request.session['absent_students']]
+                    
                     # randomly select a student if there are students in the selected class
-                    if students:
+                    if active_students:
                         # set maximum calls requirement to 3 higher than the lowest in the class 
-                        ms = min((s.total_calls - s.absent_calls) for s in students) + 3
+                        ms = min((s.total_calls - s.absent_calls) for s in active_students) + 3
                         student = None
                         while student == None:
-                            student = random.choice(students)
+                            student = random.choice(active_students)
                             if(student.total_calls-student.absent_calls >= ms):
-                                students.remove(student)
+                                active_students.remove(student)
                                 student = None
-                        
+                    elif students:  # No active students but class has students
+                        messages.info(request, "All students have been marked absent in this session. Use the 'Reset Absent List' button to include them again.")
 
             except Class.DoesNotExist:
                 selected_class = None  # if the class does not exist, reset to None
@@ -182,7 +199,8 @@ class StudentRandomizerView(LoginRequiredMixin,View):
             'student': student,  # randomly selected student
             'avg_rating': student.get_average_score(),
             'empty': False,
-            'id_present' : True
+            'id_present': True,
+            'absent_count': len(request.session.get('absent_students', []))
         }
         return render(request, self.template_name, context)
     
@@ -199,6 +217,16 @@ class StudentRandomizerView(LoginRequiredMixin,View):
         elif rating == "absent":
             rating = 0
             present = False
+            
+            # Add the student to the session's absent list
+            if 'absent_students' not in request.session:
+                request.session['absent_students'] = []
+            
+            student_id = str(data["student_id"])
+            if student_id not in request.session['absent_students']:
+                request.session['absent_students'].append(student_id)
+                request.session.modified = True
+                
         elif rating == "unprepared":
             rating = 0
             prepared = False

@@ -123,6 +123,17 @@
         </select>
     </form>
 
+    {% if absent_count > 0 %}
+    <div class="absent-info">
+        <p>{{ absent_count }} student(s) currently marked as absent in this session</p>
+        <form method="get">
+            <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+            <input type="hidden" name="refresh" value="true">
+            <button type="submit">Reset Absent List</button>
+        </form>
+    </div>
+    {% endif %}
+
     <!-- Display Student Information if a Student is Selected -->
     {% if student %}
     <div class="student-info">
