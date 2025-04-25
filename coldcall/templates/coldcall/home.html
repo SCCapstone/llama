@@ -48,11 +48,54 @@
         </form>
     </div>
     
+    <div class="buttons-group">
     <!-- Randomizer Button -->
-    <form method="get" action="{% url 'randomizer' %}">
+    <form method="get" action="{% url 'randomizer' %}" class="action-button-container">
         <input type="hidden" name="class_id" value="{{ selected_class.id }}">
-        <button type="submit">Randomize Students</button>
+        <button type="submit" class="action-button">Randomize Students</button>
     </form>
+
+    {% if selected_class %}
+    <div class="action-button-container">
+        <button type="button" id="show-add-students-popup" class="action-button">Add Students</button>
+    </div>
+
+    <div id="add-students-popup" class="popup">
+        <div class="popup-inner">
+            <h3>Add Students</h3>
+            <p>How would you like to add students to "{{ selected_class.class_name }}"?</p>
+            <div class="popup-buttons">
+                <a href="{% url 'add_student_manual' selected_class.id %}" class="popup-button">Add Manually</a>
+                <a href="{% url 'add_student_import_with_id' selected_class.id %}" class="popup-button">Import CSV</a>
+            </div>
+            <button id="close-add-students-popup" class="close-popup">Cancel</button>
+        </div>
+    </div>
+    {% endif %}
+
+    </div>
+
+    <script>
+        // Add Students popup functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const showAddStudentsButton = document.getElementById('show-add-students-popup');
+            const addStudentsPopup = document.getElementById('add-students-popup');
+            const closeAddStudentsButton = document.getElementById('close-add-students-popup');
+            
+            if (showAddStudentsButton && addStudentsPopup) {
+                showAddStudentsButton.addEventListener('click', function() {
+                    addStudentsPopup.classList.add('visible');
+                });
+                
+                if (closeAddStudentsButton) {
+                    closeAddStudentsButton.addEventListener('click', function() {
+                        addStudentsPopup.classList.remove('visible');
+                    });
+                }
+            }
+        });
+        </script>
+
 
     <!-- Display Students for the Selected Class -->
     <div class="student-table-container">
