@@ -21,6 +21,20 @@
   background-color: #fff;
 }
 
+/* New container for filter and action buttons */
+.filter-action-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 3.5rem;
+  padding: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
 .student-table-container {
   padding: 10px;
   background-color: #f9f9f9;
@@ -236,17 +250,17 @@
 
 
 .action-button {
-  padding: 10px 20px;
+  padding: 10px;
   background-color: #73000a;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  width: 200px; /* Fixed width for both buttons */
-  text-align: center;
 }
 
 .action-button:hover {
-  background-color: #8f0010;
+  background-color: #500;
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }

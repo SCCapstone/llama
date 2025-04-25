@@ -27,52 +27,53 @@
         </div>  
     </div>
     {% endif %}
-    <!-- Class Filter Dropdown -->
-    <div class="filter-container">
-        <form method="get">
-            <label for="class_id">Select Class:</label>
-            <select id="class_id" name="class_id" onchange="this.form.submit()">
-                <option value="">All Classes</option>
-                {% for class in classes %}
-                    <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
-                        {{ class.class_name }}
-                    </option>
-                {% endfor %}
-            </select>
-            <!-- Hidden input to keep sort when filtering classes -->
-            <input type="hidden" name="sort" value="{{ sort }}">
-            <!-- Hidden input to keep search queries when filtering classes -->
-            <input type="hidden" name="search_first_name" value="{{ first_name }}">
-            <input type="hidden" name="search_last_name" value="{{ last_name }}">
-            <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
-        </form>
-    </div>
-    
-    <div class="buttons-group">
-    <!-- Randomizer Button -->
-    <form method="get" action="{% url 'randomizer' %}" class="action-button-container">
-        <input type="hidden" name="class_id" value="{{ selected_class.id }}">
-        <button type="submit" class="action-button">Randomize Students</button>
-    </form>
-
-    {% if selected_class %}
-    <div class="action-button-container">
-        <button type="button" id="show-add-students-popup" class="action-button">Add Students</button>
-    </div>
-
-    <div id="add-students-popup" class="popup">
-        <div class="popup-inner">
-            <h3>Add Students</h3>
-            <p>How would you like to add students to "{{ selected_class.class_name }}"?</p>
-            <div class="popup-buttons">
-                <a href="{% url 'add_student_manual' selected_class.id %}" class="popup-button">Add Manually</a>
-                <a href="{% url 'add_student_import_with_id' selected_class.id %}" class="popup-button">Import CSV</a>
-            </div>
-            <button id="close-add-students-popup" class="close-popup">Cancel</button>
+    <!-- Class Filter Dropdown and Action Buttons in one row -->
+    <div class="filter-action-container">
+        <div class="filter-container">
+            <form method="get">
+                <label for="class_id">Select Class:</label>
+                <select id="class_id" name="class_id" onchange="this.form.submit()">
+                    <option value="">All Classes</option>
+                    {% for class in classes %}
+                        <option value="{{ class.id }}" {% if selected_class and class.id == selected_class.id %}selected{% endif %}>
+                            {{ class.class_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <!-- Hidden input to keep sort when filtering classes -->
+                <input type="hidden" name="sort" value="{{ sort }}">
+                <!-- Hidden input to keep search queries when filtering classes -->
+                <input type="hidden" name="search_first_name" value="{{ first_name }}">
+                <input type="hidden" name="search_last_name" value="{{ last_name }}">
+                <input type="hidden" name="search_usc_id" value="{{ usc_id }}">
+            </form>
         </div>
-    </div>
-    {% endif %}
+        
+        <div class="action-buttons">
+            <!-- Randomizer Button -->
+            <form method="get" action="{% url 'randomizer' %}" class="action-button-container">
+                <input type="hidden" name="class_id" value="{{ selected_class.id }}">
+                <button type="submit" class="action-button">Coldcall Students</button>
+            </form>
 
+            {% if selected_class %}
+            <div class="action-button-container">
+                <button type="button" id="show-add-students-popup" class="action-button">Add Students</button>
+            </div>
+
+            <div id="add-students-popup" class="popup">
+                <div class="popup-inner">
+                    <h3>Add Students</h3>
+                    <p>How would you like to add students to "{{ selected_class.class_name }}"?</p>
+                    <div class="popup-buttons">
+                        <a href="{% url 'add_student_manual' selected_class.id %}" class="popup-button">Add Manually</a>
+                        <a href="{% url 'add_student_import_with_id' selected_class.id %}" class="popup-button">Import CSV</a>
+                    </div>
+                    <button id="close-add-students-popup" class="close-popup">Cancel</button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
     </div>
 
     <script>
@@ -92,10 +93,17 @@
                         addStudentsPopup.classList.remove('visible');
                     });
                 }
+                
+                // Close popup when clicking outside of popup content
+                addStudentsPopup.addEventListener('click', function(event) {
+                    // If the click is on the popup background (not its content)
+                    if (event.target === addStudentsPopup) {
+                        addStudentsPopup.classList.remove('visible');
+                    }
+                });
             }
         });
         </script>
-
 
     <!-- Display Students for the Selected Class -->
     <div class="student-table-container">
