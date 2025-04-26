@@ -10,7 +10,7 @@ from django.utils.timezone import is_aware
 from datetime import datetime, timezone
 from dateutil.parser import parse
 
-from .view_helper import get_template_dir, STUDENT_ATTRIBUTES, RATING_ATTRIBUTES
+from .view_helper import get_template_dir, STUDENT_ATTRIBUTES, RATING_ATTRIBUTES, SAMPLE_STUDENT, SAMPLE_RATING
 from ..models import Class, Student, StudentRating
 
 import csv
@@ -317,134 +317,38 @@ class ExportClassFileView(View):
             messages.error(request, f"Error: {str(e)}")
             return render(request, self.template_name, {'classes': Class.objects.filter(professor_key=request.user), 'class_id': class_id})
 
-# TODO: Test above to ensure it functions the same, then remove commented section
-# Gives the user a .csv file containing information about each student in a class
-# class ExportClassFileView2(View):
-#     def get(self, request):
-#         self.template_name = get_template_dir("export_class_file", request.is_mobile)
-#         classes = Class.objects.filter(professor_key=request.user)
-#         return render(request, self.template_name, {'classes': classes})
-    
-#     def post(self, request):
-#         class_ids = request.POST.getlist('class_id')
-#         export_type = request.POST.get('export_type')
-#         file_format = request.POST.get('file_format', 'csv')
+class ExportSampleFileView(View):
+    def post(self, request, class_id=None, export_type=None):
+        redirect_name = self.template_name = get_template_dir("add_student_import", request.is_mobile) 
+
+        if not class_id or not export_type:
+            messages.error("Invalid arguments provided.")
+            return render(request, redirect_name)
         
-#         if not class_ids or not export_type:
-#             return HttpResponseBadRequest("No class ID provided.")
+        sample_class = Class.objects.get(id=class_id, professor_key = request.user)
 
-#         try:
-#             # Set content type and extension based on format
-#             content_types = {
-#                 'csv': 'text/csv',
-#                 'txt': 'text/plain',
-#                 'excel': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-#             }
-#             extensions = {'csv': '.csv', 'txt': '.txt', 'excel': '.xlsx'}
-#             content_type = content_types.get(file_format, 'text/csv')
-#             extension = extensions.get(file_format, '.csv')
+        if not sample_class:
+            messages.error("Invalid class provided.")
+            return render(request, redirect_name)
+        
+        CONTENT_TYPE = 'text/csv'
+        EXTENSION = '.csv'
 
-#             # If only one class is selected, return a single file
-#             if len(class_ids) == 1:
-#                 class_obj = Class.objects.get(id=class_ids[0], professor_key=request.user)
-#                 timestamp = datetime.now().strftime('%Y%m%d')
-#                 filename = f"{class_obj.class_name}_{timestamp}{extension}"
+        response = HttpResponse(content_type=CONTENT_TYPE)
 
-#                 if file_format in ['csv', 'txt']:
-#                     response = HttpResponse(content_type=content_type)
-#                     response['Content-Disposition'] = f'attachment; filename="{filename}"'
-#                     writer = csv.writer(response)
-                    
-#                     if export_type == "simple":
-#                         writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id'])
-#                         for student in class_obj.student_set.all():
-#                             writer.writerow([student.usc_id, student.email, student.first_name, student.last_name,
-#                                           student.seating, student.total_calls, student.absent_calls, student.total_score, student.class_key.pk])
-#                     else:  # export_type == "all"
-#                         writer.writerow(['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id'])
-#                         for student in class_obj.student_set.all():
-#                             ratings = StudentRating.objects.filter(student_key=student)
-#                             for rating in ratings:
-#                                 writer.writerow([student.usc_id, rating.date, rating.attendance,
-#                                                rating.prepared, rating.score, student.class_key.pk])
-#                 else:  # Excel format
-#                     wb = Workbook()
-#                     ws = wb.active
-                    
-#                     if export_type == "simple":
-#                         ws.append(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id'])
-#                         for student in class_obj.student_set.all():
-#                             ws.append([student.usc_id, student.email, student.first_name, student.last_name,
-#                                      student.seating, student.total_calls, student.absent_calls, student.total_score, student.class_key.pk])
-#                     else:  # export_type == "all"
-#                         ws.append(['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id'])
-#                         for student in class_obj.student_set.all():
-#                             ratings = StudentRating.objects.filter(student_key=student)
-#                             for rating in ratings:
-#                                 ws.append([student.usc_id, rating.date, rating.attendance,
-#                                          rating.prepared, rating.score, student.class_key.pk])
-                    
-#                     response = HttpResponse(content_type=content_type)
-#                     response['Content-Disposition'] = f'attachment; filename="{filename}"'
-#                     wb.save(response)
+        if export_type == 1:
+            rows = [STUDENT_ATTRIBUTES]
+            sample_row = SAMPLE_STUDENT.copy()
+        else:
+            rows = [RATING_ATTRIBUTES]
+            sample_row = SAMPLE_RATING.copy()
 
-#                 return response
+        sample_row.append(class_id)
+        rows.append(sample_row)
 
-#             # Multiple classes selected - create ZIP file
-#             else:
-#                 zip_buffer = io.BytesIO()
-#                 with ZipFile(zip_buffer, 'w') as zip_file:
-#                     for class_id in class_ids:
-#                         class_obj = Class.objects.get(id=class_id, professor_key=request.user)
-                        
-#                         if file_format in ['csv', 'txt']:
-#                             output = io.StringIO()
-#                             writer = csv.writer(output)
-                            
-#                             if export_type == "simple":
-#                                 writer.writerow(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id'])
-#                                 for student in class_obj.student_set.all():
-#                                     writer.writerow([student.usc_id, student.email, student.first_name, student.last_name,
-#                                                   student.seating, student.total_calls, student.absent_calls, student.total_score, student.class_key.pk])
-#                             else:  # export_type == "all"
-#                                 writer.writerow(['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id'])
-#                                 for student in class_obj.student_set.all():
-#                                     ratings = StudentRating.objects.filter(student_key=student)
-#                                     for rating in ratings:
-#                                         writer.writerow([student.usc_id, rating.date, rating.attendance,
-#                                                        rating.prepared, rating.score, student.class_key.pk])
-                            
-#                             content = output.getvalue()
-                            
-#                         else:  # Excel format
-#                             output = io.BytesIO()
-#                             wb = Workbook()
-#                             ws = wb.active
-                            
-#                             if export_type == "simple":
-#                                 ws.append(['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id'])
-#                                 for student in class_obj.student_set.all():
-#                                     ws.append([student.usc_id, student.email, student.first_name, student.last_name,
-#                                              student.seating, student.total_calls, student.absent_calls, student.total_score, student.class_key.pk])
-#                             else:  # export_type == "all"
-#                                 ws.append(['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id'])
-#                                 for student in class_obj.student_set.all():
-#                                     ratings = StudentRating.objects.filter(student_key=student)
-#                                     for rating in ratings:
-#                                         ws.append([student.usc_id, rating.date, rating.attendance,
-#                                                  rating.prepared, rating.score, student.class_key.pk])
-                            
-#                             wb.save(output)
-#                             content = output.getvalue()
+        filename = f"{sample_class.class_name}{"" if export_type == 1 else "_ratings"}{"_sample"}{EXTENSION}"
+        writer = csv.writer(response)
+        writer.writerows(rows)
 
-#                         timestamp = datetime.now().strftime('%Y%m%d')
-#                         filename = f"{class_obj.class_name}_{timestamp}{extension}"
-#                         zip_file.writestr(filename, content)
-
-#                 response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
-#                 response['Content-Disposition'] = f'attachment; filename="class_exports.zip"'
-                
-#                 return response
-            
-#         except Exception as e:
-#             return HttpResponseBadRequest(f"Error: {str(e)}")
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response

@@ -1,7 +1,7 @@
 #views to create, modify, and view student info
 from .views_class import AddClassView, ClassDetailsView, ClassHomePageView
 #views related to data management (i.e CSV import/export)
-from .views_data import AddStudentImportView, ExportClassFileView
+from .views_data import AddStudentImportView, ExportClassFileView, ExportSampleFileView
 #views for core functionality (i.e registration and homepage)
 from .views_main import CreateAccountView, LoginView, HomePageView, StudentRandomizerView, ProfileView, ChangePasswordView, DemoView
 #views to create, modify, and view student info

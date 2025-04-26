@@ -32,7 +32,22 @@
             </select>
         </div>
     </form>
-    
+
+    {% if selected_class %}
+    <div class = "sample-group">
+        Download Sample:
+        <form class="download_form" id="student_download" method="post" action="{% url 'export_sample_file' selected_class.id 1 %}">
+            {% csrf_token %}
+            <button type="submit" class="download_button">Student File</button>
+        </form>
+            
+        <form class="download_form" id="rating_download" method="post" action="{% url 'export_sample_file' selected_class.id 2 %}">
+            {% csrf_token %}
+            <button type="submit" class="download_button">Rating File</button>
+        </form>
+    </div>
+    {% endif %}
+
     {% if selected_class %}
         <form id="import-form" method="post" enctype="multipart/form-data">
             {% csrf_token %}

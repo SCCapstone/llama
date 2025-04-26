@@ -108,6 +108,19 @@ button {
     transition: background-color 0.3s ease;
 }
 
+.sample-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 button:hover {
     background-color: #73000a;
 }

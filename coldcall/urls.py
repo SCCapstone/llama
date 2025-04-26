@@ -54,6 +54,7 @@ urlpatterns = [
     # Export To File 
     path("exportclassfile", views.ExportClassFileView.as_view(), name="export_class_file"),
     path("exportclassfile/<int:class_id>", views.ExportClassFileView.as_view(), name="export_class_file_with_id"),
+    path("exportsamplefile/<int:class_id>/<int:export_type>", views.ExportSampleFileView.as_view(), name="export_sample_file"),
 
     # Randomizer
     path("randomizer", views.StudentRandomizerView.as_view(), name="randomizer"),

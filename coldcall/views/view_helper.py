@@ -13,3 +13,5 @@ def get_demo_dir():
 #ExportClassFileView constants
 STUDENT_ATTRIBUTES = ['usc_id', 'email', 'first_name', 'last_name', 'seating', 'total_calls', 'absent_calls', 'total_score', 'class_id']
 RATING_ATTRIBUTES = ['usc_id', 'date', 'attendance', 'prepared', 'score', 'class_id']
+SAMPLE_STUDENT = ['B12345678', "sample@example.com", "John", "Doe", "FR", '0', '0', '0']
+SAMPLE_RATING = ['B12345678', 'April 2nd, 2025 3PM', 'TRUE', 'TRUE', '5']
