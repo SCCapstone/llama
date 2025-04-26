@@ -88,3 +88,16 @@
     border-top: 2px solid black;
     display: inline-block;
 }
+
+.delete-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+
+.note_column {
+    width: 60%
+}
