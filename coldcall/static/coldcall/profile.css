@@ -37,6 +37,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align:center;
+}
+
+.profile-icon-large h2 {
+
+    justify-self: center;
+    font-size: 80%;
 }
 
 .profile-picture-container {
