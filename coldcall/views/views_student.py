@@ -173,24 +173,27 @@ class StudentRatingEditView(LoginRequiredMixin, View):
     def post(self, request, pk, performance_id):
         student = Student.objects.get(pk=pk)
         rating = StudentRating.objects.get(pk=performance_id)
+        new_rating = request.POST.get('modifier')
+        if 'absent' in new_rating or 'unprepared' in new_rating:
+            rating.score = 0
+            rating.attendance = not 'absent' in new_rating
+            rating.prepared = not 'unprepared' in new_rating
+            rating.save()
 
-        print(request.POST)
-        attendance = 'present' in request.POST
-        prepared = 'prepared' in request.POST
-        print(attendance)
-        print(prepared)
+            student.recalculate_all()
+            return redirect("/student/" + str(pk)) 
+
         try:
             score = int(request.POST.get('rating'))
         except:
             score = 5
-
-        rating.attendance = attendance
-        rating.prepared = prepared
+        rating.attendance = True
+        rating.prepared = True
         rating.score = score
         rating.save()
 
         student.recalculate_all()
-        return redirect("/student/" + str(pk))   
+        return redirect("/student/" + str(pk)) 
         
 #Allows editing of a student's existing data.     
 class StudentUpdateView(View):

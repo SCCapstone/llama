@@ -14,7 +14,8 @@
 }
 
 .container input[type="text"],
-.container input[type="number"] {
+.container input[type="number"],
+.container select {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;

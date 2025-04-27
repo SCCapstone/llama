@@ -18,14 +18,18 @@
 </div>
 <div class="container">
 <body>
+  <h3> If a student is absent or unprepared, their rating will always be zero. </h3>
     <form method="post">
         {% csrf_token %}
-        <input type="number" id="rating" name="rating" min="1" max="5" value = {{rating.score}}>
-        <label for="rating">Rating</label>
-        <input type="checkbox" id="present" name="present" {%if rating.attendance%} checked {% endif %}>
-        <label for="present">Present</label>
-        <input type="checkbox" id="prepared" name="prepared" {%if rating.prepared %} checked {% endif %}>
-        <label for="prepared">Prepared</label>
+        <label for="rating">Rating:</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" value = {% if rating.score == 0 %}1{% else %}{{ rating.score|default:1 }}{% endif %}>
+        
+        Status: 
+        <select name="modifier" id="modifier">
+          <option value="" {% if not rating.modifier %}selected{% endif %}>Normal</option>
+          <option value="absent" {% if rating.modifier == "absent" %}selected{% endif %}>Absent</option>
+          <option value="unprepared" {% if rating.modifier == "unprepared" %}selected{% endif %}>Unprepared</option>
+        </select>
         <button type="submit">Save</button>
     </form>
 </body>
