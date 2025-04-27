@@ -75,6 +75,13 @@
                         </div>
                     </div>
                 </form>
+                
+                <div class="logout-section-mobile">
+                    <form action="{% url 'logout' %}" method="post" class="logout-form-mobile">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-button-mobile">Log Out</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

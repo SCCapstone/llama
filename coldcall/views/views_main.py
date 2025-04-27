@@ -80,29 +80,7 @@ class HomePageView(LoginRequiredMixin, View):
             
         # Apply sorting
         if students and sort_query:
-            if sort_query == "average_score":
-                # use model annotation to calculate average, as get_average_calls() can not be used with order_by()
-
-                #first calculate total_calls - absent calls using its own annotation
-                students = students.annotate(
-                    c = ExpressionWrapper(
-                        F('total_calls') - F('absent_calls'), 
-                        output_field=IntegerField())
-                ) 
-
-                students = students.annotate(
-                    avg = Case(
-                        #prevent divide by 0, always show these students first
-                        When(
-                            c__lte=0,
-                            then=Value(-1)
-                        ),
-                        default=(F('total_score')/(F('c'))), #actual average calculation
-                        output_field=FloatField()
-                    )
-                ).order_by('avg') #final sort, ascending
-            else:
-                students = students.order_by(Lower(sort_query))
+            students = students.order_by(Lower(sort_query))
         else:
             # Making sure that non-dropped students are displayed first then dropped students
             students = students.order_by('dropped', Lower('last_name'))
