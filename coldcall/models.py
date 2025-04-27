@@ -63,6 +63,11 @@ class Student(models.Model):
     unprepared_calls = models.IntegerField(default=0)
     total_score = models.IntegerField(default=0)
     dropped = models.BooleanField(default=False)
+    average_score = models.FloatField(default=0.0)  # average score of the student
+
+    def save(self, *args, **kwargs):
+        self.average_score = self.get_average_score()  # Assign average score before saving
+        super(Student, self).save(*args, **kwargs)
 
     def add_rating(self, score, is_present=True, is_prepared=True, in_date=None):
         if in_date is None:
